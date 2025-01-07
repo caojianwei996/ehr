@@ -1,16 +1,18 @@
 package com.neusoft.ehr.entity;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 
-@EqualsAndHashCode(callSuper = false)
-@Getter
-@ToString
+/**
+ * @author 曹健伟
+ * <p>
+ * 业务异常
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class ServiceException extends RuntimeException {
+    /**
+     * 业务码
+     */
     private final ServiceCode serviceCode;
-
-    public ServiceException(ServiceCode serviceCode) {
-        this.serviceCode = serviceCode;
-    }
 }

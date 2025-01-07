@@ -1,24 +1,25 @@
 package com.neusoft.ehr.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-@EqualsAndHashCode(callSuper = false)
+/**
+ * @param <T> 载荷类型
+ * @author 曹健伟
+ * <p>
+ * 请求对象
+ */
+@AllArgsConstructor(onConstructor_ = {@JsonCreator})
 @Getter
-@ToString
 @Valid
 public class Request<T> {
+    /**
+     * 载荷数据
+     */
     @NotNull
     private final T data;
-
-    @JsonCreator
-    public Request(@JsonProperty("data") T data) {
-        this.data = data;
-    }
 }

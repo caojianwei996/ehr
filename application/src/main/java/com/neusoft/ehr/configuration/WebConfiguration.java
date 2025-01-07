@@ -6,6 +6,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author 曹健伟
+ * <p>
+ * Web配置类
+ */
 @Configuration
 public class WebConfiguration {
     @Bean
