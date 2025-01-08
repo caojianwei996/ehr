@@ -24,9 +24,9 @@ public class ViewAttendancesMonthPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "考勤员工")
+    @Schema(description = "员工姓名")
     @TableField("employee")
-    private Long employee;
+    private String employee;
 
     @Schema(description = "出勤时间")
     @TableField("clock_in")
