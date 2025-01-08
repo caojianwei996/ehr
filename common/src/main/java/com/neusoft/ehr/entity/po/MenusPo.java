@@ -46,6 +46,6 @@ public class MenusPo implements Serializable {
     private Long parent;
 
     @Schema(description = "权限级别")
-    @TableField("priority")
-    private Byte priority;
+    @TableField("authority")
+    private Byte authority;
 }

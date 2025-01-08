@@ -1,11 +1,11 @@
 create table menus
 (
-    id       bigint       not null auto_increment comment '菜单编号',
-    name     varchar(8)   not null comment '菜单名称',
-    path     varchar(255) not null comment '菜单路径',
-    is_menu  boolean      not null comment '是菜单',
-    parent   bigint       not null comment '父菜单',
-    priority tinyint      not null comment '权限级别',
+    id        bigint       not null auto_increment comment '菜单编号',
+    name      varchar(8)   not null comment '菜单名称',
+    path      varchar(255) not null comment '菜单路径',
+    is_menu   boolean      not null comment '是菜单',
+    parent    bigint       not null comment '父菜单',
+    authority tinyint      not null comment '权限级别',
     primary key (id),
     unique (path),
     index (parent)
@@ -75,7 +75,7 @@ create table employees
     name               varchar(64) not null comment '员工姓名',
     email              varchar(64) not null comment '员工邮箱',
     password           char(60)    not null comment '员工密码',
-    authority          bigint      not null comment '员工权限',
+    authority          tinyint     not null comment '员工权限',
     induction          date        not null comment '入职时间',
     transfer_vocations tinyint     not null comment '调休假',
     work_type          bigint      not null comment '员工工作类型',
@@ -140,8 +140,11 @@ select employee, clock_in, clock_out
 from attendances
 where date(clock_in) = curdate();
 create view view_attendances_month as
-select employee, clock_in, clock_out
+select employees.name        as employee,
+       attendances.clock_in  as clock_in,
+       attendances.clock_out as clock_out
 from attendances
+         left outer join employees on attendances.employee = employees.id
 where year(clock_in) = year(curdate())
   and month(clock_in) = month(curdate());
 create table supplements

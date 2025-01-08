@@ -1,6 +1,13 @@
+application:
+  token:
+    expiration-time: 60
+    issuer: neusoft
+    not-before: 0
+    private-key: MGACAQAwEAYHKoZIzj0CAQYFK4EEACMESTBHAgEBBEIBKBVhL17zuV97FCLgTBtgiegwvOGUq3ISjeW7zzqZHpPceYuZOmfEX+uMPrHt4uko+ZKJG+qmYTZdnpHMezwbgEQ=
+    public-key: MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAbmP72V9XoH2tjIL6iYtDNsVcGzWzFcjmHEo2t+3jl+pnhXRtDCJD8HmEgjzEIS68C3JvxGaOsjRwFIdxx6s/mrIA5xOCnLzvtltA8LJyNNIqvGepw1M2Jhbu6Kbfxr/R/3Cif/IrgJ+gbAzukfO+3Oj0ddOuz4rzAHqxk9k8ZVI6V9M=
+    subject: user
 mybatis-plus:
   mapper-locations: classpath*:/mappers/**/*.xml
-  type-aliases-package: com.neusoft.ehr.entity.po
 server:
   servlet:
     context-path: /api
