@@ -19,7 +19,7 @@ public class Application {
     /**
      * 数据库URL
      */
-    private static final String url = "jdbc:mysql://localhost:3306/exam_20250106";
+    private static final String url = "jdbc:mysql://localhost:3306/ehr";
     /**
      * 数据库用户名
      */
@@ -42,15 +42,12 @@ public class Application {
         // @formatter:off
         // 准备读取键盘输入
         Scanner scanner = new Scanner(System.in);
-
         // 输入作者
         System.out.println("Author:");
         String author = scanner.nextLine();
-
         // 输入模块名
         System.out.println("Module:");
         String moduleName = scanner.nextLine();
-
         // 代码生成
         FastAutoGenerator
                 // 数据库配置
@@ -89,7 +86,7 @@ public class Application {
                         // Controller包
                         .controller("controller")
                         // 特殊路径信息
-                        .pathInfo(Collections.singletonMap(OutputFile.xml,basePath + "/main/resources/mappers"))
+                        .pathInfo(Collections.singletonMap(OutputFile.xml, basePath + "/main/resources/mappers"))
                         //结束配置
                         .build()
                 )

@@ -1,3 +1,5 @@
+mybatis-plus:
+  mapper-locations: classpath*:/mappers/**/*.xml
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
