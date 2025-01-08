@@ -61,7 +61,7 @@
 
 ```http request
 * /**
-Authorization: jwt
+Authorization: Bearer jwt
 ```
 
 ### 员工登录
@@ -188,7 +188,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`time`
-- Return:`record`
+- Return:`Record`
 - Throws:`打卡时间异常` `频繁打卡`
 
 ### 获取缺勤记录
@@ -217,7 +217,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`upTime` `downTime` `reason`
-- Return:`record`
+- Return:`Record`
 - Throws:`打卡时间异常`
 
 ### 获取补签申请
