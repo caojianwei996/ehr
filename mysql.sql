@@ -1,31 +1,54 @@
 create table menus
 (
     id        bigint       not null auto_increment comment '菜单编号',
-    name      varchar(8)   not null comment '菜单名称',
-    path      varchar(255) not null comment '菜单路径',
-    is_menu   boolean      not null comment '是菜单',
-    parent    bigint       not null comment '父菜单',
-    authority tinyint      not null comment '权限级别',
+    name      varchar(54)  not null comment '菜单名称',
+    path      varchar(256) not null comment '菜单路径',
+    authority tinyint      not null comment '权限级别:0.低;1.中;2.高;',
     primary key (id),
-    unique (path),
-    index (parent)
+    unique (path)
 ) comment '菜单';
+insert into menus
+values (1, 'Index', '/', 0),
+       (2, 'Information', '/information', 0),
+       (3, 'Password', '/password', 0),
+       (4, 'Attendance', '/attendance', 0),
+       (5, 'Attendance-Applies', '/attendance/apply', 0),
+       (6, 'Attendance-Record', '/attendance/record', 0),
+       (7, 'Attendance-Approve', '/attendance/approve', 1),
+       (8, 'Vocation-Applies', '/vocation/apply', 0),
+       (9, 'Vocation-Records', '/vocation/record', 0),
+       (10, 'Vocation-Approve', '/vocation/approve', 1),
+       (11, 'Vocation-Type', '/vocation/type', 2),
+       (12, 'Calendar', '/calendar', 2),
+       (13, 'Schedule', '/schedule', 2),
+       (14, 'Schedule-Type', '/schedule/type', 2),
+       (15, 'Manage-Employee', '/manage/employee', 2),
+       (16, 'Manage-Department', '/manage/department', 2),
+       (17, 'Manage-Position', '/manage/position', 2);
 create table languages
 (
     id   bigint  not null auto_increment comment '语言编号',
     name char(2) not null comment '语言名称',
     primary key (id)
 ) comment '语言';
+insert into languages (id, name)
+values (1, 'zh'),
+       (2, 'en'),
+       (3, 'ja');
 create table countries
 (
     id   bigint  not null auto_increment comment '国家编号',
     name char(2) not null comment '国家名称',
     primary key (id)
 ) comment '国家';
+insert into countries (id, name)
+values (1, 'CN'),
+       (2, 'US'),
+       (3, 'JP');
 create table messages
 (
     id       bigint      not null auto_increment comment '消息编号',
-    code     varchar(16) not null comment '消息代码',
+    code     varchar(64) not null comment '消息代码',
     language bigint      not null comment '语言',
     country  bigint comment '国家',
     text     text comment '文本',
@@ -34,10 +57,26 @@ create table messages
     index (language),
     index (country)
 ) comment '消息';
+insert into messages (id, code, language, country, text)
+values (1, 'SUCCESS', 1, 1, '操作成功！'),
+       (2, 'SUCCESS', 2, 2, 'Operation successfully!'),
+       (3, 'SUCCESS', 3, 3, '操作に成功しました！'),
+       (4, 'FAILURE', 1, 1, '操作失败！'),
+       (5, 'FAILURE', 2, 2, 'Operation failed!'),
+       (6, 'FAILURE', 3, 3, '操作に失敗しました！'),
+       (7, 'TOKEN_INCORRECT', 1, 1, '令牌错误！'),
+       (8, 'TOKEN_INCORRECT', 2, 2, 'Token incorrect!'),
+       (9, 'TOKEN_INCORRECT', 3, 3, 'トークンエラー'),
+       (10, 'ACCOUNT_NOT_EXIST', 1, 1, '账号不存在！'),
+       (11, 'ACCOUNT_NOT_EXIST', 2, 2, 'Account not exist!'),
+       (12, 'ACCOUNT_NOT_EXIST', 3, 3, 'アカウントが存在しません！'),
+       (13, 'PASSWORD_ERROR', 1, 1, '密码错误！'),
+       (14, 'PASSWORD_ERROR', 2, 2, 'Password error!'),
+       (15, 'PASSWORD_ERROR', 3, 3, 'パスワードエラー！');
 create view view_messages as
 select messages.code  as code,
        languages.name as language,
-       countries.name as contry,
+       countries.name as country,
        messages.text  as text
 from messages
          left outer join languages on messages.language = languages.id

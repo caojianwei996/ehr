@@ -13,9 +13,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebConfiguration {
+    /**
+     * Web配置
+     *
+     * @return WebMVC配置类
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
+            /**
+             * 后端处理跨域
+             * @param registry 跨域注册链
+             */
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
