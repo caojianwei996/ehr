@@ -44,7 +44,7 @@ public class EmployeesPo implements Serializable {
 
     @Schema(description = "员工权限")
     @TableField("authority")
-    private Long authority;
+    private Byte authority;
 
     @Schema(description = "入职时间")
     @TableField("induction")
