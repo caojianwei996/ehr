@@ -24,11 +24,13 @@ create table countries
 ) comment '国家';
 create table messages
 (
-    code     bigint not null auto_increment comment '消息编号',
-    language bigint not null comment '语言',
+    id       bigint      not null auto_increment comment '消息编号',
+    code     varchar(16) not null comment '消息代码',
+    language bigint      not null comment '语言',
     country  bigint comment '国家',
     text     text comment '文本',
-    primary key (code, language, country),
+    primary key (id),
+    unique (code, language, country),
     index (language),
     index (country)
 ) comment '消息';
@@ -93,11 +95,11 @@ create view view_account as
 select id, email, password
 from employees;
 create view view_departments as
-select departments.id          as id,
-       departments.name        as name,
-       employees.name          as leader,
-       departments.preparation as preparation,
-       departments.status      as status
+select departments.id          as department_id,
+       departments.name        as department_name,
+       employees.name          as department_leader,
+       departments.preparation as department_preparation,
+       departments.status      as department_status
 from departments
          left outer join employees on departments.leader = employees.id;
 create table work_types
@@ -109,14 +111,14 @@ create table work_types
     primary key (id)
 ) comment '工作类型';
 create view view_employees as
-select employees.name      as name,
-       employees.email     as email,
-       employees.authority as authority,
-       work_types.name     as work_type,
-       genders.name        as gender,
-       departments.name    as department,
-       positions.name      as position,
-       leader.name         as leader
+select employees.name      as employee_name,
+       employees.email     as employee_email,
+       employees.authority as employee_authority,
+       work_types.name     as employee_work_type,
+       genders.name        as employee_gender,
+       departments.name    as employee_department,
+       positions.name      as employee_position,
+       leader.name         as employee_leader
 from employees
          left outer join work_types on employees.work_type = work_types.id
          left outer join genders on employees.gender = genders.id
@@ -134,11 +136,11 @@ create table attendances
     index (clock_in)
 ) comment '考勤';
 create view view_attendances_day as
-select *
+select employee, clock_in, clock_out
 from attendances
 where date(clock_in) = curdate();
 create view view_attendances_month as
-select *
+select employee, clock_in, clock_out
 from attendances
 where year(clock_in) = year(curdate())
   and month(clock_in) = month(curdate());

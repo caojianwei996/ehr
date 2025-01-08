@@ -1,6 +1,8 @@
 package com.neusoft.ehr.entity.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +11,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * VIEW
+ * 部门
  * </p>
  *
  * @author 曹健伟
@@ -17,29 +19,29 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("view_departments")
-@Schema(name = "ViewDepartmentsPo", description = "VIEW")
-public class ViewDepartmentsPo implements Serializable {
+@TableName("departments")
+@Schema(name = "DepartmentsPo", description = "部门")
+public class DepartmentsPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "部门编号")
-    @TableField("department_id")
-    private Long departmentId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     @Schema(description = "部门名称")
-    @TableField("department_name")
-    private String departmentName;
+    @TableField("name")
+    private String name;
 
-    @Schema(description = "员工姓名")
-    @TableField("department_leader")
-    private String departmentLeader;
+    @Schema(description = "部门领导")
+    @TableField("leader")
+    private Long leader;
 
     @Schema(description = "部门编制")
-    @TableField("department_preparation")
-    private Long departmentPreparation;
+    @TableField("preparation")
+    private Long preparation;
 
     @Schema(description = "部门状态")
-    @TableField("department_status")
-    private Byte departmentStatus;
+    @TableField("status")
+    private Byte status;
 }

@@ -5,13 +5,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 消息
+ * 工作类型
  * </p>
  *
  * @author 曹健伟
@@ -19,29 +20,25 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("messages")
-@Schema(name = "MessagesPo", description = "消息")
-public class MessagesPo implements Serializable {
+@TableName("work_types")
+@Schema(name = "WorkTypesPo", description = "工作类型")
+public class WorkTypesPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "消息编号")
+    @Schema(description = "工作类型编号")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @Schema(description = "消息代码")
-    @TableField("code")
-    private String code;
+    @Schema(description = "工作类型名称")
+    @TableField("name")
+    private String name;
 
-    @Schema(description = "语言")
-    @TableField("language")
-    private Long language;
+    @Schema(description = "上班时间")
+    @TableField("on_time")
+    private LocalTime onTime;
 
-    @Schema(description = "国家")
-    @TableField("country")
-    private Long country;
-
-    @Schema(description = "文本")
-    @TableField("text")
-    private String text;
+    @Schema(description = "下班时间")
+    @TableField("off_time")
+    private LocalTime offTime;
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 消息
+ * 假期类型
  * </p>
  *
  * @author 曹健伟
@@ -19,29 +19,21 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("messages")
-@Schema(name = "MessagesPo", description = "消息")
-public class MessagesPo implements Serializable {
+@TableName("vocation_types")
+@Schema(name = "VocationTypesPo", description = "假期类型")
+public class VocationTypesPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "消息编号")
+    @Schema(description = "假期类型编号")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @Schema(description = "消息代码")
-    @TableField("code")
-    private String code;
+    @Schema(description = "假期类型名称")
+    @TableField("name")
+    private String name;
 
-    @Schema(description = "语言")
-    @TableField("language")
-    private Long language;
-
-    @Schema(description = "国家")
-    @TableField("country")
-    private Long country;
-
-    @Schema(description = "文本")
-    @TableField("text")
-    private String text;
+    @Schema(description = "假期受限")
+    @TableField("is_restricted")
+    private Boolean restricted;
 }

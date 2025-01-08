@@ -1,6 +1,8 @@
 package com.neusoft.ehr.entity.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * VIEW
+ * 考勤
  * </p>
  *
  * @author 曹健伟
@@ -18,11 +20,15 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("view_attendances_day")
-@Schema(name = "ViewAttendancesDayPo", description = "VIEW")
-public class ViewAttendancesDayPo implements Serializable {
+@TableName("attendances")
+@Schema(name = "AttendancesPo", description = "考勤")
+public class AttendancesPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Schema(description = "考勤编号")
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     @Schema(description = "考勤员工")
     @TableField("employee")
