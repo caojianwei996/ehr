@@ -54,3 +54,297 @@
     - 代码生成
 - System
     - 系统管理
+
+## 接口文档
+
+### 权限控制:
+
+```http request
+* /**
+Authorization: jwt
+```
+
+### 员工登录
+
+```http request
+POST /api/users/login
+Content-Type: application/json
+
+{
+  "data": {
+    "username": "number&email",
+    "password": "jakejake"
+  }
+}
+```
+
+- Authentication:`false`
+- Required:`username` `password`
+- Return:`User`
+- Throws:`用户不存在` `密码错误`
+
+### 重置密码
+
+```http request
+POST /api/users/reset
+Content-Type: application/json
+
+{
+  "data": {
+    "email": "email"
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`email`
+- Throws:`用户不存在`
+
+### 获取菜单
+
+```http request
+GET /api/menus
+```
+
+- Authentication:`true`
+- Return:`Menu[]`
+
+### 查看基本信息
+
+```http request
+GET /api/employees/basic
+```
+
+- Authentication:`true`
+- Return:`Employee`
+
+### 查看履历信息
+
+```http request
+GET /api/employees/resume
+```
+
+- Authentication:`true`
+- Return:`Resume`
+
+### 修改密码
+
+```http request
+PUT /api/users
+Content-Type: application/json
+
+{
+  "data": {
+    "oldPassword": "oldPassword",
+    "newPassword": "oldPassword"
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`oldPassword` `newPassword`
+- Return:`User`
+- Throws:`密码错误`
+
+### 获取时间
+
+```http request
+GET /api/attendances/time
+```
+
+- Authentication:`false`
+- Return:`Attendance`
+
+### 上班打卡
+
+```http request
+POST /api/attendances
+Content-Type: application/json
+
+{
+  "data": {
+    "time": "yyyy-MM-dd HH:mm:ss"
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`time`
+- Return:`Record`
+- Throws:`打卡时间异常`
+
+### 下班打卡
+
+```http request
+PUT /api/attendances
+Content-Type: application/json
+
+{
+  "data": {
+    "time": "yyyy-MM-dd HH:mm:ss"
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`time`
+- Return:`record`
+- Throws:`打卡时间异常` `频繁打卡`
+
+### 获取缺勤记录
+
+```http request
+GET /api/attendances
+```
+
+- Authentication:`true`
+- Return:`Record[]`
+
+### 考勤补签
+
+```http request
+POST /api/attendance
+Content-Type: application/json
+
+{
+  "data": {
+    "upTime": "yyyy-MM-dd HH:mm:ss",
+    "downTime": "yyyy-MM-dd HH:mm:ss",
+    "reason": ""
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`upTime` `downTime` `reason`
+- Return:`record`
+- Throws:`打卡时间异常`
+
+### 获取补签申请
+
+```http request
+GET /api/attendances/apply
+```
+
+- Authentication:`true`
+- Return:`Apply[]`
+
+### 审批补签
+
+```http request
+POST /api/attendances/apply
+Content-Type: application/json
+
+{
+  "data": {
+    "agree": true,
+    "list": []
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`agree` `list`
+
+### 获取假期
+
+```http request
+GET /api/vacations
+```
+
+- Authentication:`true`
+- Return:`number`
+
+### 申请休假
+
+```http request
+POST /api/vacations/apply
+Content-Type: application/json
+
+{
+  "data": {
+    "type": number,
+    "start": "yyyy-MM-dd",
+    "end": "yyyy-MM-dd"
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`type` `start` `end`
+- Throws:`假期不足`
+
+### 审批休假
+
+```http request
+POST /api/vacations/apply
+Content-Type: application/json
+
+{
+  "data": {
+    "agree": true,
+    "list": []
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`agree` `list`
+
+### 月出勤记录
+
+```http request
+GET /api/attendances/month
+```
+
+- Authentication:`true`
+- Return:`AbsenceRecord[]`
+
+### 获取部门信息
+
+```http request
+GET /api/departments?limit=number&page=bumber
+```
+
+- Authentication:`true`
+- Return:`Department[]`
+
+### 新增部门
+
+```http request
+POST /api/departments
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "string",
+    "preparation": "preparation"
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`name` `preparation`
+- Return:`Department[]`
+- Throws:`名称冲突`
+
+### 修改部门
+
+```http request
+POST /api/departments
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "string",
+    "leader: number,
+    "preparation": "preparation",
+    "status": number
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`name` `leader` `preparation` `status`
+- Return:`Department[]`
+- Throws:`名称冲突`
