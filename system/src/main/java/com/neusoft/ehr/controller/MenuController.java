@@ -3,16 +3,24 @@ package com.neusoft.ehr.controller;
 import com.neusoft.ehr.entity.Response;
 import com.neusoft.ehr.entity.vo.MenuVo;
 import com.neusoft.ehr.service.IMenuService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.context.MessageSource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 菜单控制器
+ *
+ * @author 曹健伟
+ */
+@Schema(name = "MenuController", description = "菜单控制器")
 @RequestMapping("/menus")
 @RestController
 public class MenuController extends BaseController {
+    /**
+     * 菜单业务组件
+     */
     private final IMenuService menuService;
 
     /**
@@ -26,6 +34,11 @@ public class MenuController extends BaseController {
         this.menuService = menuService;
     }
 
+    /**
+     * 获取菜单
+     *
+     * @return 菜单列表
+     */
     @GetMapping
     public Response<List<MenuVo>> select() {
         return success(menuService.select());

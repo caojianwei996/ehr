@@ -37,15 +37,7 @@ public class MenusPo implements Serializable {
     @TableField("path")
     private String path;
 
-    @Schema(description = "是菜单")
-    @TableField("is_menu")
-    private Boolean menu;
-
-    @Schema(description = "父菜单")
-    @TableField("parent")
-    private Long parent;
-
-    @Schema(description = "权限级别")
+    @Schema(description = "权限级别:0.低;1.中;2.高;")
     @TableField("authority")
     private Byte authority;
 }
