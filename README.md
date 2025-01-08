@@ -348,3 +348,43 @@ Content-Type: application/json
 - Required:`name` `leader` `preparation` `status`
 - Return:`Department[]`
 - Throws:`名称冲突`
+
+### 新增岗位
+
+```http request
+POST /api/departments
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "string",
+    "preparation": "preparation"
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`name` `preparation`
+- Return:`Department[]`
+- Throws:`名称冲突`
+
+### 修改岗位
+
+```http request
+POST /api/departments
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "string",
+    "leader: number,
+    "preparation": "preparation",
+    "status": number
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`name` `leader` `preparation` `status`
+- Return:`Department[]`
+- Throws:`名称冲突`

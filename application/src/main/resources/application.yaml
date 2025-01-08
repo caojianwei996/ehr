@@ -1,5 +1,9 @@
 mybatis-plus:
   mapper-locations: classpath*:/mappers/**/*.xml
+  type-aliases-package: com.neusoft.ehr.entity.po
+server:
+  servlet:
+    context-path: /api
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

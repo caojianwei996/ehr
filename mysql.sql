@@ -83,6 +83,7 @@ create table employees
     leader             bigint comment '员工领导',
     primary key (id),
     unique (name),
+    index (work_type),
     index (gender),
     index (department),
     index (position),
@@ -99,15 +100,25 @@ select departments.id          as id,
        departments.status      as status
 from departments
          left outer join employees on departments.leader = employees.id;
+create table work_types
+(
+    id       bigint      not null auto_increment comment '工作类型编号',
+    name     varchar(16) not null comment '工作类型名称',
+    on_time  time        not null comment '上班时间',
+    off_time time        not null comment '下班时间',
+    primary key (id)
+) comment '工作类型';
 create view view_employees as
 select employees.name      as name,
        employees.email     as email,
        employees.authority as authority,
+       work_types.name     as work_type,
        genders.name        as gender,
        departments.name    as department,
        positions.name      as position,
        leader.name         as leader
 from employees
+         left outer join work_types on employees.work_type = work_types.id
          left outer join genders on employees.gender = genders.id
          left outer join departments on employees.department = departments.id
          left outer join positions on employees.position = positions.id
@@ -130,7 +141,7 @@ create view view_attendances_month as
 select *
 from attendances
 where year(clock_in) = year(curdate())
-   or month(clock_in) = month(curdate());
+  and month(clock_in) = month(curdate());
 create table supplements
 (
     id        bigint not null auto_increment comment '补签编号',
@@ -155,7 +166,7 @@ from supplements
 where status = 0;
 create table vocation_types
 (
-    id            bigint      not null auto_increment comment '假期类型变化',
+    id            bigint      not null auto_increment comment '假期类型编号',
     name          varchar(16) not null comment '假期类型名称',
     is_restricted tinyint(1)  not null comment '假期受限',
     primary key (id),
@@ -196,11 +207,3 @@ create table calendar
     primary key (id),
     index (type)
 ) comment '日历';
-create table work_types
-(
-    id       bigint      not null auto_increment comment '工作类型编号',
-    name     varchar(16) not null comment '工作类型名称',
-    on_time  time        not null comment '上班时间',
-    off_time time        not null comment '下班时间',
-    primary key (id)
-) comment '工作类型';

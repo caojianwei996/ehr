@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import com.neusoft.ehr.controller.BaseController;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Collections;
 import java.util.Scanner;
@@ -45,9 +43,6 @@ public class Application {
         // 输入作者
         System.out.println("Author:");
         String author = scanner.nextLine();
-        // 输入模块名
-        System.out.println("Module:");
-        String moduleName = scanner.nextLine();
         // 代码生成
         FastAutoGenerator
                 // 数据库配置
@@ -73,18 +68,10 @@ public class Application {
                 .packageConfig(builder -> builder
                         // 父包
                         .parent("com.neusoft.ehr")
-                        // 模块名
-                        .moduleName(moduleName)
                         // 实体类包
                         .entity("entity.po")
                         // Mapper包
                         .mapper("mapper")
-                        // Service接口包
-                        .service("service")
-                        // Service实现包
-                        .serviceImpl("service.implement")
-                        // Controller包
-                        .controller("controller")
                         // 特殊路径信息
                         .pathInfo(Collections.singletonMap(OutputFile.xml, basePath + "/main/resources/mappers"))
                         //结束配置
@@ -120,24 +107,10 @@ public class Application {
                         .convertXmlFileName(entity -> entity + "Mapper")
                         // 允许文件覆盖
                         .enableFileOverride()
-                        // Mapper注解
-                        .mapperAnnotation(Mapper.class)
-                        // Service构建
-                        .serviceBuilder()
-                        // 格式化Service接口名称
-                        .convertServiceFileName(entityName -> "I" + entityName + "Service")
-                        // 格式化Service实现名称
-                        .convertServiceImplFileName(entityName -> entityName + "Service")
-                        // 允许文件覆盖
-                        .enableFileOverride()
-                        // Controller构建
-                        .controllerBuilder()
-                        // 格式化Controller接口名称
-                        .convertFileName(entity -> entity + "Controller")
-                        // 启用REST风格
-                        .enableRestStyle()
-                        // 统一继承BaseController
-                        .superClass(BaseController.class)
+                        // 不构建Service
+                        .serviceBuilder().disable()
+                        // 不构建Controller
+                        .controllerBuilder().disable()
                         // 结束配置
                         .build()
                 )
