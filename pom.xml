@@ -13,7 +13,6 @@
         <module>generator</module>
         <module>system</module>
         <module>department</module>
-        <module>postions</module>
         <module>employee</module>
     </modules>
     <properties>

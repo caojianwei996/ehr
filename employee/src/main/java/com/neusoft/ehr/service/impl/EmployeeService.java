@@ -1,6 +1,8 @@
-package com.neusoft.ehr.service.Imp;
+package com.neusoft.ehr.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.neusoft.ehr.entity.ServiceCode;
 import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.dto.LoginDto;
 import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
@@ -9,26 +11,23 @@ import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.mapper.EmployeesMapper;
 import com.neusoft.ehr.util.token.TokenUtil;
+import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.neusoft.ehr.entity.ServiceCode.PASSWORD_ERROR;
-import static com.neusoft.ehr.entity.ServiceCode.USER_NOT_EXIST;
-
+@RequiredArgsConstructor
 @Service
 public class EmployeeService implements IEmployeeService {
-
-    @Autowired
-    TokenUtil tokenUtil;
-    @Autowired
-    private EmployeesMapper employeesMapper;
+    private final TokenUtil tokenUtil;
+    private final EmployeesMapper employeesMapper;
 
     @Override
     public LoginVo login(LoginDto data) {
         //1.先判断用户是否存在
-        QueryWrapper<EmployeesPo> queryWrapper = new QueryWrapper<EmployeesPo>().eq("name", data.getUsername());
-        EmployeesPo employees = employeesMapper.selectOne(queryWrapper);
+        EmployeesPo employees = employeesMapper.selectOne(
+                Wrappers.<EmployeesPo>lambdaQuery()
+                        .eq(EmployeesPo::getEmail, data.getUsername())
+        );
         //2.用户存在
         if (employees != null) {
             //3.再判断密码是否正确
@@ -43,37 +42,37 @@ public class EmployeeService implements IEmployeeService {
                 result.setAuthority(employees.getAuthority());
 
                 //传入载荷数据，生成token
-                String token = "Bearer "+tokenUtil.encode(result);
+                String token = "Bearer " + tokenUtil.encode(result);
 
                 result.setToken(token);
                 //返回结果
                 return result;
             } else {
-                throw new ServiceException(PASSWORD_ERROR);
+                throw new ServiceException(ServiceCode.PASSWORD_ERROR);
             }
         } else {
-            throw new ServiceException(USER_NOT_EXIST);
+            throw new ServiceException(ServiceCode.USER_NOT_EXIST);
         }
     }
 
     @Override
-    public Void reset(String email) {
+    public void reset(String email) {
         //先查该用户是否存在
-        QueryWrapper<EmployeesPo> queryWrapper = new QueryWrapper<EmployeesPo>().eq("email", email);
-        EmployeesPo employees = employeesMapper.selectOne(queryWrapper);
-        if(employees!=null){
+        EmployeesPo employees = employeesMapper.selectOne(
+                Wrappers.<EmployeesPo>lambdaQuery()
+                        .eq(EmployeesPo::getEmail, email)
+        );
+        if (employees != null) {
             String newPassword = "123456";
-            String hashpw = BCrypt.hashpw(newPassword, BCrypt.gensalt());
-            employees.setPassword(hashpw);
-            employeesMapper.update(employees,queryWrapper);
-        }else {
-            throw new ServiceException(USER_NOT_EXIST);
+            employees.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+            employeesMapper.updateById(employees);
+        } else {
+            throw new ServiceException(ServiceCode.USER_NOT_EXIST);
         }
-        return null;
     }
 
     @Override
-    public LoginVo updatePassword(UpdatePasswordDto data,LoginVo loginVo) {
+    public void updatePassword(UpdatePasswordDto data, LoginVo loginVo) {
         QueryWrapper<EmployeesPo> queryWrapper = new QueryWrapper<EmployeesPo>();
         //先查该用户的原密码
         String hashPassword = employeesMapper.selectOne(queryWrapper.eq("name", loginVo.getName())).getPassword();
@@ -86,9 +85,5 @@ public class EmployeeService implements IEmployeeService {
 //        }
 
         EmployeesPo employeesPo = employeesMapper.selectOne(queryWrapper.eq("password", oldPassword));
-
-
-
-        return null;
     }
 }
