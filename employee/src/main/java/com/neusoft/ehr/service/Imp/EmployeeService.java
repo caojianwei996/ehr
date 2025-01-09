@@ -8,12 +8,10 @@ import com.neusoft.ehr.entity.po.EmployeesPo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.mapper.EmployeesMapper;
-import com.neusoft.ehr.utils.TokenUtil;
+import com.neusoft.ehr.util.token.TokenUtil;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 import static com.neusoft.ehr.entity.ServiceCode.PASSWORD_ERROR;
 import static com.neusoft.ehr.entity.ServiceCode.USER_NOT_EXIST;
@@ -44,15 +42,8 @@ public class EmployeeService implements IEmployeeService {
                 result.setEmail(employees.getEmail());
                 result.setAuthority(employees.getAuthority());
 
-                //生成载荷数据
-                HashMap<String, Object> jwtMap = new HashMap<>();
-                jwtMap.put("id", result.getId());
-                jwtMap.put("name", result.getName());
-                jwtMap.put("email", result.getEmail());
-                jwtMap.put("authority", result.getAuthority());
-
                 //传入载荷数据，生成token
-                String token = "Bearer "+tokenUtil.toToken(jwtMap);
+                String token = "Bearer "+tokenUtil.encode(result);
 
                 result.setToken(token);
                 //返回结果
@@ -82,10 +73,18 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public LoginVo updatePassword(UpdatePasswordDto data) {
-        //先判断原密码是否正确
-        String oldPassword = data.getOldPassword();
+    public LoginVo updatePassword(UpdatePasswordDto data,LoginVo loginVo) {
         QueryWrapper<EmployeesPo> queryWrapper = new QueryWrapper<EmployeesPo>();
+        //先查该用户的原密码
+        String hashPassword = employeesMapper.selectOne(queryWrapper.eq("name", loginVo.getName())).getPassword();
+
+        //再判断输入的原密码是否正确
+        String oldPassword = data.getOldPassword();
+
+//        BCrypt.checkpw(oldPassword,hashPassword){
+//
+//        }
+
         EmployeesPo employeesPo = employeesMapper.selectOne(queryWrapper.eq("password", oldPassword));
 
 

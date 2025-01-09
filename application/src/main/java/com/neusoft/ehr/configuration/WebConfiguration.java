@@ -3,7 +3,9 @@ package com.neusoft.ehr.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -19,7 +21,7 @@ public class WebConfiguration {
      * @return WebMVC配置类
      */
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    public WebMvcConfigurer corsConfigurer(HandlerInterceptor[] interceptors) {
         return new WebMvcConfigurer() {
             /**
              * 后端处理跨域
@@ -32,6 +34,13 @@ public class WebConfiguration {
                         .allowedHeaders(CorsConfiguration.ALL)
                         .allowedMethods(CorsConfiguration.ALL)
                         .allowedOrigins(CorsConfiguration.ALL);
+            }
+
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                for(HandlerInterceptor interceptor:interceptors){
+                    registry.addInterceptor(interceptor).addPathPatterns("/**");
+                }
             }
         };
     }

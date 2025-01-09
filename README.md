@@ -131,7 +131,7 @@ GET /api/employees/resume
 ### 修改密码
 
 ```http request
-PUT /api/users
+POST /api/users/update
 Content-Type: application/json
 
 {

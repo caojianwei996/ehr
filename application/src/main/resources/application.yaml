@@ -1,4 +1,9 @@
 application:
+  authentication:
+    permit:
+      post:
+        - /api/users/login
+        - /api/users/reset
   token:
     expiration-time: 60
     issuer: neusoft

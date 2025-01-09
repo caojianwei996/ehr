@@ -3,6 +3,7 @@ package com.neusoft.ehr.controller;
 import com.neusoft.ehr.entity.dto.LoginDto;
 import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
 import com.neusoft.ehr.entity.vo.LoginVo;
+import com.neusoft.ehr.interceptor.auth.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
@@ -41,14 +42,14 @@ public class EmployeeController extends BaseController{
     @PostMapping("/reset")
     public Response<Void> resetPassword(@RequestBody Request<String> request){
         String email = request.getData();
-
         return success(employeeService.reset(email));
     }
-    @PutMapping("/")
+    @PostMapping("/update")
     public Response<LoginVo> updatePassword(@RequestBody Request<UpdatePasswordDto> request){
         UpdatePasswordDto data = request.getData();
+        LoginVo currentUser = AuthorizationInterceptor.getCurrentUser();
 
-        return success(employeeService.updatePassword(data));
+        return success(employeeService.updatePassword(data,currentUser));
     }
 
 }
