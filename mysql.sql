@@ -188,10 +188,11 @@ where year(clock_in) = year(curdate())
   and month(clock_in) = month(curdate());
 create table supplements
 (
-    id        bigint not null auto_increment comment '补签编号',
-    employee  bigint not null comment '补签员工',
-    clock_in  datetime comment '新出勤时间',
-    clock_out datetime comment '新退勤时间',
+    id        bigint      not null auto_increment comment '补签编号',
+    employee  bigint      not null comment '补签员工',
+    clock_in  datetime    not null comment '新出勤时间',
+    clock_out datetime    not null comment '新退勤时间',
+    reason    varchar(16) not null comment '补签原因',
     status    tinyint comment '补签状态:0.已申请;1.已批准;',
     primary key (id),
     index (employee),

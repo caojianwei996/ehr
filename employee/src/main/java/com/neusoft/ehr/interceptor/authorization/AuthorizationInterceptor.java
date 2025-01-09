@@ -1,4 +1,4 @@
-package com.neusoft.ehr.interceptor.auth;
+package com.neusoft.ehr.interceptor.authorization;
 
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.util.token.TokenUtil;
@@ -19,9 +19,10 @@ import java.util.Collections;
 
 @RequiredArgsConstructor
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE+1)
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
 public class AuthorizationInterceptor implements HandlerInterceptor {
     private static final ThreadLocal<LoginVo> THREAD_LOCAL = new InheritableThreadLocal<>();
+
     public static LoginVo getCurrentUser() {
         return THREAD_LOCAL.get();
     }
@@ -40,23 +41,20 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             );
             return true;
         } catch (Throwable e) {
-            for (String path : properties
-                    .getPermit().getOrDefault(
-                            HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                            Collections.emptyList()
-                    )
-            ) {
-                if (pathMatcher.match(path, request.getRequestURI())) {
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            HttpMethod method = HttpMethod.resolve(request.getMethod());
+            String uri = request.getRequestURI();
+            for (String path : properties.getPermit().getOrDefault(method, Collections.emptyList())) {
+                if (pathMatcher.match(path, uri)) {
                     return true;
                 }
             }
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         THREAD_LOCAL.remove();
     }
 }

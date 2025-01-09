@@ -36,9 +36,13 @@ public class WebConfiguration {
                         .allowedOrigins(CorsConfiguration.ALL);
             }
 
+            /**
+             * 拦截器链
+             * @param registry 拦截器注册链
+             */
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
-                for(HandlerInterceptor interceptor:interceptors){
+                for (HandlerInterceptor interceptor : interceptors) {
                     registry.addInterceptor(interceptor).addPathPatterns("/**");
                 }
             }
