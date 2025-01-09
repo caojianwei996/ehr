@@ -27,6 +27,10 @@
             <groupId>com.neusoft.ehr</groupId>
             <artifactId>department</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.neusoft.ehr</groupId>
+            <artifactId>position</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

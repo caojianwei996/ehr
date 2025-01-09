@@ -4,20 +4,13 @@ import com.neusoft.ehr.DTO.DepartmentsDTO;
 import com.neusoft.ehr.VO.DepartmentsVO;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
-import com.neusoft.ehr.entity.ServiceCode;
-import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.po.DepartmentsPo;
-import com.neusoft.ehr.exceptions.NameConflictException;
-import com.neusoft.ehr.mapper.DepartmentsMapper;
 import com.neusoft.ehr.service.DepartmentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 @RestController
 public class DeptController extends BaseController {
@@ -47,8 +40,8 @@ public class DeptController extends BaseController {
     }
 
     @PutMapping("/departments")
-    public Response<DepartmentsVO> updateDepartment(@RequestBody Request<DepartmentsDTO> departmentsDTO) {
-        DepartmentsVO updatedDept = departmentsService.updateDepartment(departmentsDTO.getData());
+    public Response<DepartmentsPo> updateDepartment(@RequestBody Request<DepartmentsDTO> departmentsDTO) {
+        DepartmentsPo updatedDept = departmentsService.updateDepartment(departmentsDTO.getData());
         return success(updatedDept);
     }
 }

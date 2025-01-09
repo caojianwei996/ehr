@@ -6,16 +6,13 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 @Data
-public class DepartmentsDTO {
-    @TableField("name")
-    private String name;
-
+public class PositionsDTO {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField("preparation")
-    private Long preparation;
+    @TableField("name")
+    private String name;
 
-    @TableField("leader")
-    private Long leader;
+    @TableField("level")
+    private Byte level;
 }

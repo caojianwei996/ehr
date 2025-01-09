@@ -13,7 +13,7 @@ import java.util.List;
 public interface DepartmentsService {
     void insertDepartments(DepartmentsDTO departmentsDTO);
 
-    DepartmentsVO updateDepartment(DepartmentsDTO departmentsDTO);
+    DepartmentsPo updateDepartment(DepartmentsDTO departmentsDTO);
 
     List<DepartmentsPo> pageDepartments(Integer limit, Integer page);
 }

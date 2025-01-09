@@ -13,8 +13,8 @@
         <module>generator</module>
         <module>system</module>
         <module>department</module>
-        <module>postions</module>
         <module>employee</module>
+        <module>position</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -79,6 +79,11 @@
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
                 <artifactId>department</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>position</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

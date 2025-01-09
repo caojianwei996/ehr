@@ -3,11 +3,9 @@ package com.neusoft.ehr.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.neusoft.ehr.DTO.DepartmentsDTO;
-import com.neusoft.ehr.VO.DepartmentsVO;
 import com.neusoft.ehr.entity.ServiceCode;
 import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.po.DepartmentsPo;
-import com.neusoft.ehr.exceptions.NameConflictException;
 import com.neusoft.ehr.mapper.DepartmentsMapper;
 import com.neusoft.ehr.service.DepartmentsService;
 import org.springframework.beans.BeanUtils;
@@ -38,7 +36,7 @@ public class DepartmentsServiceImpl implements DepartmentsService {
     }
 
     @Override
-    public DepartmentsVO updateDepartment(DepartmentsDTO departmentsDTO) {
+    public DepartmentsPo updateDepartment(DepartmentsDTO departmentsDTO) {
         // 先根据id获取原部门名称
         DepartmentsPo originalDept = departmentsMapper.selectById(departmentsDTO.getId());
 
@@ -47,19 +45,15 @@ public class DepartmentsServiceImpl implements DepartmentsService {
             QueryWrapper<DepartmentsPo> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("name", departmentsDTO.getName());
             if (departmentsMapper.selectCount(queryWrapper) > 0) {
-                throw new NameConflictException("部门名称已存在");
+                throw new ServiceException(ServiceCode.NAME_CONFLICT);
             }
         }
 
         DepartmentsPo departmentsPo = new DepartmentsPo();
         BeanUtils.copyProperties(departmentsDTO, departmentsPo);
-
         departmentsMapper.updateById(departmentsPo);
 
-        DepartmentsVO departmentsVO = new DepartmentsVO();
-        BeanUtils.copyProperties(departmentsPo, departmentsVO);
-
-        return departmentsVO;
+        return departmentsPo;
     }
 
     @Override
