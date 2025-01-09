@@ -51,5 +51,10 @@ public class EmployeeController extends BaseController{
 
         return success(employeeService.updatePassword(data,currentUser));
     }
+    @PostMapping("/")
+    public Response<LoginVo> addEmployee(@RequestBody Request<> request){
+
+        return null;
+    }
 
 }

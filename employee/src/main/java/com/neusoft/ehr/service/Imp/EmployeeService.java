@@ -1,6 +1,7 @@
 package com.neusoft.ehr.service.Imp;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.dto.LoginDto;
 import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
@@ -13,8 +14,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.neusoft.ehr.entity.ServiceCode.PASSWORD_ERROR;
-import static com.neusoft.ehr.entity.ServiceCode.USER_NOT_EXIST;
+import static com.neusoft.ehr.entity.ServiceCode.*;
 
 @Service
 public class EmployeeService implements IEmployeeService {
@@ -76,19 +76,21 @@ public class EmployeeService implements IEmployeeService {
     public LoginVo updatePassword(UpdatePasswordDto data,LoginVo loginVo) {
         QueryWrapper<EmployeesPo> queryWrapper = new QueryWrapper<EmployeesPo>();
         //先查该用户的原密码
-        String hashPassword = employeesMapper.selectOne(queryWrapper.eq("name", loginVo.getName())).getPassword();
+        EmployeesPo employee = employeesMapper.selectOne(queryWrapper.eq("name", loginVo.getName()));
+        String oldHashPw = employee.getPassword();
 
-        //再判断输入的原密码是否正确
-        String oldPassword = data.getOldPassword();
+        //判断输入的原密码是否正确
+        String oldPw = data.getOldPassword();
 
-//        BCrypt.checkpw(oldPassword,hashPassword){
-//
-//        }
-
-        EmployeesPo employeesPo = employeesMapper.selectOne(queryWrapper.eq("password", oldPassword));
-
-
-
-        return null;
+        if(BCrypt.checkpw(oldPw,oldHashPw)) {
+            //密码匹配成功,允许修改密码
+            //加密新密码
+            String newHashPw = BCrypt.hashpw(data.getNewPassword(), BCrypt.gensalt());
+            employee.setPassword(newHashPw);
+            employeesMapper.update(new UpdateWrapper<EmployeesPo>().eq("name",loginVo.getName()));
+            //该返回一个信息，
+            return loginVo;
+        }
+        throw new ServiceException(OLD_PASSWORD_ERROR);
     }
 }

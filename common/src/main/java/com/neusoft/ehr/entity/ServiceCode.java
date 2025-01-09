@@ -25,5 +25,9 @@ public enum ServiceCode {
     /**
      * 用户不存在
      */
-    USER_NOT_EXIST
+    USER_NOT_EXIST,
+    /**
+     * 原密码错误
+     */
+    OLD_PASSWORD_ERROR
 }
