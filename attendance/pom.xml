@@ -21,6 +21,10 @@
     <dependencies>
         <dependency>
             <groupId>com.neusoft.ehr</groupId>
+            <artifactId>employee</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.neusoft.ehr</groupId>
             <artifactId>common</artifactId>
         </dependency>
         <dependency>

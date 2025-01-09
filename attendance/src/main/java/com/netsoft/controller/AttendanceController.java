@@ -6,6 +6,7 @@ import com.netsoft.service.IAttendanceService;
 import com.neusoft.ehr.controller.BaseController;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
+import com.neusoft.ehr.entity.po.ViewSupplementsPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,4 +44,7 @@ public class AttendanceController extends BaseController {
         attendanceService.addSupplement(request.getData());
         return success();
     }
+
+    @GetMapping("/attendances/apply")
+    public Response<List<ViewSupplementsPo>>
 }

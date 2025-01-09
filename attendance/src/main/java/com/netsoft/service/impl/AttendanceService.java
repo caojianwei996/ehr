@@ -6,6 +6,8 @@ import com.netsoft.service.IAttendanceService;
 import com.neusoft.ehr.entity.po.SupplementsPo;
 import com.neusoft.ehr.entity.po.ViewAttendancesMonthPo;
 import com.neusoft.ehr.entity.po.ViewSupplementsPo;
+import com.neusoft.ehr.entity.vo.LoginVo;
+import com.neusoft.ehr.interceptor.auth.AuthorizationInterceptor;
 import com.neusoft.ehr.mapper.SupplementsMapper;
 import com.neusoft.ehr.mapper.ViewAttendancesMonthMapper;
 import com.neusoft.ehr.mapper.ViewSupplementsMapper;
@@ -67,11 +69,12 @@ public class AttendanceService implements IAttendanceService {
     @Override
     public void addSupplement(ViewSupplementMonthDto request) {
         SupplementsPo supplementsPo = new SupplementsPo();
-        Long employee = 1L;
-        supplementsPo.setEmployee(employee);
+        LoginVo loginVo = AuthorizationInterceptor.getCurrentUser();
+        supplementsPo.setEmployee(loginVo.getId());
         supplementsPo.setClockIn(request.getClockIn());
         supplementsPo.setClockOut(request.getClockOut());
         supplementsPo.setReason(request.getReason());
+        supplementsPo.setStatus((byte) 0);
         supplementsMapper.insert(supplementsPo);
     }
 }
