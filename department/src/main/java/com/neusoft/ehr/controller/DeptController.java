@@ -24,46 +24,31 @@ public class DeptController extends BaseController {
     @Autowired
     private DepartmentsService departmentsService;
 
-    private final DepartmentsMapper departmentsMapper;
-    protected DeptController(MessageSource messageSource, DepartmentsMapper departmentsMapper) {
+    /**
+     * BaseController构造方法
+     *
+     * @param messageSource 国际化组件
+     */
+    public DeptController(MessageSource messageSource) {
         super(messageSource);
-        this.departmentsMapper = departmentsMapper;
     }
 
     @GetMapping("/departments")
     public Response<List<DepartmentsPo>> getDepartments(@RequestParam(required = false) Integer limit,
                                                         @RequestParam(required = false) Integer page) {
-        Page<DepartmentsPo> departmentsPage = null;
-        if (limit!= null && page!= null) {
-            Page<DepartmentsPo> pageParam = new Page<>(page, limit);
-            QueryWrapper<DepartmentsPo> queryWrapper = new QueryWrapper<>();
-            departmentsPage = departmentsMapper.selectPage(pageParam, queryWrapper);
-        } else {
-            // 如果没有分页参数，查询全部部门信息
-            departmentsPage = new Page<>();
-            List<DepartmentsPo> allDepartments = departmentsMapper.selectList(null);
-            departmentsPage.setRecords(allDepartments);
-            departmentsPage.setTotal(allDepartments.size());
-        }
-
-        List<DepartmentsPo> departmentsList = departmentsPage.getRecords();
+        List<DepartmentsPo> departmentsList = departmentsService.pageDepartments(limit, page);
         return success(departmentsList);
     }
 
     @PostMapping("/departments")
-    public Response addDepartments(@RequestBody DepartmentsDTO departmentsDTO) {
-        try {
-            departmentsService.insertDepartments(departmentsDTO);
-            return success();
-        } catch (NameConflictException e) {
-            return failure(ServiceCode.NAME_CONFLICT);
-        }
+    public Response<Void> addDepartments(@RequestBody Request<DepartmentsDTO> departmentsDTO) {
+        departmentsService.insertDepartments(departmentsDTO.getData());
+        return success();
     }
 
-    //修改部门信息
     @PutMapping("/departments")
-    public Response<DepartmentsVO> updateDepartment(@RequestBody DepartmentsDTO departmentsDTO) {
-        DepartmentsVO updatedDept = departmentsService.updateDepartment(departmentsDTO);
+    public Response<DepartmentsVO> updateDepartment(@RequestBody Request<DepartmentsDTO> departmentsDTO) {
+        DepartmentsVO updatedDept = departmentsService.updateDepartment(departmentsDTO.getData());
         return success(updatedDept);
     }
 }
