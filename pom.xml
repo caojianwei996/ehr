@@ -13,6 +13,7 @@
         <module>generator</module>
         <module>system</module>
         <module>department</module>
+        <module>attendance</module>
         <module>employee</module>
         <module>position</module>
     </modules>
@@ -58,7 +59,22 @@
             </dependency>
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
+                <artifactId>attendance</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
                 <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>department</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>employee</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -79,11 +95,6 @@
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
                 <artifactId>department</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.neusoft.ehr</groupId>
-                <artifactId>position</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

@@ -389,3 +389,56 @@ Content-Type: application/json
 - Required:`name` `leader` `preparation` `status`
 - Return:`Department[]`
 - Throws:`名称冲突`
+
+### 新增员工
+
+```http request
+POST /api/employee
+Content-Type: application/json
+
+{
+  "data": {
+    "name": "",
+    "email": "email",
+    "gender": number,
+    "birthday": "yyyy-MM-dd",
+    "salary": number,
+    "authority": number,
+    "department": number,
+    "position": number,
+    "attendance": number 
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`name` `email` `gender` `birthday` `salary` `authority` `department` `position` `attendance`
+- Throws:`邮箱冲突`
+
+### 新增员工
+
+```http request
+PUT /api/employee
+Content-Type: application/json
+
+{
+  "data": {
+    "id": number
+    "name": "",
+    "email": "email",
+    "gender": number,
+    "birthday": "yyyy-MM-dd",
+    "salary": number,
+    "authority": number,
+    "department": number,
+    "position": number,
+    "attendance": number,
+    "status": number
+  }
+}
+```
+
+- Authentication:`true`
+- Required:`id`
+- Return:`Department[]`
+- Throws:`邮箱冲突`

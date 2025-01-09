@@ -7,7 +7,6 @@ import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,35 +20,35 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/users")
-public class EmployeeController extends BaseController{
+public class EmployeeController extends BaseController {
+    private final IEmployeeService employeeService;
 
-
-    @Autowired
-    private IEmployeeService employeeService;
     /**
-     * BaseController构造方法
+     * EmployeeController构造方法
      *
-     * @param messageSource 国际化组件
+     * @param messageSource   国际化组件
+     * @param employeeService 员工业务组件
      */
-    public EmployeeController(MessageSource messageSource) {
+    public EmployeeController(MessageSource messageSource, IEmployeeService employeeService) {
         super(messageSource);
+        this.employeeService = employeeService;
     }
-    @PostMapping("/login")
-    public Response<LoginVo> login(@RequestBody Request<LoginDto> request){
-        LoginDto data = request.getData();
-        return success(employeeService.login(data));
-    }
-    @PostMapping("/reset")
-    public Response<Void> resetPassword(@RequestBody Request<String> request){
-        String email = request.getData();
-        return success(employeeService.reset(email));
-    }
-    @PostMapping("/update")
-    public Response<LoginVo> updatePassword(@RequestBody Request<UpdatePasswordDto> request){
-        UpdatePasswordDto data = request.getData();
-        LoginVo currentUser = AuthorizationInterceptor.getCurrentUser();
 
-        return success(employeeService.updatePassword(data,currentUser));
+    @PostMapping("/login")
+    public Response<LoginVo> login(@RequestBody Request<LoginDto> request) {
+        return success(employeeService.login(request.getData()));
+    }
+
+    @PostMapping("/reset")
+    public Response<Void> resetPassword(@RequestBody Request<String> request) {
+        employeeService.reset(request.getData());
+        return success();
+    }
+
+    @PostMapping("/update")
+    public Response<Void> updatePassword(@RequestBody Request<UpdatePasswordDto> request) {
+        employeeService.updatePassword(request.getData(), AuthorizationInterceptor.getCurrentUser());
+        return success();
     }
 
 }

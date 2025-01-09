@@ -23,6 +23,10 @@ public class ViewEmployeesPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "员工编号")
+    @TableField("employee_id")
+    private Long employeeId;
+
     @Schema(description = "员工姓名")
     @TableField("employee_name")
     private String employeeName;

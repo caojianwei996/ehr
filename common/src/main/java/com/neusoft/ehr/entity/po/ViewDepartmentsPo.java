@@ -39,7 +39,7 @@ public class ViewDepartmentsPo implements Serializable {
     @TableField("department_preparation")
     private Long departmentPreparation;
 
-    @Schema(description = "部门状态")
+    @Schema(description = "部门状态:0.正常;1.关闭;")
     @TableField("department_status")
     private Byte departmentStatus;
 }

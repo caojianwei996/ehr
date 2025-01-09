@@ -1,7 +1,7 @@
 package com.neusoft.ehr.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 import javax.validation.Valid;
@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
  * <p>
  * 请求对象
  */
-@AllArgsConstructor(onConstructor_ = {@JsonCreator})
 @Getter
 @Valid
 public class Request<T> {
@@ -22,4 +21,9 @@ public class Request<T> {
      */
     @NotNull
     private final T data;
+
+    @JsonCreator
+    public Request(@JsonProperty("data") T data) {
+        this.data = data;
+    }
 }

@@ -43,4 +43,8 @@ public class ViewSupplementsPo implements Serializable {
     @Schema(description = "新退勤时间")
     @TableField("clock_out_new")
     private LocalDateTime clockOutNew;
+
+    @Schema(description = "补签原因")
+    @TableField("reason")
+    private String reason;
 }

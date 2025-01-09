@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,7 +43,7 @@ public class DepartmentsPo implements Serializable {
     @TableField("preparation")
     private Long preparation;
 
-    @Schema(description = "部门状态")
+    @Schema(description = "部门状态:0.正常;1.关闭;")
     @TableField("status")
     private Byte status;
 }
