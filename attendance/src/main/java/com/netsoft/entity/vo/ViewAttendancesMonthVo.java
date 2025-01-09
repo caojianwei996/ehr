@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class ViewAttendancesMonthVo {
 
     @Schema(description = "员工姓名")
-    private String name;
+    private String employee;
 
     @Schema(description = "出勤时间")
     private LocalDateTime clockIn;

@@ -1,9 +1,14 @@
 package com.netsoft.service.impl;
 
+import com.netsoft.entity.dto.ViewSupplementMonthDto;
 import com.netsoft.entity.vo.ViewAttendancesMonthVo;
 import com.netsoft.service.IAttendanceService;
+import com.neusoft.ehr.entity.po.SupplementsPo;
 import com.neusoft.ehr.entity.po.ViewAttendancesMonthPo;
+import com.neusoft.ehr.entity.po.ViewSupplementsPo;
+import com.neusoft.ehr.mapper.SupplementsMapper;
 import com.neusoft.ehr.mapper.ViewAttendancesMonthMapper;
+import com.neusoft.ehr.mapper.ViewSupplementsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +26,9 @@ public class AttendanceService implements IAttendanceService {
     @Autowired
     private ViewAttendancesMonthMapper viewAttendancesMonthMapper;
 
+    @Autowired
+    private SupplementsMapper supplementsMapper;
+
     // 上班时间，早上 8 点
     private static final LocalDateTime START_TIME = LocalDateTime.of(2025, 1, 1, 8, 30);
     // 下班时间，下午 5 点
@@ -34,6 +42,9 @@ public class AttendanceService implements IAttendanceService {
             ViewAttendancesMonthVo viewAttendancesMonthVo = new ViewAttendancesMonthVo();
             LocalDateTime clockIn = viewAttendancesMonthPo.getClockIn();
             LocalDateTime clockOut = viewAttendancesMonthPo.getClockOut();
+            viewAttendancesMonthVo.setClockIn(clockIn);
+            viewAttendancesMonthVo.setClockOut(clockOut);
+            viewAttendancesMonthVo.setEmployee(viewAttendancesMonthPo.getEmployee());
             if (clockIn == null && clockOut == null) {
                 viewAttendancesMonthVo.setType("旷工");
             } else if (clockIn == null || clockIn.isAfter(END_TIME)) {
@@ -50,6 +61,17 @@ public class AttendanceService implements IAttendanceService {
             viewAttendancesMonthVos.add(viewAttendancesMonthVo);
         }
 
-        return null;
+        return viewAttendancesMonthVos;
+    }
+
+    @Override
+    public void addSupplement(ViewSupplementMonthDto request) {
+        SupplementsPo supplementsPo = new SupplementsPo();
+        Long employee = 1L;
+        supplementsPo.setEmployee(employee);
+        supplementsPo.setClockIn(request.getClockIn());
+        supplementsPo.setClockOut(request.getClockOut());
+        supplementsPo.setReason(request.getReason());
+        supplementsMapper.insert(supplementsPo);
     }
 }
