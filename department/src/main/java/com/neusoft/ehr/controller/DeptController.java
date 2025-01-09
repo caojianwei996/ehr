@@ -2,6 +2,7 @@ package com.neusoft.ehr.controller;
 
 import com.neusoft.ehr.DTO.DepartmentsDTO;
 import com.neusoft.ehr.VO.DepartmentsVO;
+import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
 import com.neusoft.ehr.entity.ServiceCode;
 import com.neusoft.ehr.entity.ServiceException;
