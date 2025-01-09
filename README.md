@@ -96,7 +96,7 @@ Content-Type: application/json
 }
 ```
 
-- Authentication:`true`
+- Authentication:`false`
 - Required:`email`
 - Throws:`用户不存在`
 

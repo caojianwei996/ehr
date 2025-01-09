@@ -1,16 +1,14 @@
 package com.neusoft.ehr.controller;
 
 import com.neusoft.ehr.entity.dto.LoginDto;
+import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -41,8 +39,16 @@ public class EmployeeController extends BaseController{
         return success(employeeService.login(data));
     }
     @PostMapping("/reset")
-    public Response<Void> resetPassword(@RequestBody Request<String> email){
+    public Response<Void> resetPassword(@RequestBody Request<String> request){
+        String email = request.getData();
 
-        return null;
+        return success(employeeService.reset(email));
     }
+    @PutMapping("/")
+    public Response<LoginVo> updatePassword(@RequestBody Request<UpdatePasswordDto> request){
+        UpdatePasswordDto data = request.getData();
+
+        return success(employeeService.updatePassword(data));
+    }
+
 }

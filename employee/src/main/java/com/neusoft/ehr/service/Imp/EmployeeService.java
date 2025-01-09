@@ -3,6 +3,7 @@ package com.neusoft.ehr.service.Imp;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.dto.LoginDto;
+import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
 import com.neusoft.ehr.entity.po.EmployeesPo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.service.IEmployeeService;
@@ -62,5 +63,33 @@ public class EmployeeService implements IEmployeeService {
         } else {
             throw new ServiceException(USER_NOT_EXIST);
         }
+    }
+
+    @Override
+    public Void reset(String email) {
+        //先查该用户是否存在
+        QueryWrapper<EmployeesPo> queryWrapper = new QueryWrapper<EmployeesPo>().eq("email", email);
+        EmployeesPo employees = employeesMapper.selectOne(queryWrapper);
+        if(employees!=null){
+            String newPassword = "123456";
+            String hashpw = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+            employees.setPassword(hashpw);
+            employeesMapper.update(employees,queryWrapper);
+        }else {
+            throw new ServiceException(USER_NOT_EXIST);
+        }
+        return null;
+    }
+
+    @Override
+    public LoginVo updatePassword(UpdatePasswordDto data) {
+        //先判断原密码是否正确
+        String oldPassword = data.getOldPassword();
+        QueryWrapper<EmployeesPo> queryWrapper = new QueryWrapper<EmployeesPo>();
+        EmployeesPo employeesPo = employeesMapper.selectOne(queryWrapper.eq("password", oldPassword));
+
+
+
+        return null;
     }
 }
