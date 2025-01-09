@@ -12,6 +12,8 @@
         <module>common</module>
         <module>generator</module>
         <module>system</module>
+        <module>department</module>
+        <module>postions</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
