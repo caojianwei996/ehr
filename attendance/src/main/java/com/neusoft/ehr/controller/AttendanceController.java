@@ -1,10 +1,9 @@
-package com.netsoft.controller;
+package com.neusoft.ehr.controller;
 
-import com.netsoft.entity.dto.ApplyDto;
-import com.netsoft.entity.dto.ViewSupplementMonthDto;
-import com.netsoft.entity.vo.ViewAttendancesMonthVo;
-import com.netsoft.service.IAttendanceService;
-import com.neusoft.ehr.controller.BaseController;
+import com.neusoft.ehr.entity.dto.ApplyDto;
+import com.neusoft.ehr.entity.dto.ViewSupplementMonthDto;
+import com.neusoft.ehr.entity.vo.ViewAttendancesMonthVo;
+import com.neusoft.ehr.service.IAttendanceService;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
 import com.neusoft.ehr.entity.po.ViewAttendancesMonthPo;

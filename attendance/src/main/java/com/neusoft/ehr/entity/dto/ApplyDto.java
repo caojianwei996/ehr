@@ -1,11 +1,10 @@
-package com.netsoft.entity.dto;
+package com.neusoft.ehr.entity.dto;
 
 import com.neusoft.ehr.entity.po.SupplementsPo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

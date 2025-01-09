@@ -1,4 +1,4 @@
-package com.netsoft.entity.dto;
+package com.neusoft.ehr.entity.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
