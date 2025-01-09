@@ -49,4 +49,5 @@ public class SupplementsPo implements Serializable {
     @Schema(description = "补签状态:0.已申请;1.已批准;")
     @TableField("status")
     private Byte status;
+
 }

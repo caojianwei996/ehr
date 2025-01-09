@@ -1,4 +1,4 @@
-package com.neusoft.ehr.DTO;
+package com.neusoft.ehr.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
