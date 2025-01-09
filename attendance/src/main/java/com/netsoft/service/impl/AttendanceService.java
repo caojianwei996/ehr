@@ -45,7 +45,7 @@ public class AttendanceService implements IAttendanceService {
             } else if (clockOut.isBefore(END_TIME)) {
                 viewAttendancesMonthVo.setType("早退");
             } else {
-                viewAttendancesMonthVo.setType("正常");
+                continue;
             }
             viewAttendancesMonthVos.add(viewAttendancesMonthVo);
         }
