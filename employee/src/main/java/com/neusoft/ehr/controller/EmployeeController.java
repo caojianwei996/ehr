@@ -3,7 +3,7 @@ package com.neusoft.ehr.controller;
 import com.neusoft.ehr.entity.dto.LoginDto;
 import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
 import com.neusoft.ehr.entity.vo.LoginVo;
-import com.neusoft.ehr.interceptor.auth.AuthorizationInterceptor;
+import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;

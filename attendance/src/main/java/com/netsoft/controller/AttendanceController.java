@@ -1,11 +1,13 @@
 package com.netsoft.controller;
 
+import com.netsoft.entity.dto.ApplyDto;
 import com.netsoft.entity.dto.ViewSupplementMonthDto;
 import com.netsoft.entity.vo.ViewAttendancesMonthVo;
 import com.netsoft.service.IAttendanceService;
 import com.neusoft.ehr.controller.BaseController;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
+import com.neusoft.ehr.entity.po.ViewAttendancesMonthPo;
 import com.neusoft.ehr.entity.po.ViewSupplementsPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -46,5 +48,20 @@ public class AttendanceController extends BaseController {
     }
 
     @GetMapping("/attendances/apply")
-    public Response<List<ViewSupplementsPo>>
+    public Response<List<ViewSupplementsPo>> getApplies() {
+        List<ViewSupplementsPo> applies = attendanceService.getApplies();
+        return success(applies);
+    }
+
+    @PostMapping("/attendances/apply")
+    public Response updateSupplement(Request<ApplyDto> request) {
+        attendanceService.updateSupplement(request.getData());
+        return success();
+    }
+
+    @GetMapping("/attendances/month")
+    public Response<List<ViewAttendancesMonthPo>> getAttendancesMonth() {
+        List<ViewAttendancesMonthPo> attendances = attendanceService.getAttendancesMonth();
+        return success(attendances);
+    }
 }

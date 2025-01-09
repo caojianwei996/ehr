@@ -16,7 +16,7 @@ import lombok.Setter;
  * </p>
  *
  * @author 曹健伟
- * @since 2025-01-08
+ * @since 2025-01-09
  */
 @Getter
 @Setter
@@ -42,11 +42,12 @@ public class SupplementsPo implements Serializable {
     @TableField("clock_out")
     private LocalDateTime clockOut;
 
+    @Schema(description = "补签原因")
+    @TableField("reason")
+    private String reason;
+
     @Schema(description = "补签状态:0.已申请;1.已批准;")
     @TableField("status")
     private Byte status;
 
-    @Schema(description = "缺勤原因")
-    @TableField("reason")
-    private String reason;
 }
