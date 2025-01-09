@@ -19,6 +19,17 @@ public enum ServiceCode {
      */
     TOKEN_INCORRECT,
 
-    /*名称冲突*/
+    /**
+     * 用户名已存在
+     */
     NAME_CONFLICT,
+
+    /**
+     * 密码错误
+     */
+    PASSWORD_ERROR,
+    /**
+     * 用户不存在
+     */
+    USER_NOT_EXIST
 }
