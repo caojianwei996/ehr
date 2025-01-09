@@ -18,6 +18,12 @@ public enum ServiceCode {
      * Token错误
      */
     TOKEN_INCORRECT,
+
+    /**
+     * 用户名已存在
+     */
+    NAME_CONFLICT,
+
     /**
      * 密码错误
      */
