@@ -33,7 +33,7 @@ public class ViewEmployeesPo implements Serializable {
 
     @Schema(description = "员工权限")
     @TableField("employee_authority")
-    private Long employeeAuthority;
+    private Byte employeeAuthority;
 
     @Schema(description = "工作类型名称")
     @TableField("employee_work_type")

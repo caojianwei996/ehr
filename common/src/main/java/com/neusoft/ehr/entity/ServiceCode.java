@@ -7,7 +7,15 @@ package com.neusoft.ehr.entity;
  */
 public enum ServiceCode {
     /**
-     * 成功
+     * 操作成功
      */
     SUCCESS,
+    /**
+     * 操作失败
+     */
+    FAILURE,
+    /**
+     * Token错误
+     */
+    TOKEN_INCORRECT,
 }
