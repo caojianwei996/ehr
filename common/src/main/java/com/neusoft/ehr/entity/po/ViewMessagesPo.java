@@ -32,8 +32,8 @@ public class ViewMessagesPo implements Serializable {
     private String language;
 
     @Schema(description = "国家名称")
-    @TableField("contry")
-    private String contry;
+    @TableField("country")
+    private String country;
 
     @Schema(description = "文本")
     @TableField("text")

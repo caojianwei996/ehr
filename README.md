@@ -47,13 +47,14 @@
 ## 模块说明
 
 - Application
-    - 程序主口
+    - 程序主入口
 - Common
     - 通用代码
 - Generator
-    - 代码生成
+    - 代码生成器
 - System
-    - 系统管理
+    - 系统菜单管理
+    - 国际化消息管理
 
 ## 接口文档
 
@@ -61,7 +62,7 @@
 
 ```http request
 * /**
-Authorization: jwt
+Authorization: Bearer jwt
 ```
 
 ### 员工登录
@@ -188,7 +189,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`time`
-- Return:`record`
+- Return:`Record`
 - Throws:`打卡时间异常` `频繁打卡`
 
 ### 获取缺勤记录
@@ -217,7 +218,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`upTime` `downTime` `reason`
-- Return:`record`
+- Return:`Record`
 - Throws:`打卡时间异常`
 
 ### 获取补签申请
