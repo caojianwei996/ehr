@@ -12,6 +12,7 @@
         <module>common</module>
         <module>generator</module>
         <module>system</module>
+        <module>department</module>
         <module>employee</module>
     </modules>
     <properties>
@@ -72,6 +73,11 @@
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
                 <artifactId>employee</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>department</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

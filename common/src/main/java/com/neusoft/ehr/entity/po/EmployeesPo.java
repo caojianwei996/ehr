@@ -50,6 +50,14 @@ public class EmployeesPo implements Serializable {
     @TableField("induction")
     private LocalDate induction;
 
+    @Schema(description = "员工生日")
+    @TableField("birthday")
+    private LocalDate birthday;
+
+    @Schema(description = "员工工资")
+    @TableField("salary")
+    private Long salary;
+
     @Schema(description = "调休假")
     @TableField("transfer_vocations")
     private Byte transferVocations;

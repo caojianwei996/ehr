@@ -116,6 +116,8 @@ create table employees
     password           char(60)    not null comment '员工密码',
     authority          tinyint     not null comment '员工权限',
     induction          date        not null comment '入职时间',
+    birthday           date        not null comment '员工生日',
+    salary             bigint      not null comment '员工工资',
     transfer_vocations tinyint     not null comment '调休假',
     work_type          bigint      not null comment '员工工作类型',
     gender             bigint      not null comment '员工性别',
@@ -130,9 +132,6 @@ create table employees
     index (position),
     index (leader)
 ) comment '员工';
-create view view_account as
-select id, email, password
-from employees;
 create view view_departments as
 select departments.id          as department_id,
        departments.name        as department_name,

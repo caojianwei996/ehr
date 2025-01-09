@@ -7,6 +7,7 @@ application:
       post:
         - /api/users/login
         - /api/users/reset
+        - /api/users/employee
   token:
     expiration-time: 60
     issuer: neusoft
