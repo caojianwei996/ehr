@@ -22,7 +22,7 @@ public class DepartmentController extends BaseController {
      *
      * @param messageSource 国际化组件
      */
-    protected DepartmentController(MessageSource messageSource, DepartmentsService departmentsService) {
+    public DepartmentController(MessageSource messageSource, DepartmentsService departmentsService) {
         super(messageSource);
         this.departmentsService = departmentsService;
     }

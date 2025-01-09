@@ -91,14 +91,11 @@ POST /api/users/reset
 Content-Type: application/json
 
 {
-  "data": {
-    "email": "email"
-  }
+  "data": "email"
 }
 ```
 
 - Authentication:`false`
-- Required:`email`
 - Throws:`用户不存在`
 
 ### 获取菜单
@@ -144,13 +141,12 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`oldPassword` `newPassword`
-- Return:`User`
 - Throws:`密码错误`
 
 ### 获取时间
 
 ```http request
-GET /api/sign//time
+GET /api/sign/time
 ```
 
 - Authentication:`false`
@@ -163,13 +159,13 @@ POST /api/sign/on
 Content-Type: application/json
 
 {
-  "data": "yyyy-MM-dd HH:mm:ss"
+  "data": "ISO 8601"
 }
 ```
 
 - Authentication:`true`
 - Required:`time`
-- Throws:`打卡时间异常`
+- Throws:`非法操作`
 
 ### 下班打卡
 
@@ -178,13 +174,12 @@ POST /api/sign/off
 Content-Type: application/json
 
 {
-  "data": "yyyy-MM-dd HH:mm:ss"
+  "data": "ISO 8601"
 }
 ```
 
 - Authentication:`true`
-- Required:`time`
-- Throws:`打卡时间异常`
+- Throws:`非法操作`
 
 ### 获取当天考勤记录
 
@@ -212,17 +207,16 @@ Content-Type: application/json
 
 {
   "data": {
-    "upTime": "yyyy-MM-dd HH:mm:ss",
-    "downTime": "yyyy-MM-dd HH:mm:ss",
-    "reason": ""
+    "upTime": "ISO 8601",
+    "downTime": "ISO 8601",
+    "reason": string
   }
 }
 ```
 
 - Authentication:`true`
 - Required:`upTime` `downTime` `reason`
-- Return:`Record`
-- Throws:`打卡时间异常`
+- Throws:`非法操作`
 
 ### 获取补签申请
 
@@ -241,8 +235,8 @@ Content-Type: application/json
 
 {
   "data": {
-    "agree": true,
-    "list": []
+    "id": number,
+    "agree": boolean
   }
 }
 ```
@@ -268,8 +262,8 @@ Content-Type: application/json
 {
   "data": {
     "type": number,
-    "start": "yyyy-MM-dd",
-    "end": "yyyy-MM-dd"
+    "start": "ISO 8601",
+    "end": "ISO 8601"
   }
 }
 ```
@@ -286,8 +280,8 @@ Content-Type: application/json
 
 {
   "data": {
-    "agree": true,
-    "list": []
+    "id": number,
+    "agree": boolean
   }
 }
 ```
@@ -298,7 +292,7 @@ Content-Type: application/json
 ### 获取部门信息
 
 ```http request
-GET /api/departments?limit=number&page=bumber
+GET /api/departments?page=number&limit=number
 ```
 
 - Authentication:`true`
@@ -312,28 +306,27 @@ Content-Type: application/json
 
 {
   "data": {
-    "name": "string",
-    "preparation": "preparation"
+    "name": string,
+    "preparation": number
   }
 }
 ```
 
 - Authentication:`true`
 - Required:`name` `preparation`
-- Return:`Department[]`
-- Throws:`名称冲突`
+- Throws:`属性冲突`
 
 ### 修改部门
 
 ```http request
-POST /api/departments
+PUT /api/departments
 Content-Type: application/json
 
 {
   "data": {
-    "name": "string",
+    "name": string,
     "leader: number,
-    "preparation": "preparation",
+    "preparation": number,
     "status": number
   }
 }
@@ -341,8 +334,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`name` `leader` `preparation` `status`
-- Return:`Department[]`
-- Throws:`名称冲突`
+- Throws:`属性冲突`
 
 ### 新增岗位
 
@@ -352,16 +344,15 @@ Content-Type: application/json
 
 {
   "data": {
-    "name": "string",
-    "preparation": "preparation"
+    "name": string,
+    "preparation": number
   }
 }
 ```
 
 - Authentication:`true`
 - Required:`name` `preparation`
-- Return:`Department[]`
-- Throws:`名称冲突`
+- Throws:`属性冲突`
 
 ### 修改岗位
 
@@ -371,9 +362,9 @@ Content-Type: application/json
 
 {
   "data": {
-    "name": "string",
+    "name": string,
     "leader: number,
-    "preparation": "preparation",
+    "preparation": number,
     "status": number
   }
 }
@@ -381,8 +372,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`name` `leader` `preparation` `status`
-- Return:`Department[]`
-- Throws:`名称冲突`
+- Throws:`属性冲突`
 
 ### 新增员工
 
@@ -392,7 +382,7 @@ Content-Type: application/json
 
 {
   "data": {
-    "name": "",
+    "name": string,
     "email": "email",
     "gender": number,
     "birthday": "yyyy-MM-dd",
@@ -407,9 +397,9 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`name` `email` `gender` `birthday` `salary` `authority` `department` `position` `attendance`
-- Throws:`邮箱冲突`
+- Throws:`属性冲突`
 
-### 新增员工
+### 修改员工
 
 ```http request
 PUT /api/employee
@@ -418,7 +408,7 @@ Content-Type: application/json
 {
   "data": {
     "id": number
-    "name": "",
+    "name": string,
     "email": "email",
     "gender": number,
     "birthday": "yyyy-MM-dd",
@@ -434,5 +424,4 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`id`
-- Return:`Department[]`
-- Throws:`邮箱冲突`
+- Throws:`属性冲突`
