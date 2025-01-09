@@ -150,7 +150,7 @@ Content-Type: application/json
 ### 获取时间
 
 ```http request
-GET /api/attendances/time
+GET /api/sign//time
 ```
 
 - Authentication:`false`
@@ -159,52 +159,55 @@ GET /api/attendances/time
 ### 上班打卡
 
 ```http request
-POST /api/attendances
+POST /api/sign/on
 Content-Type: application/json
 
 {
-  "data": {
-    "time": "yyyy-MM-dd HH:mm:ss"
-  }
+  "data": "yyyy-MM-dd HH:mm:ss"
 }
 ```
 
 - Authentication:`true`
 - Required:`time`
-- Return:`Record`
 - Throws:`打卡时间异常`
 
 ### 下班打卡
 
 ```http request
-PUT /api/attendances
+POST /api/sign/off
 Content-Type: application/json
 
 {
-  "data": {
-    "time": "yyyy-MM-dd HH:mm:ss"
-  }
+  "data": "yyyy-MM-dd HH:mm:ss"
 }
 ```
 
 - Authentication:`true`
 - Required:`time`
-- Return:`Record`
-- Throws:`打卡时间异常` `频繁打卡`
+- Throws:`打卡时间异常`
 
-### 获取缺勤记录
+### 获取当天考勤记录
 
 ```http request
-GET /api/attendances
+GET /api/attendances/day
 ```
 
 - Authentication:`true`
-- Return:`Record[]`
+- Return:`AbsenceRecord`
+
+### 获取当月出勤记录
+
+```http request
+GET /api/attendances/month
+```
+
+- Authentication:`true`
+- Return:`AbsenceRecord[]`
 
 ### 考勤补签
 
 ```http request
-POST /api/attendance
+POST /api/attendances/apply
 Content-Type: application/json
 
 {
@@ -233,7 +236,7 @@ GET /api/attendances/apply
 ### 审批补签
 
 ```http request
-POST /api/attendances/apply
+PUT /api/attendances/apply
 Content-Type: application/json
 
 {
@@ -291,15 +294,6 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`agree` `list`
-
-### 月出勤记录
-
-```http request
-GET /api/attendances/month
-```
-
-- Authentication:`true`
-- Return:`AbsenceRecord[]`
 
 ### 获取部门信息
 

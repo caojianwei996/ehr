@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@RequestMapping("/departments")
 @RestController
 public class DepartmentController extends BaseController {
     private final DepartmentsService departmentsService;
@@ -26,18 +27,21 @@ public class DepartmentController extends BaseController {
         this.departmentsService = departmentsService;
     }
 
-    @GetMapping("/departments")
-    public Response<IPage<ViewDepartmentsPo>> selectDepartments(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer limit) {
+    @GetMapping
+    public Response<IPage<ViewDepartmentsPo>> selectDepartments(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "limit", defaultValue = "10") Integer limit
+    ) {
         return success(departmentsService.selectDepartments(page, limit));
     }
 
-    @PostMapping("/departments")
+    @PostMapping
     public Response<Void> insertDepartments(@RequestBody @Valid Request<InsertDepartmentsDto> request) {
         departmentsService.insertDepartments(request.getData());
         return success();
     }
 
-    @PutMapping("/departments")
+    @PutMapping
     public Response<Void> updateDepartment(@RequestBody @Valid Request<UpdateDepartmentsDto> request) {
         departmentsService.updateDepartment(request.getData());
         return success();

@@ -15,7 +15,9 @@ public interface IMessageService {
 
     void deleteMessage(ViewMessagesPo po);
 
-    IPage<ViewMessagesPo> selectMessage(Locale locale, Integer page, Integer size);
+    void updateMessage(ViewMessagesPo po);
+
+    IPage<ViewMessagesPo> selectMessage(ViewMessagesPo po, Integer page, Integer size);
 
     ViewMessagesPo selectMessage(String code, Locale locale);
 }

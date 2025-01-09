@@ -1,6 +1,6 @@
 package com.neusoft.ehr.service;
 
-import com.neusoft.ehr.entity.vo.MenuVo;
+import com.neusoft.ehr.entity.po.MenusPo;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
  * @author 曹健伟
  */
 public interface IMenuService {
-    List<MenuVo> select();
+    List<MenusPo> select();
 }

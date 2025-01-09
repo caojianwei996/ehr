@@ -1,103 +1,101 @@
 package com.neusoft.ehr.service.impl;
 
-import com.neusoft.ehr.entity.dto.ViewSupplementMonthDto;
-import com.neusoft.ehr.entity.vo.ViewAttendancesMonthVo;
-import com.neusoft.ehr.entity.dto.ApplyDto;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.neusoft.ehr.entity.ServiceCode;
+import com.neusoft.ehr.entity.ServiceException;
+import com.neusoft.ehr.entity.ViewSupplementMonthDto;
+import com.neusoft.ehr.entity.po.*;
+import com.neusoft.ehr.entity.ApplyDto;
+import com.neusoft.ehr.mapper.*;
 import com.neusoft.ehr.service.IAttendanceService;
-import com.neusoft.ehr.entity.po.SupplementsPo;
-import com.neusoft.ehr.entity.po.ViewAttendancesMonthPo;
-import com.neusoft.ehr.entity.po.ViewSupplementsPo;
-import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
-import com.neusoft.ehr.mapper.SupplementsMapper;
-import com.neusoft.ehr.mapper.ViewAttendancesMonthMapper;
-import com.neusoft.ehr.mapper.ViewSupplementsMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
- * @Author xkf
- * @Date 2025/1/8 16:41
- * @DESCRIBTE
+ * @author xkf
  */
+@RequiredArgsConstructor
 @Service
 public class AttendanceService implements IAttendanceService {
-    @Autowired
-    private ViewAttendancesMonthMapper viewAttendancesMonthMapper;
-
-    @Autowired
-    private SupplementsMapper supplementsMapper;
-
-    @Autowired
-    private ViewSupplementsMapper viewSupplementsMapper;
-
+    private final ViewAttendancesDayMapper viewAttendancesDayMapper;
+    private final ViewAttendancesMonthMapper viewAttendancesMonthMapper;
+    private final ViewSupplementsMapper viewSupplementsMapper;
+    private final SupplementsMapper supplementsMapper;
+    private final AttendancesMapper attendancesMapper;
 
     @Override
-    public List<ViewAttendancesMonthVo> getAllAbsences() {
-        List<ViewAttendancesMonthPo> viewAttendancesMonthPos = viewAttendancesMonthMapper.selectList(null);
-        List<ViewAttendancesMonthVo> viewAttendancesMonthVos = new ArrayList<>();
-        for (ViewAttendancesMonthPo viewAttendancesMonthPo : viewAttendancesMonthPos) {
-
-            ViewAttendancesMonthVo viewAttendancesMonthVo = new ViewAttendancesMonthVo();
-            LocalDateTime clockIn = viewAttendancesMonthPo.getClockIn();
-            LocalDateTime clockOut = viewAttendancesMonthPo.getClockOut();
-            viewAttendancesMonthVo.setEmployee(viewAttendancesMonthPo.getEmployee());
-            viewAttendancesMonthVo.setClockIn(clockIn);
-            viewAttendancesMonthVo.setClockOut(clockOut);
-            if (clockIn == null || clockOut == null) {
-                viewAttendancesMonthVo.setType("旷工");
-                viewAttendancesMonthVos.add(viewAttendancesMonthVo);
-                continue;
-            }
-            // 上班时间，早上 8 点
-            LocalDateTime START_TIME = LocalDateTime.of(clockIn.getYear(), clockIn.getMonth(), clockIn.getDayOfMonth(), 8, 30);
-            // 下班时间，下午 5 点
-            LocalDateTime END_TIME = LocalDateTime.of(clockOut.getYear(), clockOut.getMonth(), clockOut.getDayOfMonth(), 17, 30);
-            // 判断迟到和早退情况
-            if (clockIn.isAfter(START_TIME)) {
-                viewAttendancesMonthVo.setType("迟到");
-            } else if (clockOut.isBefore(END_TIME)) {
-                viewAttendancesMonthVo.setType("早退");
-            } else {
-                continue;
-            }
-            viewAttendancesMonthVos.add(viewAttendancesMonthVo);
-        }
-
-        return viewAttendancesMonthVos;
-    }
-
-    @Override
-    public void addSupplement(ViewSupplementMonthDto request) {
-        SupplementsPo supplementsPo = new SupplementsPo();
-        LoginVo loginVo = AuthorizationInterceptor.getCurrentUser();
-        supplementsPo.setEmployee(loginVo.getId());
-        supplementsPo.setClockIn(request.getClockIn());
-        supplementsPo.setClockOut(request.getClockOut());
-        supplementsPo.setReason(request.getReason());
-        supplementsPo.setStatus((byte) 0);
-        supplementsMapper.insert(supplementsPo);
-    }
-
-    @Override
-    public List<ViewSupplementsPo> getApplies() {
-        return viewSupplementsMapper.selectList(null);
-    }
-
-    @Override
-    public void updateSupplement(ApplyDto data) {
-        for (SupplementsPo supplementsPo : data.getList()) {
-            supplementsPo.setStatus((byte) 1);
-            supplementsMapper.updateById(supplementsPo);
-        }
+    public ViewAttendancesDayPo getAttendancesDay() {
+        return viewAttendancesDayMapper.selectOne(
+                Wrappers.<ViewAttendancesDayPo>lambdaQuery()
+                        .eq(ViewAttendancesDayPo::getName, AuthorizationInterceptor.getCurrentUser().getName())
+        );
     }
 
     @Override
     public List<ViewAttendancesMonthPo> getAttendancesMonth() {
-        return viewAttendancesMonthMapper.selectList(null);
+        return viewAttendancesMonthMapper.selectList(
+                Wrappers.<ViewAttendancesMonthPo>lambdaQuery().eq(
+                        ViewAttendancesMonthPo::getEmployee, AuthorizationInterceptor.getCurrentUser().getName()
+                )
+        );
+    }
+
+    @Override
+    public void addSupplement(ViewSupplementMonthDto viewSupplementMonthDto) {
+        Long id = AuthorizationInterceptor.getCurrentUser().getId();
+        AttendancesPo attendancesPo = attendancesMapper.selectOne(
+                Wrappers.<AttendancesPo>lambdaQuery()
+                        .eq(AttendancesPo::getEmployee, id)
+                        .between(
+                                AttendancesPo::getClockIn,
+                                viewSupplementMonthDto.getClockIn().with(LocalTime.MIN),
+                                viewSupplementMonthDto.getClockIn().with(LocalTime.MAX)
+                        )
+        );
+        if (attendancesPo == null || attendancesPo.getStatus() != 3) {
+            throw new ServiceException(ServiceCode.FAILURE);
+        }
+        SupplementsPo supplementsPo = new SupplementsPo();
+        supplementsPo.setEmployee(id);
+        supplementsPo.setClockIn(viewSupplementMonthDto.getClockIn());
+        supplementsPo.setClockOut(viewSupplementMonthDto.getClockOut());
+        supplementsPo.setReason(viewSupplementMonthDto.getReason());
+        supplementsMapper.insert(supplementsPo);
+        attendancesMapper.update(
+                Wrappers.<AttendancesPo>lambdaUpdate()
+                        .set(AttendancesPo::getStatus, 4)
+
+        );
+    }
+
+    @Override
+    public List<ViewSupplementsPo> getApplies() {
+        return viewSupplementsMapper.selectList(Wrappers.emptyWrapper());
+    }
+
+    @Override
+    public void updateSupplement(ApplyDto data) {
+        SupplementsPo supplementsPo = supplementsMapper.selectOne(
+                Wrappers.<SupplementsPo>lambdaQuery()
+                        .eq(SupplementsPo::getId, data.getId())
+        );
+        if (supplementsPo != null) {
+            supplementsPo.setFiltered(true);
+            supplementsMapper.updateById(supplementsPo);
+            attendancesMapper.update(
+                    Wrappers.<AttendancesPo>lambdaUpdate()
+                            .set(AttendancesPo::getStatus, data.getAgree() ? 5 : 6)
+                            .eq(AttendancesPo::getEmployee, AuthorizationInterceptor.getCurrentUser().getId())
+                            .between(
+                                    AttendancesPo::getClockIn,
+                                    supplementsPo.getClockIn().with(LocalTime.MIN),
+                                    supplementsPo.getClockIn().with(LocalTime.MAX)
+                            )
+            );
+        }
     }
 }

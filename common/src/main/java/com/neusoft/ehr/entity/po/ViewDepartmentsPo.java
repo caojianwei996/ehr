@@ -24,22 +24,22 @@ public class ViewDepartmentsPo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "部门编号")
-    @TableField("department_id")
-    private Long departmentId;
+    @TableField("id")
+    private Long id;
 
     @Schema(description = "部门名称")
-    @TableField("department_name")
-    private String departmentName;
+    @TableField("name")
+    private String name;
 
     @Schema(description = "员工姓名")
-    @TableField("department_leader")
-    private String departmentLeader;
+    @TableField("leader")
+    private String leader;
 
     @Schema(description = "部门编制")
-    @TableField("department_preparation")
-    private Long departmentPreparation;
+    @TableField("preparation")
+    private Long preparation;
 
     @Schema(description = "部门状态:0.正常;1.关闭;")
-    @TableField("department_status")
-    private Byte departmentStatus;
+    @TableField("status")
+    private Byte status;
 }

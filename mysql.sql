@@ -73,11 +73,12 @@ values (1, 'SUCCESS', 1, 1, '操作成功！'),
        (13, 'PASSWORD_ERROR', 1, 1, '密码错误！'),
        (14, 'PASSWORD_ERROR', 2, 2, 'Password error!'),
        (15, 'PASSWORD_ERROR', 3, 3, 'パスワードエラー！'),
-       (16, 'NAME_CONFLICT', 1, 1, '名称冲突！'),
-       (17, 'NAME_CONFLICT', 2, 2, 'Name conflict!'),
-       (18, 'NAME_CONFLICT', 3, 3, '名前の競合！');
+       (16, 'PROPERTY_CONFLICT', 1, 1, '属性冲突！'),
+       (17, 'PROPERTY_CONFLICT', 2, 2, 'Property conflict!'),
+       (18, 'PROPERTY_CONFLICT', 3, 3, '属性の競合！');
 create view view_messages as
-select messages.code  as code,
+select messages.id    as id,
+       messages.code  as code,
        languages.name as language,
        countries.name as country,
        messages.text  as text
@@ -134,12 +135,12 @@ create table employees
     birthday           date        not null comment '员工生日',
     email              varchar(64) not null comment '员工邮箱',
     password           char(60)    not null comment '员工密码',
-    authority          tinyint     not null comment '员工权限',
+    authority          tinyint     not null default 0 comment '员工权限:1.普通;2.领导;3.管理;',
     induction          date        not null comment '入职时间',
     salary             bigint      not null comment '员工工资',
-    transfer_vocations tinyint     not null comment '调休假',
+    transfer_vocations tinyint     not null default 0 comment '调休假',
     status             tinyint     not null default 0 comment '员工状态:0.在职;1.离职;',
-    work_type          bigint      not null comment '员工工作类型',
+    work_type          bigint      not null default 1 comment '员工工作类型',
     gender             bigint      not null comment '员工性别',
     department         bigint      not null comment '员工部门',
     position           bigint      not null comment '员工岗位',
@@ -171,11 +172,11 @@ values (1, 'E1', '1990-01-01', 'e1@neusoft.com', '$2a$10$gQkw6nhAtat.mlJY92oo4.v
        (8, 'E8', '1990-01-01', 'e8@neusoft.com', '$2a$10$gQkw6nhAtat.mlJY92oo4.vfCo5sm7lmzwTaXxk//p6974lYxkxqi', 2,
         '2010-01-01', 30000, 30, 0, 3, 2, 3, 3, null);
 create view view_departments as
-select departments.id          as department_id,
-       departments.name        as department_name,
-       employees.name          as department_leader,
-       departments.preparation as department_preparation,
-       departments.status      as department_status
+select departments.id          as id,
+       departments.name        as name,
+       employees.name          as leader,
+       departments.preparation as preparation,
+       departments.status      as status
 from departments
          left outer join employees on departments.leader = employees.id;
 create table work_types
@@ -186,16 +187,18 @@ create table work_types
     off_time time        not null comment '下班时间',
     primary key (id)
 ) comment '工作类型';
+insert into work_types (id, name, on_time, off_time)
+values (1, '早:8-30;晚:17:30', '8:30', '17:30');
 create view view_employees as
-select employees.id        as employee_id,
-       employees.name      as employee_name,
-       employees.email     as employee_email,
-       employees.authority as employee_authority,
-       work_types.name     as employee_work_type,
-       genders.name        as employee_gender,
-       departments.name    as employee_department,
-       positions.name      as employee_position,
-       leader.name         as employee_leader
+select employees.id        as id,
+       employees.name      as name,
+       employees.email     as email,
+       employees.authority as authority,
+       work_types.name     as work_type,
+       genders.name        as gender,
+       departments.name    as department,
+       positions.name      as position,
+       leader.name         as leader
 from employees
          left outer join work_types on employees.work_type = work_types.id
          left outer join genders on employees.gender = genders.id
@@ -204,41 +207,50 @@ from employees
          left outer join employees as leader on employees.leader = leader.id;
 create table attendances
 (
-    id        bigint not null auto_increment comment '考勤编号',
-    employee  bigint not null comment '考勤员工',
+    id        bigint  not null auto_increment comment '考勤编号',
+    employee  bigint  not null comment '考勤员工',
     clock_in  datetime comment '出勤时间',
     clock_out datetime comment '退勤时间',
+    status    tinyint not null default 0 comment '考勤状态:1.考勤中;2.出勤;3.缺勤;4.审批;5.补签;6.矿工;',
     primary key (id),
     index (employee),
     index (clock_in)
 ) comment '考勤';
 create view view_attendances_day as
-select employee, clock_in, clock_out
+select attendances.id        as id,
+       employees.name        as name,
+       attendances.clock_in  as clock_in,
+       attendances.clock_out as clock_out,
+       attendances.status    as status
 from attendances
+         left outer join employees on attendances.employee = employees.id
 where date(clock_in) = curdate();
 create view view_attendances_month as
-select employees.name        as employee,
+select attendances.id        as id,
+       employees.name        as employee,
        attendances.clock_in  as clock_in,
-       attendances.clock_out as clock_out
+       attendances.clock_out as clock_out,
+       attendances.status    as status
 from attendances
          left outer join employees on attendances.employee = employees.id
 where year(clock_in) = year(curdate())
   and month(clock_in) = month(curdate());
 create table supplements
 (
-    id        bigint      not null auto_increment comment '补签编号',
-    employee  bigint      not null comment '补签员工',
-    clock_in  datetime    not null comment '新出勤时间',
-    clock_out datetime    not null comment '新退勤时间',
-    reason    varchar(16) not null comment '补签原因',
-    status    tinyint     not null default 0 comment '补签状态:0.已申请;1.已批准;',
+    id          bigint      not null auto_increment comment '补签编号',
+    employee    bigint      not null comment '补签员工',
+    clock_in    datetime    not null comment '新出勤时间',
+    clock_out   datetime    not null comment '新退勤时间',
+    reason      varchar(16) not null comment '补签原因',
+    is_filtered tinyint(1)  not null default false comment '补签状态:0.未处理;1.已处理;',
     primary key (id),
     index (employee),
     index (clock_in),
-    index (status)
+    index (is_filtered)
 ) comment '补签';
 create view view_supplements as
-select employees.name        as name,
+select supplements.id        as id,
+       employees.name        as name,
        attendances.clock_in  as clock_in_old,
        supplements.clock_in  as clock_in_new,
        attendances.clock_out as clock_out_old,
@@ -247,7 +259,7 @@ select employees.name        as name,
 from supplements
          left outer join employees on supplements.employee = employees.id
          left outer join attendances on supplements.employee = attendances.employee
-where supplements.status = 0;
+where supplements.is_filtered = false;
 create table leaves
 (
     id            bigint      not null auto_increment comment '假期类型编号',
@@ -270,7 +282,8 @@ create table vocations
     index (type)
 ) comment '休假';
 create view view_vocations as
-select employees.name                     as name,
+select vocations.id                       as id,
+       employees.name                     as name,
        case
            when employees.induction > date_sub(curdate(), interval 1 year) then 0
            when employees.induction > date_sub(curdate(), interval 10 year) then 5
