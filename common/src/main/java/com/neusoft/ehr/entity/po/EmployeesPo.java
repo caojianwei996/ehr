@@ -81,4 +81,8 @@ public class EmployeesPo implements Serializable {
     @Schema(description = "员工领导")
     @TableField("leader")
     private Long leader;
+
+    @Schema(description = "员工状态")
+    @TableField("status")
+    private Byte status;
 }

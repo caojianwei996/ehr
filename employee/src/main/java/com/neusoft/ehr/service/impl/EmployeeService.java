@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.dto.AddEmployeeInfoDto;
 import com.neusoft.ehr.entity.dto.LoginDto;
+import com.neusoft.ehr.entity.dto.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
 import com.neusoft.ehr.entity.po.EmployeesPo;
-import com.neusoft.ehr.entity.vo.EmployeeInfoVo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.mapper.EmployeesMapper;
@@ -118,6 +118,8 @@ public class EmployeeService implements IEmployeeService {
             employee.setWorkType(data.getAttendance());
             employee.setInduction(data.getInduction());
             employee.setTransferVocations((byte) 0);
+            employee.setStatus((byte)0);
+
 
             //密码
             employee.setPassword(BCrypt.hashpw("123ABCabc",BCrypt.gensalt()));
@@ -125,5 +127,46 @@ public class EmployeeService implements IEmployeeService {
             return;
         }
         throw new ServiceException(EMAIL_CONFLICT);
+    }
+
+    @Override
+    public void updateEmployee(UpdateEmployeeDto data) {
+        EmployeesPo baseEmployee = employeesMapper.selectOne(new QueryWrapper<EmployeesPo>().eq("id", data.getId()));
+        //先判断有没有修改邮箱 如果有的话判断是否冲突
+        if(data.getEmail()!=null) {
+            EmployeesPo employeesPo = employeesMapper.selectOne(new QueryWrapper<EmployeesPo>().eq("email", data.getEmail()));
+            if (employeesPo != null) {
+                throw new ServiceException(EMAIL_CONFLICT);
+            }
+            //没有冲突，修改邮箱
+            baseEmployee.setEmail(data.getEmail());
+        }
+        //判断其他修改
+        //生日
+        if(data.getBirthday()!=null){
+            baseEmployee.setBirthday(data.getBirthday());
+        }
+        //工资
+        if(data.getSalary()!=null){
+            baseEmployee.setSalary(data.getSalary());
+        }
+        //权限
+        if(data.getAuthority()!=null){
+            baseEmployee.setAuthority(data.getAuthority());
+        }
+        //部门
+        if(data.getDepartment()!=null){
+            baseEmployee.setDepartment(data.getDepartment());
+        }
+        //岗位
+        if(data.getPosition()!=null){
+            baseEmployee.setPosition(data.getPosition());
+        }
+        //员工状态
+        if(data.getStatus()!=null){
+            baseEmployee.setStatus(data.getStatus());
+        }
+        employeesMapper.updateById(baseEmployee);
+
     }
 }

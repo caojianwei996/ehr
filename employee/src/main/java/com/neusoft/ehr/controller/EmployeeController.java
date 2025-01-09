@@ -2,8 +2,8 @@ package com.neusoft.ehr.controller;
 
 import com.neusoft.ehr.entity.dto.AddEmployeeInfoDto;
 import com.neusoft.ehr.entity.dto.LoginDto;
+import com.neusoft.ehr.entity.dto.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
-import com.neusoft.ehr.entity.vo.EmployeeInfoVo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
@@ -58,6 +58,13 @@ public class EmployeeController extends BaseController {
 
         System.out.println(request);
         employeeService.addEmployee(request.getData());
+        return success();
+    }
+
+    @PutMapping("/employee")
+    public Response<Void> updateEmployee(@RequestBody Request<UpdateEmployeeDto> request){
+
+        employeeService.updateEmployee(request.getData());
         return success();
     }
 

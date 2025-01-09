@@ -416,7 +416,7 @@ Content-Type: application/json
 - Required:`name` `email` `gender` `birthday` `salary` `authority` `department` `position` `attendance`
 - Throws:`邮箱冲突`
 
-### 新增员工
+### 修改员工
 
 ```http request
 PUT /api/employee
@@ -427,7 +427,6 @@ Content-Type: application/json
     "id": number
     "name": "",
     "email": "email",
-    "gender": number,
     "birthday": "yyyy-MM-dd",
     "salary": number,
     "authority": number,
@@ -441,5 +440,4 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`id`
-- Return:`Department[]`
 - Throws:`邮箱冲突`
