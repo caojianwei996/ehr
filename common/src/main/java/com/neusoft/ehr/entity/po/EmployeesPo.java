@@ -34,6 +34,10 @@ public class EmployeesPo implements Serializable {
     @TableField("name")
     private String name;
 
+    @Schema(description = "员工生日")
+    @TableField("birthday")
+    private LocalDate birthday;
+
     @Schema(description = "员工邮箱")
     @TableField("email")
     private String email;
@@ -57,6 +61,10 @@ public class EmployeesPo implements Serializable {
     @Schema(description = "调休假")
     @TableField("transfer_vocations")
     private Byte transferVocations;
+
+    @Schema(description = "员工状态:1.在职;2.离职;")
+    @TableField("status")
+    private Byte status;
 
     @Schema(description = "员工工作类型")
     @TableField("work_type")

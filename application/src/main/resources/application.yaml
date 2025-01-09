@@ -2,11 +2,18 @@ application:
   authentication:
     permit:
       get:
+        - /api/**
+        - /api/swagger-ui.html
         - /api/swagger-ui/**
         - /api/v3/api-docs/**
       post:
+        - /api/**
         - /api/users/login
         - /api/users/reset
+      put:
+        - /api/**
+      delete:
+        - /api/**
   token:
     expiration-time: 60
     issuer: neusoft

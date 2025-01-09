@@ -1,7 +1,6 @@
 package com.neusoft.ehr.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -10,7 +9,6 @@ import lombok.Getter;
  * <p>
  * 响应对象
  */
-@AllArgsConstructor
 @Getter
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class Response<T> {
@@ -29,4 +27,10 @@ public class Response<T> {
      */
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private final T data;
+
+    public Response(int code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
 }

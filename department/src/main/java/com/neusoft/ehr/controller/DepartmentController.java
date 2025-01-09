@@ -1,47 +1,45 @@
 package com.neusoft.ehr.controller;
 
-import com.neusoft.ehr.dto.DepartmentsDTO;
-import com.neusoft.ehr.vo.DepartmentsVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.neusoft.ehr.entity.InsertDepartmentsDto;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
-import com.neusoft.ehr.entity.po.DepartmentsPo;
+import com.neusoft.ehr.entity.UpdateDepartmentsDto;
+import com.neusoft.ehr.entity.po.ViewDepartmentsPo;
 import com.neusoft.ehr.service.DepartmentsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 public class DepartmentController extends BaseController {
-    @Autowired
-    private DepartmentsService departmentsService;
+    private final DepartmentsService departmentsService;
 
     /**
      * BaseController构造方法
      *
      * @param messageSource 国际化组件
      */
-    protected DepartmentController(MessageSource messageSource) {
+    protected DepartmentController(MessageSource messageSource, DepartmentsService departmentsService) {
         super(messageSource);
+        this.departmentsService = departmentsService;
     }
 
     @GetMapping("/departments")
-    public Response<List<DepartmentsPo>> getDepartments(@RequestParam(required = false) Integer limit,
-                                                        @RequestParam(required = false) Integer page) {
-        List<DepartmentsPo> departmentsList = departmentsService.pageDepartments(limit, page);
-        return success(departmentsList);
+    public Response<IPage<ViewDepartmentsPo>> selectDepartments(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer limit) {
+        return success(departmentsService.selectDepartments(page, limit));
     }
 
     @PostMapping("/departments")
-    public Response<Void> addDepartments(@RequestBody Request<DepartmentsDTO> departmentsDTO) {
-        departmentsService.insertDepartments(departmentsDTO.getData());
+    public Response<Void> insertDepartments(@RequestBody @Valid Request<InsertDepartmentsDto> request) {
+        departmentsService.insertDepartments(request.getData());
         return success();
     }
 
     @PutMapping("/departments")
-    public Response<DepartmentsVO> updateDepartment(@RequestBody Request<DepartmentsDTO> departmentsDTO) {
-        DepartmentsVO updatedDept = departmentsService.updateDepartment(departmentsDTO.getData());
-        return success(updatedDept);
+    public Response<Void> updateDepartment(@RequestBody @Valid Request<UpdateDepartmentsDto> request) {
+        departmentsService.updateDepartment(request.getData());
+        return success();
     }
 }
