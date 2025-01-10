@@ -10,4 +10,7 @@ public interface DepartmentsService {
     void insertDepartments(InsertDepartmentsDto departmentsDTO);
 
     void updateDepartment(UpdateDepartmentsDto departmentsDTO);
+    DepartmentsPo updateDepartment(DepartmentsDTO departmentsDTO);
+
+    List<DepartmentsPo> pageDepartments(Integer limit, Integer page);
 }
