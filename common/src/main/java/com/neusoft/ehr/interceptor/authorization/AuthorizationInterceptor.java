@@ -1,7 +1,7 @@
 package com.neusoft.ehr.interceptor.authorization;
 
 import com.neusoft.ehr.entity.vo.LoginVo;
-import com.neusoft.ehr.token.TokenUtil;
+import com.neusoft.ehr.util.token.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

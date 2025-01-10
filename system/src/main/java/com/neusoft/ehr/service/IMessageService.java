@@ -1,6 +1,7 @@
 package com.neusoft.ehr.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.neusoft.ehr.entity.MessageDto;
 import com.neusoft.ehr.entity.po.ViewMessagesPo;
 
 import java.util.Locale;
@@ -11,13 +12,13 @@ import java.util.Locale;
  * @author 曹健伟
  */
 public interface IMessageService {
-    void insertMessage(ViewMessagesPo po);
+    void insertMessage(MessageDto po);
 
-    void deleteMessage(ViewMessagesPo po);
+    void deleteMessage(MessageDto po);
 
-    void updateMessage(ViewMessagesPo po);
+    void updateMessage(MessageDto po);
 
-    IPage<ViewMessagesPo> selectMessage(ViewMessagesPo po, Integer page, Integer size);
+    IPage<ViewMessagesPo> selectMessage(MessageDto po, Integer page, Integer size);
 
     ViewMessagesPo selectMessage(String code, Locale locale);
 }

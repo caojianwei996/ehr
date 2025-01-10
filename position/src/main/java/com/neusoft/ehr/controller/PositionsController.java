@@ -11,12 +11,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RequestMapping("/positions")
 @RestController
 public class PositionsController extends BaseController {
     private final PositionsService positionsService;
+
     /**
      * BaseController构造方法
      *
@@ -28,9 +28,11 @@ public class PositionsController extends BaseController {
     }
 
     @GetMapping
-    public Response<IPage<PositionsPo>> getPositions(@RequestParam(defaultValue = "1") Integer page,
-                                                           @RequestParam(defaultValue = "10") Integer limit) {
-        return success(positionsService.selectPositions(limit, page));
+    public Response<IPage<PositionsPo>> getPositions(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer limit
+    ) {
+        return success(positionsService.selectPositions(page, limit));
     }
 
     @PostMapping
