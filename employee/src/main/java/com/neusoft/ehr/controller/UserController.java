@@ -12,7 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+/**
+ * <p>
+ * UserController 前端控制器
+ * </p>
+ *
+ * @author 吉兆鹏
+ * @since 2025-01-10
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController extends BaseController{

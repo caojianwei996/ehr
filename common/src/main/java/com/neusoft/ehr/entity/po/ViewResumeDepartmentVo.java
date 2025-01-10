@@ -24,6 +24,14 @@ public class ViewResumeDepartmentVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "id")
+    @TableField("id")
+    private Long id;
+
+    @Schema(description = "员工id")
+    @TableField("em_id")
+    private String em_id;
+
     @Schema(description = "员工姓名")
     @TableField("name")
     private String name;

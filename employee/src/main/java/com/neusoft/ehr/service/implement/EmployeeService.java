@@ -164,14 +164,14 @@ public class EmployeeService implements IEmployeeService {
         if(data.getAuthority()!=null){
             baseEmployee.setAuthority(data.getAuthority());
         }
-        //部门
-        if(data.getDepartment()!=null){
-            baseEmployee.setDepartment(data.getDepartment());
-        }
-        //岗位
-        if(data.getPosition()!=null){
-            baseEmployee.setPosition(data.getPosition());
-        }
+//        //部门
+//        if(data.getDepartment()!=null){
+//            baseEmployee.setDepartment(data.getDepartment());
+//        }
+//        //岗位
+//        if(data.getPosition()!=null){
+//            baseEmployee.setPosition(data.getPosition());
+//        }
         //员工状态
         if(data.getStatus()!=null){
             baseEmployee.setStatus(data.getStatus());

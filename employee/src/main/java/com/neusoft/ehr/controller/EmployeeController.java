@@ -1,18 +1,13 @@
 package com.neusoft.ehr.controller;
 
-import com.neusoft.ehr.entity.AddEmployeeInfoDto;
-import com.neusoft.ehr.entity.LoginDto;
-import com.neusoft.ehr.entity.UpdateEmployeeDto;
-import com.neusoft.ehr.entity.UpdatePasswordDto;
-import com.neusoft.ehr.entity.EmployeeBasicInfoVo;
+import com.neusoft.ehr.entity.*;
 import com.neusoft.ehr.entity.po.ViewEmployeesPo;
 import com.neusoft.ehr.entity.po.ViewResumeDepartmentVo;
 import com.neusoft.ehr.entity.po.ViewResumePositionVo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
-import com.neusoft.ehr.entity.Request;
-import com.neusoft.ehr.entity.Response;
+import com.neusoft.ehr.service.IReverseService;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +25,7 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController extends BaseController {
     private final IEmployeeService employeeService;
+    private final IReverseService reverseService;
 
     /**
      * EmployeeController构造方法
@@ -37,9 +33,10 @@ public class EmployeeController extends BaseController {
      * @param messageSource   国际化组件
      * @param employeeService 员工业务组件
      */
-    public EmployeeController(MessageSource messageSource, IEmployeeService employeeService) {
+    public EmployeeController(MessageSource messageSource, IEmployeeService employeeService,IReverseService reverseService) {
         super(messageSource);
         this.employeeService = employeeService;
+        this.reverseService = reverseService;
     }
 
 
@@ -53,7 +50,6 @@ public class EmployeeController extends BaseController {
 
     @PutMapping
     public Response<Void> updateEmployee(@RequestBody Request<UpdateEmployeeDto> request){
-
         employeeService.updateEmployee(request.getData());
         return success();
     }
@@ -72,6 +68,16 @@ public class EmployeeController extends BaseController {
     public Response<List<ViewResumePositionVo>> getPositionResume(){
         String name = AuthorizationInterceptor.getCurrentUser().getName();
         return success(employeeService.getPositionResume(name));
+    }
+    @PostMapping("/reverse/department")
+    public Response<Void> reverseDepartment(@RequestBody Request<ReverseDepartmentDto> request){
+        reverseService.reverseDepartment(request.getData());
+        return success();
+    }
+    @PostMapping("/reverse/position")
+    public Response<Void> reversePosition(@RequestBody Request<ReverseDepartmentDto> request){
+        reverseService.reversePosition(request.getData());
+        return success();
     }
 
 }

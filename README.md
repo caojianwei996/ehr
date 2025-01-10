@@ -431,14 +431,38 @@ Content-Type: application/json
     "birthday": "yyyy-MM-dd",
     "salary": number,
     "authority": number,
-    "department": number,
-    "position": number,
     "attendance": number,
     "status": number
   }
 }
 ```
-
 - Authentication:`true`
 - Required:`id`
 - Throws:`属性冲突`
+
+
+### 员工调转部门
+
+```http request
+POST /api/employee/reverse/department
+Content-Type: application/json
+
+{
+  "data": "string"
+}
+```
+- Authentication:`true`
+- Required:`id`
+
+### 员工调转岗位
+
+```http request
+POST /api/employee/reverse/position
+Content-Type: application/json
+
+{
+  "data": "string"
+}
+```
+- Authentication:`true`
+- Required:`id`
