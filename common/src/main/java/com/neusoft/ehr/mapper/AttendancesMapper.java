@@ -1,9 +1,7 @@
 package com.neusoft.ehr.mapper;
 
-import com.neusoft.ehr.entity.po.AttendancesPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import java.util.List;
+import com.neusoft.ehr.entity.po.AttendancesPo;
 
 /**
  * <p>
@@ -11,7 +9,7 @@ import java.util.List;
  * </p>
  *
  * @author 曹健伟
- * @since 2025-01-08
+ * @since 2025-01-09
  */
 public interface AttendancesMapper extends BaseMapper<AttendancesPo> {
 

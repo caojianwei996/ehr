@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author 曹健伟
- * @since 2025-01-08
+ * @since 2025-01-09
  */
 public interface ViewMessagesMapper extends BaseMapper<ViewMessagesPo> {
 

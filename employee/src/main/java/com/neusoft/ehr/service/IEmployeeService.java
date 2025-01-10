@@ -9,5 +9,5 @@ public interface IEmployeeService {
 
     void reset(String email);
 
-    void updatePassword(UpdatePasswordDto data,LoginVo loginVo);
+    void updatePassword(UpdatePasswordDto data, LoginVo loginVo);
 }

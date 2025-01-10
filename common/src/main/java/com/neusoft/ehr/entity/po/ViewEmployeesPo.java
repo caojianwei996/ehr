@@ -24,38 +24,38 @@ public class ViewEmployeesPo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "员工编号")
-    @TableField("employee_id")
-    private Long employeeId;
+    @TableField("id")
+    private Long id;
 
     @Schema(description = "员工姓名")
-    @TableField("employee_name")
-    private String employeeName;
+    @TableField("name")
+    private String name;
 
     @Schema(description = "员工邮箱")
-    @TableField("employee_email")
-    private String employeeEmail;
+    @TableField("email")
+    private String email;
 
-    @Schema(description = "员工权限")
-    @TableField("employee_authority")
-    private Byte employeeAuthority;
+    @Schema(description = "员工权限:1.普通;2.领导;3.管理;")
+    @TableField("authority")
+    private Byte authority;
 
     @Schema(description = "工作类型名称")
-    @TableField("employee_work_type")
-    private String employeeWorkType;
+    @TableField("work_type")
+    private String workType;
 
     @Schema(description = "性别名称")
-    @TableField("employee_gender")
-    private String employeeGender;
+    @TableField("gender")
+    private String gender;
 
     @Schema(description = "部门名称")
-    @TableField("employee_department")
-    private String employeeDepartment;
+    @TableField("department")
+    private String department;
 
     @Schema(description = "岗位名称")
-    @TableField("employee_position")
-    private String employeePosition;
+    @TableField("position")
+    private String position;
 
     @Schema(description = "员工姓名")
-    @TableField("employee_leader")
-    private String employeeLeader;
+    @TableField("leader")
+    private String leader;
 }

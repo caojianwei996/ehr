@@ -46,7 +46,7 @@ public class EmployeesPo implements Serializable {
     @TableField("password")
     private String password;
 
-    @Schema(description = "员工权限")
+    @Schema(description = "员工权限:1.普通;2.领导;3.管理;")
     @TableField("authority")
     private Byte authority;
 
@@ -62,7 +62,7 @@ public class EmployeesPo implements Serializable {
     @TableField("transfer_vocations")
     private Byte transferVocations;
 
-    @Schema(description = "员工状态:1.在职;2.离职;")
+    @Schema(description = "员工状态:0.在职;1.离职;")
     @TableField("status")
     private Byte status;
 

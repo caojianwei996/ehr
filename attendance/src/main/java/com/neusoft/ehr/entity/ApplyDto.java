@@ -1,25 +1,18 @@
-package com.neusoft.ehr.entity.dto;
+package com.neusoft.ehr.entity;
 
-import com.neusoft.ehr.entity.po.SupplementsPo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
- * @Author xkf
- * @Date 2025/1/9 15:08
- * @DESCRIBTE
+ * @author xkf
  */
 @Getter
 @Setter
 @Schema(name = "ApplyDto", description = "审批休假参数接收")
 public class ApplyDto {
+    @Schema(description = "补签编号")
+    private Long id;
     @Schema(description = "是否同意")
     private Boolean agree;
-
-    @Schema(description = "缺勤列表")
-    private List<SupplementsPo> list;
-
 }

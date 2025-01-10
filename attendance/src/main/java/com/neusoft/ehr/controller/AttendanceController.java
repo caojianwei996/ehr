@@ -1,66 +1,62 @@
 package com.neusoft.ehr.controller;
 
-import com.neusoft.ehr.entity.dto.ApplyDto;
-import com.neusoft.ehr.entity.dto.ViewSupplementMonthDto;
-import com.neusoft.ehr.entity.vo.ViewAttendancesMonthVo;
+import com.neusoft.ehr.entity.ApplyDto;
+import com.neusoft.ehr.entity.ViewSupplementMonthDto;
+import com.neusoft.ehr.entity.po.ViewAttendancesDayPo;
+import com.neusoft.ehr.entity.po.ViewAttendancesMonthPo;
+import com.neusoft.ehr.entity.po.ViewSupplementsPo;
 import com.neusoft.ehr.service.IAttendanceService;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
-import com.neusoft.ehr.entity.po.ViewAttendancesMonthPo;
-import com.neusoft.ehr.entity.po.ViewSupplementsPo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
- * @Author xkf
- * @Date 2025/1/8 15:55
- * @DESCRIBTE
+ * @author xkf
  */
+@RequestMapping("/attendances")
 @RestController
 public class AttendanceController extends BaseController {
-    @Autowired
-    private IAttendanceService attendanceService;
+    private final IAttendanceService attendanceService;
+
     /**
-     * BaseController构造方法
+     * AttendanceController构造方法
      *
      * @param messageSource 国际化组件
      */
-    protected AttendanceController(MessageSource messageSource) {
+    public AttendanceController(MessageSource messageSource, IAttendanceService attendanceService) {
         super(messageSource);
+        this.attendanceService = attendanceService;
     }
 
-    @GetMapping("/attendances")
-    public Response<List<ViewAttendancesMonthVo>> getAllAbsences() {
-        List<ViewAttendancesMonthVo> allAbsences = attendanceService.getAllAbsences();
-        return success(allAbsences);
+    @GetMapping("/day")
+    public Response<ViewAttendancesDayPo> getAttendancesDay() {
+        return success(attendanceService.getAttendancesDay());
     }
 
-    @PostMapping("/attendance")
-    public Response addSupplement(Request<ViewSupplementMonthDto> request) {
+    @GetMapping("/month")
+    public Response<List<ViewAttendancesMonthPo>> getAttendancesMonth() {
+        return success(attendanceService.getAttendancesMonth());
+    }
+
+    @PostMapping("/apply")
+    public Response<Void> addSupplement(@RequestBody @Valid Request<ViewSupplementMonthDto> request) {
         attendanceService.addSupplement(request.getData());
         return success();
     }
 
-    @GetMapping("/attendances/apply")
+    @GetMapping("/apply")
     public Response<List<ViewSupplementsPo>> getApplies() {
         List<ViewSupplementsPo> applies = attendanceService.getApplies();
         return success(applies);
     }
 
-    @PostMapping("/attendances/apply")
-    public Response updateSupplement(Request<ApplyDto> request) {
+    @PutMapping("/apply")
+    public Response<Void> updateSupplement(@RequestBody @Valid Request<ApplyDto> request) {
         attendanceService.updateSupplement(request.getData());
         return success();
-    }
-
-    @GetMapping("/attendances/month")
-    public Response<List<ViewAttendancesMonthPo>> getAttendancesMonth() {
-        List<ViewAttendancesMonthPo> attendances = attendanceService.getAttendancesMonth();
-        return success(attendances);
     }
 }
