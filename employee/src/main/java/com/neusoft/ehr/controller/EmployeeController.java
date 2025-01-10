@@ -1,14 +1,16 @@
 package com.neusoft.ehr.controller;
 
-import com.neusoft.ehr.entity.LoginDto;
-import com.neusoft.ehr.entity.UpdatePasswordDto;
-import com.neusoft.ehr.entity.vo.LoginVo;
+import com.neusoft.ehr.entity.*;
+import com.neusoft.ehr.entity.po.ViewEmployeesPo;
+import com.neusoft.ehr.entity.po.ViewDepartmentResumePo;
+import com.neusoft.ehr.entity.po.ViewPositionResumePo;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
-import com.neusoft.ehr.entity.Request;
-import com.neusoft.ehr.entity.Response;
+import com.neusoft.ehr.service.IReverseService;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -19,9 +21,10 @@ import org.springframework.web.bind.annotation.*;
  * @since 2025-01-08
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/employees")
 public class EmployeeController extends BaseController {
     private final IEmployeeService employeeService;
+    private final IReverseService reverseService;
 
     /**
      * EmployeeController构造方法
@@ -29,25 +32,51 @@ public class EmployeeController extends BaseController {
      * @param messageSource   国际化组件
      * @param employeeService 员工业务组件
      */
-    public EmployeeController(MessageSource messageSource, IEmployeeService employeeService) {
+    public EmployeeController(MessageSource messageSource, IEmployeeService employeeService,IReverseService reverseService) {
         super(messageSource);
         this.employeeService = employeeService;
+        this.reverseService = reverseService;
     }
 
-    @PostMapping("/login")
-    public Response<LoginVo> login(@RequestBody Request<LoginDto> request) {
-        return success(employeeService.login(request.getData()));
-    }
 
-    @PostMapping("/reset")
-    public Response<Void> resetPassword(@RequestBody Request<String> request) {
-        employeeService.reset(request.getData());
+    @PostMapping
+    public Response<Void> addEmployee(@RequestBody Request<AddEmployeeInfoDto> request){
+
+        System.out.println(request);
+        employeeService.addEmployee(request.getData());
         return success();
     }
 
-    @PostMapping("/update")
-    public Response<Void> updatePassword(@RequestBody Request<UpdatePasswordDto> request) {
-        employeeService.updatePassword(request.getData(), AuthorizationInterceptor.getCurrentUser());
+    @PutMapping
+    public Response<Void> updateEmployee(@RequestBody Request<UpdateEmployeeDto> request){
+        employeeService.updateEmployee(request.getData());
         return success();
     }
+
+    @GetMapping("/basic")
+    public Response<ViewEmployeesPo> getBasicInfo(){
+        Long id = AuthorizationInterceptor.getCurrentUser().getId();
+        return success(employeeService.getBasicInfo(id));
+    }
+    @GetMapping("/resume/department")
+    public Response<List<ViewDepartmentResumePo>> getDepartmentResume(){
+        String name = AuthorizationInterceptor.getCurrentUser().getName();
+        return success(employeeService.getDepartmentResume(name));
+    }
+    @GetMapping("/resume/position")
+    public Response<List<ViewPositionResumePo>> getPositionResume(){
+        String name = AuthorizationInterceptor.getCurrentUser().getName();
+        return success(employeeService.getPositionResume(name));
+    }
+    @PostMapping("/reverse/department")
+    public Response<Void> reverseDepartment(@RequestBody Request<ReverseDepartmentDto> request){
+        reverseService.reverseDepartment(request.getData());
+        return success();
+    }
+    @PostMapping("/reverse/position")
+    public Response<Void> reversePosition(@RequestBody Request<ReversePositionDto> request){
+        reverseService.reversePosition(request.getData());
+        return success();
+    }
+
 }

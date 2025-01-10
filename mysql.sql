@@ -323,3 +323,49 @@ from employees
          left outer join vocations on employees.id = vocations.employee
          left outer join leaves on vocations.type = leaves.id
 group by employees.id;
+CREATE TABLE department_resume
+(
+    id         bigint not null comment '履历编号',
+    employee   bigint not null comment '员工编号',
+    start      date   not null comment '起始时间',
+    end        date comment '终止时间',
+    department bigint not null comment '部门编号',
+    primary key (id),
+    index (department)
+) comment = '部门履历';
+insert into department_resume
+values (1, 1, '2024-12-01', '2024-12-31', 2),
+       (2, 1, '2025-01-01', NULL, 3);
+create table position_resume
+(
+    id       bigint not null comment '职位编号',
+    employee bigint not null comment '员工编号',
+    start    date   not null comment '起始时间',
+    end      date comment '终止时间',
+    position bigint not null comment '职位编号',
+    primary key (id),
+    index (position)
+) comment = '职位履历';
+insert into position_resume
+values (1, 1, '2024-12-01', '2024-12-26', 1),
+       (2, 1, '2024-12-28', null, 2);
+create view view_department_resume as
+select department_resume.id    as id,
+       employees.id            as em_id,
+       employees.name          as name,
+       departments.name        as department,
+       department_resume.start as START,
+       department_resume.end   as END
+from department_resume
+         left outer join employees on department_resume.employee = employees.id
+         left outer join departments on department_resume.department = departments.id;
+create view view_position_resume as
+SELECT position_resume.id    as id,
+       employees.id          as em_id,
+       employees.name        as name,
+       positions.name        as position,
+       position_resume.start as start,
+       position_resume.end   as end
+FROM position_resume
+         left outer join employees ON position_resume.employee = employees.id
+         left outer join positions on position_resume.position = positions.id;

@@ -124,10 +124,20 @@ GET /api/employees/basic
 - Authentication:`true`
 - Return:`Employee`
 
-### 查看履历信息
+### 查看部门履历信息
 
 ```http request
-GET /api/employees/resume
+GET /api/employees/resume/department
+```
+
+- Authentication:`true`
+- Return:`Resume`
+
+
+### 查看职位履历信息
+
+```http request
+GET /api/employees/resume/position
 ```
 
 - Authentication:`true`
@@ -430,14 +440,38 @@ Content-Type: application/json
     "birthday": "yyyy-MM-dd",
     "salary": number,
     "authority": number,
-    "department": number,
-    "position": number,
     "attendance": number,
     "status": number
   }
 }
 ```
-
 - Authentication:`true`
 - Required:`id`
 - Throws:`属性冲突`
+
+
+### 员工调转部门
+
+```http request
+POST /api/employee/reverse/department
+Content-Type: application/json
+
+{
+  "data": "string"
+}
+```
+- Authentication:`true`
+- Required:`id`
+
+### 员工调转岗位
+
+```http request
+POST /api/employee/reverse/position
+Content-Type: application/json
+
+{
+  "data": "string"
+}
+```
+- Authentication:`true`
+- Required:`id`
