@@ -9,6 +9,6 @@ public class LoginVo {
     private Long id;
     private String name;
     private String email;
-    private Byte authority;// 0 1 2 三种权限
+    private Byte authority;
     private String token;
 }

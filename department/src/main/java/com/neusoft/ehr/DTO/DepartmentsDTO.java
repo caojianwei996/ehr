@@ -7,10 +7,15 @@ import lombok.Data;
 
 @Data
 public class DepartmentsDTO {
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
     @TableField("name")
     private String name;
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
     @TableField("preparation")
     private Long preparation;
+
+    @TableField("leader")
+    private Long leader;
 }

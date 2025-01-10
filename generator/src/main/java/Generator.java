@@ -9,23 +9,6 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
  */
 public class Generator {
     /**
-     * 数据库URL
-     */
-    private static final String url = "jdbc:mysql://localhost:3306/ehr";
-    /**
-     * 数据库用户名
-     */
-    private static final String username = "root";
-    /**
-     * 数据库密码
-     */
-    private static final String password = "root";
-    /**
-     * 输出路径
-     */
-    private static final String basePath = "./generator/resultant";
-
-    /**
      * Main方法
      *
      * @param args 命令行参数
@@ -35,7 +18,7 @@ public class Generator {
         // 代码生成
         FastAutoGenerator
                 // 数据库配置
-                .create(url, username, password)
+                .create("jdbc:mysql://localhost:3306/ehr", "root", "root")
                 // 全局配置
                 .globalConfig(builder -> builder
                         // 作者
@@ -49,7 +32,7 @@ public class Generator {
                         // 启用SpringDoc
                         .enableSpringdoc()
                         // 输出路径
-                        .outputDir(basePath + "/main/java")
+                        .outputDir("./generator/resultant")
                         // 结束配置
                         .build()
                 )

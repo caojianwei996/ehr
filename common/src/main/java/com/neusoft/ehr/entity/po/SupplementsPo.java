@@ -46,7 +46,7 @@ public class SupplementsPo implements Serializable {
     @TableField("reason")
     private String reason;
 
-    @Schema(description = "补签状态:0.已申请;1.已批准;")
-    @TableField("status")
-    private Byte status;
+    @Schema(description = "补签状态:0.未处理;1.已处理;")
+    @TableField("is_filtered")
+    private Boolean filtered;
 }

@@ -13,7 +13,9 @@
         <module>generator</module>
         <module>system</module>
         <module>department</module>
+        <module>attendance</module>
         <module>employee</module>
+        <module>position</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -57,7 +59,22 @@
             </dependency>
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
+                <artifactId>attendance</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
                 <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>department</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>employee</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

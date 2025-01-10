@@ -2,14 +2,13 @@ package com.neusoft.ehr.service.implement;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.neusoft.ehr.entity.po.MenusPo;
-import com.neusoft.ehr.entity.vo.MenuVo;
+import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.mapper.MenusMapper;
 import com.neusoft.ehr.service.IMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 菜单业务实现
@@ -30,17 +29,11 @@ public class MenuService implements IMenuService {
      * @return 菜单组件
      */
     @Override
-    public List<MenuVo> select() {
-        return menusMapper
-                .selectList(Wrappers.<MenusPo>lambdaQuery().le(MenusPo::getAuthority, 2))
-                .stream()
-                .map(menusPo -> {
-                    MenuVo vo = new MenuVo();
-                    vo.setName(menusPo.getName());
-                    vo.setPath(menusPo.getPath());
-                    vo.setAuthority(MenuVo.Authority.values()[menusPo.getAuthority()]);
-                    return vo;
-                })
-                .collect(Collectors.toList());
+    public List<MenusPo> select() {
+        return menusMapper.selectList(
+                Wrappers.<MenusPo>lambdaQuery().le(
+                        MenusPo::getAuthority, AuthorizationInterceptor.getCurrentUser().getAuthority()
+                )
+        );
     }
 }

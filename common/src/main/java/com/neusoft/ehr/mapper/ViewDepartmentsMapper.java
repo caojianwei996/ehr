@@ -1,7 +1,7 @@
 package com.neusoft.ehr.mapper;
 
-import com.neusoft.ehr.entity.po.ViewDepartmentsPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.neusoft.ehr.entity.po.ViewDepartmentsPo;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author 曹健伟
- * @since 2025-01-08
+ * @since 2025-01-09
  */
 public interface ViewDepartmentsMapper extends BaseMapper<ViewDepartmentsPo> {
 

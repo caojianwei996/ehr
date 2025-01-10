@@ -1,8 +1,11 @@
 package com.neusoft.ehr.service.implement;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.neusoft.ehr.entity.ServiceCode;
+import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.po.CountriesPo;
 import com.neusoft.ehr.entity.po.LanguagesPo;
 import com.neusoft.ehr.entity.po.MessagesPo;
@@ -14,6 +17,7 @@ import com.neusoft.ehr.mapper.ViewMessagesMapper;
 import com.neusoft.ehr.service.IMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Locale;
 
@@ -67,7 +71,16 @@ public class MessageService implements IMessageService {
             countriesPo.setName(po.getCountry());
             countriesMapper.insert(countriesPo);
         }
-        MessagesPo messagesPo = new MessagesPo();
+        MessagesPo messagesPo = messagesMapper.selectOne(
+                Wrappers.<MessagesPo>lambdaQuery()
+                        .eq(MessagesPo::getCode, po.getCode())
+                        .eq(MessagesPo::getLanguage, languagesPo.getId())
+                        .eq(MessagesPo::getCountry, countriesPo.getId())
+        );
+        if (messagesPo != null) {
+            throw new ServiceException(ServiceCode.PROPERTY_CONFLICT);
+        }
+        messagesPo = new MessagesPo();
         messagesPo.setCode(po.getCode());
         messagesPo.setLanguage(languagesPo.getId());
         messagesPo.setCountry(countriesPo.getId());
@@ -82,31 +95,45 @@ public class MessageService implements IMessageService {
      */
     @Override
     public void deleteMessage(ViewMessagesPo po) {
-        LanguagesPo languagesPo = languagesMapper.selectOne(
-                Wrappers.<LanguagesPo>lambdaQuery()
-                        .eq(LanguagesPo::getName, po.getLanguage())
+        ViewMessagesPo viewMessagesPo = viewMessagesMapper.selectOne(
+                Wrappers.<ViewMessagesPo>lambdaQuery()
+                        .eq(ViewMessagesPo::getCode, po.getCode())
+                        .eq(ViewMessagesPo::getLanguage, po.getLanguage())
+                        .eq(ViewMessagesPo::getCountry, po.getCountry())
         );
-        if (languagesPo == null) {
-            return;
+        if (viewMessagesPo != null) {
+            messagesMapper.deleteById(viewMessagesPo.getId());
         }
-        CountriesPo countriesPo = countriesMapper.selectOne(
-                Wrappers.<CountriesPo>lambdaQuery()
-                        .eq(CountriesPo::getName, po.getCountry())
-        );
-        if (countriesPo == null) {
-            return;
-        }
-        MessagesPo messagesPo = new MessagesPo();
-        messagesPo.setCode(po.getCode());
-        messagesPo.setLanguage(languagesPo.getId());
-        messagesPo.setCountry(countriesPo.getId());
-        messagesPo.setText(po.getText());
-        messagesMapper.insert(messagesPo);
     }
 
     @Override
-    public IPage<ViewMessagesPo> selectMessage(Locale locale, Integer page, Integer size) {
-        return viewMessagesMapper.selectPage(Page.of(page, size), Wrappers.emptyWrapper());
+    public void updateMessage(ViewMessagesPo po) {
+        ViewMessagesPo viewMessagesPo = viewMessagesMapper.selectOne(
+                Wrappers.<ViewMessagesPo>lambdaQuery()
+                        .eq(ViewMessagesPo::getCode, po.getCode())
+                        .eq(ViewMessagesPo::getLanguage, po.getLanguage())
+                        .eq(ViewMessagesPo::getCountry, po.getCountry())
+        );
+        if (viewMessagesPo != null) {
+            MessagesPo messagesPo = messagesMapper.selectById(viewMessagesPo.getId());
+            messagesPo.setText(po.getText());
+            messagesMapper.updateById(messagesPo);
+        }
+    }
+
+    @Override
+    public IPage<ViewMessagesPo> selectMessage(ViewMessagesPo po, Integer page, Integer size) {
+        LambdaQueryWrapper<ViewMessagesPo> wrapper = Wrappers.lambdaQuery();
+        if (StringUtils.hasText(po.getCode())) {
+            wrapper.eq(ViewMessagesPo::getCode, po.getCode());
+        }
+        if (StringUtils.hasText(po.getLanguage())) {
+            wrapper.eq(ViewMessagesPo::getLanguage, po.getLanguage());
+        }
+        if (StringUtils.hasText(po.getCountry())) {
+            wrapper.eq(ViewMessagesPo::getCountry, po.getCountry());
+        }
+        return viewMessagesMapper.selectPage(Page.of(page, size), wrapper);
     }
 
     /**

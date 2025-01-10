@@ -91,14 +91,11 @@ POST /api/users/reset
 Content-Type: application/json
 
 {
-  "data": {
-    "email": "email"
-  }
+  "data": "email"
 }
 ```
 
 - Authentication:`false`
-- Required:`email`
 - Throws:`用户不存在`
 
 ### 获取菜单
@@ -144,13 +141,12 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`oldPassword` `newPassword`
-- Return:`User`
 - Throws:`密码错误`
 
 ### 获取时间
 
 ```http request
-GET /api/attendances/time
+GET /api/sign/time
 ```
 
 - Authentication:`false`
@@ -159,67 +155,68 @@ GET /api/attendances/time
 ### 上班打卡
 
 ```http request
-POST /api/attendances
+POST /api/sign/on
 Content-Type: application/json
 
 {
-  "data": {
-    "time": "yyyy-MM-dd HH:mm:ss"
-  }
+  "data": "ISO 8601"
 }
 ```
 
 - Authentication:`true`
 - Required:`time`
-- Return:`Record`
-- Throws:`打卡时间异常`
+- Throws:`非法操作`
 
 ### 下班打卡
 
 ```http request
-PUT /api/attendances
+POST /api/sign/off
 Content-Type: application/json
 
 {
-  "data": {
-    "time": "yyyy-MM-dd HH:mm:ss"
-  }
+  "data": "ISO 8601"
 }
 ```
 
 - Authentication:`true`
-- Required:`time`
-- Return:`Record`
-- Throws:`打卡时间异常` `频繁打卡`
+- Throws:`非法操作`
 
-### 获取缺勤记录
+### 获取当天考勤记录
 
 ```http request
-GET /api/attendances
+GET /api/attendances/day
 ```
 
 - Authentication:`true`
-- Return:`Record[]`
+- Return:`AbsenceRecord`
+
+### 获取当月出勤记录
+
+```http request
+GET /api/attendances/month
+```
+
+- Authentication:`true`
+- Return:`AbsenceRecord[]`
 
 ### 考勤补签
 
 ```http request
-POST /api/attendance
+POST /api/attendances/apply
 Content-Type: application/json
 
 {
   "data": {
-    "upTime": "yyyy-MM-dd HH:mm:ss",
-    "downTime": "yyyy-MM-dd HH:mm:ss",
-    "reason": ""
+    "upTime": "ISO 8601",
+    "downTime": "ISO 8601",
+    "reason": string
   }
 }
 ```
 
 - Authentication:`true`
 - Required:`upTime` `downTime` `reason`
-- Return:`Record`
-- Throws:`打卡时间异常`
+- Throws:`非法操作`
 
 ### 获取补签申请
 
@@ -233,13 +230,13 @@ GET /api/attendances/apply
 ### 审批补签
 
 ```http request
-POST /api/attendances/apply
+PUT /api/attendances/apply
 Content-Type: application/json
 
 {
   "data": {
-    "agree": true,
-    "list": []
+    "id": number,
+    "agree": boolean
   }
 }
 ```
@@ -265,8 +262,8 @@ Content-Type: application/json
 {
   "data": {
     "type": number,
-    "start": "yyyy-MM-dd",
-    "end": "yyyy-MM-dd"
+    "start": "ISO 8601",
+    "end": "ISO 8601"
   }
 }
 ```
@@ -283,8 +280,8 @@ Content-Type: application/json
 
 {
   "data": {
-    "agree": true,
-    "list": []
+    "id": number,
+    "agree": boolean
   }
 }
 ```
@@ -292,19 +289,10 @@ Content-Type: application/json
 - Authentication:`true`
 - Required:`agree` `list`
 
-### 月出勤记录
-
-```http request
-GET /api/attendances/month
-```
-
-- Authentication:`true`
-- Return:`AbsenceRecord[]`
-
 ### 获取部门信息
 
 ```http request
-GET /api/departments?limit=number&page=bumber
+GET /api/departments?page=number&limit=number
 ```
 
 - Authentication:`true`
@@ -318,28 +306,27 @@ Content-Type: application/json
 
 {
   "data": {
-    "name": "string",
-    "preparation": "preparation"
+    "name": string,
+    "preparation": number
   }
 }
 ```
 
 - Authentication:`true`
 - Required:`name` `preparation`
-- Return:`Department[]`
-- Throws:`名称冲突`
+- Throws:`属性冲突`
 
 ### 修改部门
 
 ```http request
-POST /api/departments
+PUT /api/departments
 Content-Type: application/json
 
 {
   "data": {
-    "name": "string",
+    "name": string,
     "leader: number,
-    "preparation": "preparation",
+    "preparation": number,
     "status": number
   }
 }
@@ -347,8 +334,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`name` `leader` `preparation` `status`
-- Return:`Department[]`
-- Throws:`名称冲突`
+- Throws:`属性冲突`
 
 ### 新增岗位
 
@@ -358,16 +344,15 @@ Content-Type: application/json
 
 {
   "data": {
-    "name": "string",
-    "preparation": "preparation"
+    "name": string,
+    "preparation": number
   }
 }
 ```
 
 - Authentication:`true`
 - Required:`name` `preparation`
-- Return:`Department[]`
-- Throws:`名称冲突`
+- Throws:`属性冲突`
 
 ### 修改岗位
 
@@ -377,9 +362,9 @@ Content-Type: application/json
 
 {
   "data": {
-    "name": "string",
+    "name": string,
     "leader: number,
-    "preparation": "preparation",
+    "preparation": number,
     "status": number
   }
 }
@@ -387,8 +372,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`name` `leader` `preparation` `status`
-- Return:`Department[]`
-- Throws:`名称冲突`
+- Throws:`属性冲突`
 
 ### 新增员工
 
@@ -398,11 +382,10 @@ Content-Type: application/json
 
 {
   "data": {
-    "name": "",
+    "name": string,
     "email": "email",
     "gender": number,
     "birthday": "yyyy-MM-dd",
-    "induction":"yyyy-MM-dd",
     "salary": number,
     "authority": number,
     "department": number,
@@ -414,7 +397,7 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`name` `email` `gender` `birthday` `salary` `authority` `department` `position` `attendance`
-- Throws:`邮箱冲突`
+- Throws:`属性冲突`
 
 ### 修改员工
 
@@ -425,8 +408,9 @@ Content-Type: application/json
 {
   "data": {
     "id": number
-    "name": "",
+    "name": string,
     "email": "email",
+    "gender": number,
     "birthday": "yyyy-MM-dd",
     "salary": number,
     "authority": number,
@@ -440,4 +424,4 @@ Content-Type: application/json
 
 - Authentication:`true`
 - Required:`id`
-- Throws:`邮箱冲突`
+- Throws:`属性冲突`

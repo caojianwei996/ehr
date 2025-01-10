@@ -41,4 +41,8 @@ public class AttendancesPo implements Serializable {
     @Schema(description = "退勤时间")
     @TableField("clock_out")
     private LocalDateTime clockOut;
+
+    @Schema(description = "考勤状态:1.考勤中;2.出勤;3.缺勤;4.审批;5.补签;6.矿工;")
+    @TableField("status")
+    private Byte status;
 }
