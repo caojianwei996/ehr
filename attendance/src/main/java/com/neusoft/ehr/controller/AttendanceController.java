@@ -1,6 +1,6 @@
 package com.neusoft.ehr.controller;
 
-import com.neusoft.ehr.entity.ApplyDto;
+import com.neusoft.ehr.entity.dto.ApplyDto;
 import com.neusoft.ehr.entity.ViewSupplementMonthDto;
 import com.neusoft.ehr.entity.po.ViewAttendancesDayPo;
 import com.neusoft.ehr.entity.po.ViewAttendancesMonthPo;

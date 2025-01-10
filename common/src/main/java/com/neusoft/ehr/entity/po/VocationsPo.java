@@ -50,7 +50,7 @@ public class VocationsPo implements Serializable {
     @TableField("length")
     private Long length;
 
-    @Schema(description = "休假状态:0.已申请;1.已批准;2.休假中;3.已结束;")
+    @Schema(description = "休假状态:0.已申请;1.已批准;2.已拒绝;3.休假中;4.已结束;")
     @TableField("status")
     private Byte status;
 }

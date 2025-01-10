@@ -2,9 +2,7 @@ package com.neusoft.ehr.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import java.io.Serializable;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +13,7 @@ import lombok.Setter;
  * </p>
  *
  * @author 曹健伟
- * @since 2025-01-09
+ * @since 2025-01-10
  */
 @Getter
 @Setter

@@ -16,6 +16,8 @@
         <module>generator</module>
         <module>position</module>
         <module>system</module>
+        <module>vocation</module>
+        <module>calendar</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -90,6 +92,11 @@
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
                 <artifactId>system</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>vocation</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

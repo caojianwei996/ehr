@@ -29,14 +29,7 @@ public class DepartmentsService implements IDepartmentsService {
 
     @Override
     public void insertDepartments(InsertDepartmentsDto departmentsDto) {
-        // 检查部门名称是否已存在
-        if (departmentsMapper
-                .exists(
-                        Wrappers.<DepartmentsPo>lambdaQuery().eq(
-                                DepartmentsPo::getName, departmentsDto.getName()
-                        )
-                )
-        ) {
+        if (departmentsMapper.exists(Wrappers.<DepartmentsPo>lambdaQuery().eq(DepartmentsPo::getName, departmentsDto.getName()))) {
             throw new ServiceException(ServiceCode.PROPERTY_CONFLICT);
         }
         DepartmentsPo departmentsPo = new DepartmentsPo();
@@ -46,32 +39,16 @@ public class DepartmentsService implements IDepartmentsService {
 
     @Override
     public void updateDepartment(UpdateDepartmentsDto departmentsDto) {
-        // 先根据id获取原部门名称
-        if (
-                departmentsMapper.exists(
-                        Wrappers.<DepartmentsPo>lambdaQuery().eq(
-                                DepartmentsPo::getName, departmentsDto.getName()
-                        )
-                )
-        ) {
+        if (departmentsMapper.exists(Wrappers.<DepartmentsPo>lambdaQuery().eq(DepartmentsPo::getName, departmentsDto.getName()))) {
             throw new ServiceException(ServiceCode.PROPERTY_CONFLICT);
         }
-        DepartmentsPo departmentsPo = departmentsMapper.selectById(departmentsDto.getId());
-        if (departmentsPo == null) {
-            return;
-        }
-        if (departmentsDto.getName() != null) {
-            departmentsPo.setName(departmentsDto.getName());
-        }
-        if (departmentsDto.getPreparation() != null) {
-            departmentsPo.setPreparation(departmentsDto.getPreparation());
-        }
-        if (departmentsDto.getLeader() != null) {
-            departmentsPo.setLeader(departmentsDto.getLeader());
-        }
-        if (departmentsDto.getStatus() != null) {
-            departmentsPo.setStatus(departmentsDto.getStatus());
-        }
-        departmentsMapper.updateById(departmentsPo);
+        departmentsMapper.update(
+                Wrappers.<DepartmentsPo>lambdaUpdate()
+                        .eq(DepartmentsPo::getId, departmentsDto.getId())
+                        .set(departmentsDto.getName() != null, DepartmentsPo::getName, departmentsDto.getName())
+                        .set(departmentsDto.getPreparation() != null, DepartmentsPo::getPreparation, departmentsDto.getPreparation())
+                        .set(departmentsDto.getLeader() != null, DepartmentsPo::getLeader, departmentsDto.getLeader())
+                        .set(departmentsDto.getStatus() != null, DepartmentsPo::getStatus, departmentsDto.getStatus())
+        );
     }
 }
