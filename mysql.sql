@@ -94,20 +94,21 @@ create table departments
     name        varchar(64) not null comment '部门名称',
     preparation bigint      not null comment '部门编制',
     status      tinyint     not null default 0 comment '部门状态:0.正常;1.关闭;',
+    create_at   date        not null comment '成立日期',
+    parent       bigint comment '上级部门',
     leader      bigint comment '部门领导',
     primary key (id),
     unique (name),
+    index (parent),
     index (leader)
 ) comment '部门';
-insert into departments (id, name, leader, preparation, status)
-values (1, '后勤部', 1, 50, 0),
-       (2, '信息部', 2, 75, 0),
-       (3, '开发部', 3, 100, 0),
-       (4, '销售部', 4, 125, 0),
-       (5, '人力部', 5, 125, 0),
-       (6, '法务部', 6, 100, 0),
-       (7, '财务部', 7, 75, 0),
-       (8, '宣传部', 8, 50, 1);
+insert into departments (id, name, preparation, status, create_at, parent, leader)
+values (1, '开发部', 100, 0, '2010-01-01', null, 1),
+       (2, '人力部', 125, 0, '2010-01-01', null, 2),
+       (3, '法务部', 100, 0, '2010-01-01', null, 3),
+       (4, '财务部', 75, 0, '2010-01-01', null, 4),
+       (5, '第一开发部', 100, 0, '2010-01-01', 1, 5),
+       (6, '第二开发部', 125, 0, '2010-01-01', 1, 6);
 create table positions
 (
     id     bigint      not null auto_increment comment '岗位编号',
@@ -175,12 +176,16 @@ values (1, 'E1', '1990-01-01', 'e1@neusoft.com', '$2a$10$gQkw6nhAtat.mlJY92oo4.v
        (8, 'E8', '1990-01-01', 'e8@neusoft.com', '$2a$10$gQkw6nhAtat.mlJY92oo4.vfCo5sm7lmzwTaXxk//p6974lYxkxqi', 2,
         '2010-01-01', 30000, 30, 0, 3, 2, 3, 3, null);
 create view view_departments as
-select departments.id          as id,
-       departments.name        as name,
-       employees.name          as leader,
-       departments.preparation as preparation,
-       departments.status      as status
+select departments.id          as department_id,
+       departments.name        as department_name,
+       departments.preparation as department_preparation,
+       departments.status      as department_status,
+       departments.create_at   as create_at,
+       parent.id                as parent_id,
+       parent.name              as parent_name,
+       employees.name          as leader
 from departments
+         left outer join departments as parent on departments.parent = parent.id
          left outer join employees on departments.leader = employees.id;
 create table work_types
 (

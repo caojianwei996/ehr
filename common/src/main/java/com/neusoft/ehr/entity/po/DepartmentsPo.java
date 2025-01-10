@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +41,14 @@ public class DepartmentsPo implements Serializable {
     @Schema(description = "部门状态:0.正常;1.关闭;")
     @TableField("status")
     private Byte status;
+
+    @Schema(description = "成立日期")
+    @TableField("create_at")
+    private LocalDate createAt;
+
+    @Schema(description = "上级部门")
+    @TableField("parent")
+    private Long parent;
 
     @Schema(description = "部门领导")
     @TableField("leader")
