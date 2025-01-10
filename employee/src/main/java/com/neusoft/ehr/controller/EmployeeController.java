@@ -74,4 +74,5 @@ public class EmployeeController extends BaseController {
         Long id = AuthorizationInterceptor.getCurrentUser().getId();
         return success(employeeService.getBasicInfo(id));
     }
+
 }
