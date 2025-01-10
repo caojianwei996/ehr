@@ -3,6 +3,7 @@ package com.neusoft.ehr.entity.po;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,4 +59,7 @@ public class ViewEmployeesPo implements Serializable {
     @Schema(description = "员工姓名")
     @TableField("leader")
     private String leader;
+
+    @TableField("last")
+    private BigDecimal last;
 }

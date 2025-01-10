@@ -3,7 +3,7 @@ package com.neusoft.ehr.entity.po;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,10 +28,27 @@ public class ViewVocationsPo implements Serializable {
     @TableField("id")
     private Long id;
 
-    @Schema(description = "员工姓名")
-    @TableField("name")
-    private String name;
+    @Schema(description = "员工编号")
+    @TableField("employee_id")
+    private Long employeeId;
 
-    @TableField("last")
-    private BigDecimal last;
+    @Schema(description = "员工姓名")
+    @TableField("employee_name")
+    private String employeeName;
+
+    @Schema(description = "假期类型")
+    @TableField("type")
+    private Long type;
+
+    @Schema(description = "开始时间")
+    @TableField("start")
+    private LocalDate start;
+
+    @Schema(description = "结束时间")
+    @TableField("end")
+    private LocalDate end;
+
+    @Schema(description = "休假长度")
+    @TableField("length")
+    private Long length;
 }
