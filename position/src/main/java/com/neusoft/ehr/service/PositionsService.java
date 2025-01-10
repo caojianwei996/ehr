@@ -1,6 +1,8 @@
 package com.neusoft.ehr.service;
 
-import com.neusoft.ehr.DTO.PositionsDTO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.neusoft.ehr.entity.InsertPositionsDto;
+import com.neusoft.ehr.entity.UpdatePositionsDto;
 import com.neusoft.ehr.entity.po.PositionsPo;
 
 import java.util.List;
@@ -8,9 +10,9 @@ import java.util.List;
 //mybatis-plus:
 
 public interface PositionsService {
-    List<PositionsPo> pagePositions(Integer limit, Integer page);
+    IPage<PositionsPo> selectPositions(Integer limit, Integer page);
 
-    void insertPositions(PositionsDTO data);
+    void insertPositions(InsertPositionsDto data);
 
-    PositionsPo updatePositions(PositionsDTO data);
+    void updatePositions(UpdatePositionsDto data);
 }
