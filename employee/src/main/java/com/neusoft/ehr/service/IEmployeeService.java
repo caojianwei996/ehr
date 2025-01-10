@@ -2,7 +2,11 @@ package com.neusoft.ehr.service;
 
 import com.neusoft.ehr.entity.LoginDto;
 import com.neusoft.ehr.entity.UpdatePasswordDto;
+import com.neusoft.ehr.entity.AddEmployeeInfoDto;
+import com.neusoft.ehr.entity.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.vo.LoginVo;
+
+
 
 public interface IEmployeeService {
     LoginVo login(LoginDto logindto);
@@ -10,4 +14,9 @@ public interface IEmployeeService {
     void reset(String email);
 
     void updatePassword(UpdatePasswordDto data, LoginVo loginVo);
+
+
+    void addEmployee(AddEmployeeInfoDto data);
+
+    void updateEmployee(UpdateEmployeeDto data);
 }

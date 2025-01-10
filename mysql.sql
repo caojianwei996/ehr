@@ -137,7 +137,6 @@ create table employees
     password           char(60)    not null comment '员工密码',
     authority          tinyint     not null default 0 comment '员工权限:1.普通;2.领导;3.管理;',
     induction          date        not null comment '入职时间',
-    birthday           date        not null comment '员工生日',
     salary             bigint      not null comment '员工工资',
     transfer_vocations tinyint     not null default 0 comment '调休假',
     status             tinyint     not null default 0 comment '员工状态:0.在职;1.离职;',
@@ -199,7 +198,9 @@ select employees.id        as id,
        genders.name        as gender,
        departments.name    as department,
        positions.name      as position,
-       leader.name         as leader
+       leader.name         as leader,
+       employees.birthday  as birthday,
+       employees.induction as induction
 from employees
          left outer join work_types on employees.work_type = work_types.id
          left outer join genders on employees.gender = genders.id

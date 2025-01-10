@@ -1,12 +1,10 @@
 package com.neusoft.ehr.controller;
 
-import com.neusoft.ehr.entity.dto.AddEmployeeInfoDto;
-import com.neusoft.ehr.entity.dto.LoginDto;
-import com.neusoft.ehr.entity.dto.UpdateEmployeeDto;
-import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
-import com.neusoft.ehr.entity.vo.EmployeeBasicInfoVo;
+import com.neusoft.ehr.entity.AddEmployeeInfoDto;
 import com.neusoft.ehr.entity.LoginDto;
+import com.neusoft.ehr.entity.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.UpdatePasswordDto;
+import com.neusoft.ehr.entity.EmployeeBasicInfoVo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;

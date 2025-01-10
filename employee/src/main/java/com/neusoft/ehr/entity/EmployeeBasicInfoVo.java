@@ -1,4 +1,4 @@
-package com.neusoft.ehr.entity.vo;
+package com.neusoft.ehr.entity;
 
 import lombok.Getter;
 import lombok.Setter;
