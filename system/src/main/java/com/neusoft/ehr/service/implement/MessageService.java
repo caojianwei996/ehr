@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.neusoft.ehr.entity.MessageDto;
 import com.neusoft.ehr.entity.ServiceCode;
 import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.po.CountriesPo;
@@ -52,7 +53,7 @@ public class MessageService implements IMessageService {
      * @param po 消息
      */
     @Override
-    public void insertMessage(ViewMessagesPo po) {
+    public void insertMessage(MessageDto po) {
         LanguagesPo languagesPo = languagesMapper.selectOne(
                 Wrappers.<LanguagesPo>lambdaQuery()
                         .eq(LanguagesPo::getName, po.getLanguage())
@@ -94,7 +95,7 @@ public class MessageService implements IMessageService {
      * @param po 消息
      */
     @Override
-    public void deleteMessage(ViewMessagesPo po) {
+    public void deleteMessage(MessageDto po) {
         ViewMessagesPo viewMessagesPo = viewMessagesMapper.selectOne(
                 Wrappers.<ViewMessagesPo>lambdaQuery()
                         .eq(ViewMessagesPo::getCode, po.getCode())
@@ -107,7 +108,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public void updateMessage(ViewMessagesPo po) {
+    public void updateMessage(MessageDto po) {
         ViewMessagesPo viewMessagesPo = viewMessagesMapper.selectOne(
                 Wrappers.<ViewMessagesPo>lambdaQuery()
                         .eq(ViewMessagesPo::getCode, po.getCode())
@@ -122,7 +123,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
-    public IPage<ViewMessagesPo> selectMessage(ViewMessagesPo po, Integer page, Integer size) {
+    public IPage<ViewMessagesPo> selectMessage(MessageDto po, Integer page, Integer size) {
         LambdaQueryWrapper<ViewMessagesPo> wrapper = Wrappers.lambdaQuery();
         if (StringUtils.hasText(po.getCode())) {
             wrapper.eq(ViewMessagesPo::getCode, po.getCode());

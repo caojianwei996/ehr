@@ -1,16 +1,15 @@
-package com.neusoft.ehr.service.impl;
+package com.neusoft.ehr.service.implement;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.neusoft.ehr.entity.ServiceCode;
 import com.neusoft.ehr.entity.ServiceException;
-import com.neusoft.ehr.entity.dto.LoginDto;
-import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
+import com.neusoft.ehr.entity.LoginDto;
+import com.neusoft.ehr.entity.UpdatePasswordDto;
 import com.neusoft.ehr.entity.po.EmployeesPo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.mapper.EmployeesMapper;
-import com.neusoft.ehr.token.TokenUtil;
+import com.neusoft.ehr.util.token.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -73,17 +72,5 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void updatePassword(UpdatePasswordDto data, LoginVo loginVo) {
-        QueryWrapper<EmployeesPo> queryWrapper = new QueryWrapper<EmployeesPo>();
-        //先查该用户的原密码
-        String hashPassword = employeesMapper.selectOne(queryWrapper.eq("name", loginVo.getName())).getPassword();
-
-        //再判断输入的原密码是否正确
-        String oldPassword = data.getOldPassword();
-
-//        BCrypt.checkpw(oldPassword,hashPassword){
-//
-//        }
-
-        EmployeesPo employeesPo = employeesMapper.selectOne(queryWrapper.eq("password", oldPassword));
     }
 }

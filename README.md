@@ -48,10 +48,18 @@
 
 - Application
     - 程序主入口
+- Attendance
+    - 出勤管理
 - Common
     - 通用代码
+- Department
+    - 部门管理
+- Employee
+    - 职工管理
 - Generator
     - 代码生成器
+- Position
+    - 岗位管理
 - System
     - 系统菜单管理
     - 国际化消息管理
@@ -164,7 +172,6 @@ Content-Type: application/json
 ```
 
 - Authentication:`true`
-- Required:`time`
 - Throws:`非法操作`
 
 ### 下班打卡
