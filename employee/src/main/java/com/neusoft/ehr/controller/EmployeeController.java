@@ -75,7 +75,7 @@ public class EmployeeController extends BaseController {
         return success();
     }
     @PostMapping("/reverse/position")
-    public Response<Void> reversePosition(@RequestBody Request<ReverseDepartmentDto> request){
+    public Response<Void> reversePosition(@RequestBody Request<ReversePositionDto> request){
         reverseService.reversePosition(request.getData());
         return success();
     }
