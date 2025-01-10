@@ -1,6 +1,7 @@
 package com.neusoft.ehr.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.neusoft.ehr.entity.MessageDto;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
 import com.neusoft.ehr.entity.po.ViewMessagesPo;
@@ -36,7 +37,7 @@ public class MessageController extends BaseController {
     }
 
     @PostMapping
-    public Response<Void> insert(@RequestBody @Valid Request<ViewMessagesPo> request) {
+    public Response<Void> insert(@RequestBody @Valid Request<MessageDto> request) {
         messageService.insertMessage(request.getData());
         return success();
     }
@@ -47,16 +48,16 @@ public class MessageController extends BaseController {
             @RequestParam(value = "language", required = false) String language,
             @RequestParam(value = "country", required = false) String country
     ) {
-        ViewMessagesPo po = new ViewMessagesPo();
-        po.setCode(code);
-        po.setLanguage(language);
-        po.setCountry(country);
-        messageService.deleteMessage(po);
+        MessageDto dto = new MessageDto();
+        dto.setCode(code);
+        dto.setLanguage(language);
+        dto.setCountry(country);
+        messageService.deleteMessage(dto);
         return success();
     }
 
     @PutMapping
-    public Response<Void> update(@RequestBody @Valid Request<ViewMessagesPo> request) {
+    public Response<Void> update(@RequestBody @Valid Request<MessageDto> request) {
         messageService.updateMessage(request.getData());
         return success();
     }
@@ -69,11 +70,11 @@ public class MessageController extends BaseController {
             @RequestParam(value = "language", required = false) String language,
             @RequestParam(value = "country", required = false) String country
     ) {
-        ViewMessagesPo po = new ViewMessagesPo();
-        po.setCode(code);
-        po.setLanguage(language);
-        po.setCountry(country);
-        return success(messageService.selectMessage(po, page, size));
+        MessageDto dto = new MessageDto();
+        dto.setCode(code);
+        dto.setLanguage(language);
+        dto.setCountry(country);
+        return success(messageService.selectMessage(dto, page, size));
     }
 
     @GetMapping("/{code}")

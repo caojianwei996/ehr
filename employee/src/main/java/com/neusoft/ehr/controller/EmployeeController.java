@@ -5,6 +5,8 @@ import com.neusoft.ehr.entity.dto.LoginDto;
 import com.neusoft.ehr.entity.dto.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
 import com.neusoft.ehr.entity.vo.EmployeeBasicInfoVo;
+import com.neusoft.ehr.entity.LoginDto;
+import com.neusoft.ehr.entity.UpdatePasswordDto;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
@@ -39,7 +41,6 @@ public class EmployeeController extends BaseController {
 
     @PostMapping("/login")
     public Response<LoginVo> login(@RequestBody Request<LoginDto> request) {
-        System.out.println(request);
         return success(employeeService.login(request.getData()));
     }
 

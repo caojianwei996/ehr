@@ -189,7 +189,7 @@ create table work_types
     primary key (id)
 ) comment '工作类型';
 insert into work_types (id, name, on_time, off_time)
-values (1, '早:8-30;晚:17:30', '8:30', '17:30');
+values (1, '8:30->17:30', '8:30', '17:30');
 create view view_employees as
 select employees.id        as id,
        employees.name      as name,

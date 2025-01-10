@@ -1,4 +1,4 @@
-package com.neusoft.ehr.service.impl;
+package com.neusoft.ehr.service.implement;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.neusoft.ehr.entity.ServiceCode;

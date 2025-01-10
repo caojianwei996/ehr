@@ -6,7 +6,7 @@ import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
 import com.neusoft.ehr.entity.UpdateDepartmentsDto;
 import com.neusoft.ehr.entity.po.ViewDepartmentsPo;
-import com.neusoft.ehr.service.DepartmentsService;
+import com.neusoft.ehr.service.IDepartmentsService;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +15,14 @@ import javax.validation.Valid;
 @RequestMapping("/departments")
 @RestController
 public class DepartmentController extends BaseController {
-    private final DepartmentsService departmentsService;
+    private final IDepartmentsService departmentsService;
 
     /**
      * BaseController构造方法
      *
      * @param messageSource 国际化组件
      */
-    public DepartmentController(MessageSource messageSource, DepartmentsService departmentsService) {
+    public DepartmentController(MessageSource messageSource, IDepartmentsService departmentsService) {
         super(messageSource);
         this.departmentsService = departmentsService;
     }
