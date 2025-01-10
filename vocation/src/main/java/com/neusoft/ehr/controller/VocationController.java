@@ -1,10 +1,12 @@
 package com.neusoft.ehr.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.neusoft.ehr.dto.ViewVocationsDto;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
 import com.neusoft.ehr.entity.dto.ApplyDto;
 import com.neusoft.ehr.entity.po.ViewVocationsPo;
+import com.neusoft.ehr.entity.po.VocationsPo;
 import com.neusoft.ehr.service.IVocationService;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +29,17 @@ public class VocationController extends BaseController {
         this.vocationService = vocationService;
     }
 
+    @GetMapping("/last")
+    public Response<Short> getLast() {
+        return success(vocationService.getLast());
+    }
+
     @GetMapping
-    public Response<Short> getVocations() {
-        return success(vocationService.getVocations());
+    public Response<IPage<VocationsPo>> getVocations(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size
+    ) {
+        return success(vocationService.getVocations(page, size));
     }
 
     @PostMapping("/apply")

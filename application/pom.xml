@@ -21,6 +21,10 @@
         </dependency>
         <dependency>
             <groupId>com.neusoft.ehr</groupId>
+            <artifactId>calendar</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.neusoft.ehr</groupId>
             <artifactId>department</artifactId>
         </dependency>
         <dependency>
