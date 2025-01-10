@@ -13,7 +13,7 @@ import com.neusoft.ehr.entity.po.EmployeesPo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.mapper.EmployeesMapper;
-import com.neusoft.ehr.util.token.TokenUtil;
+import com.neusoft.ehr.token.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;

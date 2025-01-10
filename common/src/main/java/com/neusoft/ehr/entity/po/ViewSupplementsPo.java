@@ -24,6 +24,10 @@ public class ViewSupplementsPo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "补签编号")
+    @TableField("id")
+    private Long id;
+
     @Schema(description = "员工姓名")
     @TableField("name")
     private String name;
@@ -43,4 +47,8 @@ public class ViewSupplementsPo implements Serializable {
     @Schema(description = "新退勤时间")
     @TableField("clock_out_new")
     private LocalDateTime clockOutNew;
+
+    @Schema(description = "补签原因")
+    @TableField("reason")
+    private String reason;
 }

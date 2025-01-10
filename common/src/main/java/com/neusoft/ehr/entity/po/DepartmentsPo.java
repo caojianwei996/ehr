@@ -33,15 +33,15 @@ public class DepartmentsPo implements Serializable {
     @TableField("name")
     private String name;
 
-    @Schema(description = "部门领导")
-    @TableField("leader")
-    private Long leader;
-
     @Schema(description = "部门编制")
     @TableField("preparation")
     private Long preparation;
 
-    @Schema(description = "部门状态")
+    @Schema(description = "部门状态:0.正常;1.关闭;")
     @TableField("status")
     private Byte status;
+
+    @Schema(description = "部门领导")
+    @TableField("leader")
+    private Long leader;
 }

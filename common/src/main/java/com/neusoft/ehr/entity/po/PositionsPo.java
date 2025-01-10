@@ -37,7 +37,7 @@ public class PositionsPo implements Serializable {
     @TableField("level")
     private Byte level;
 
-    @Schema(description = "岗位状态")
+    @Schema(description = "岗位状态:0.正常;1.关闭;")
     @TableField("status")
     private Byte status;
 }
