@@ -4,6 +4,7 @@ import com.neusoft.ehr.entity.LoginDto;
 import com.neusoft.ehr.entity.UpdatePasswordDto;
 import com.neusoft.ehr.entity.AddEmployeeInfoDto;
 import com.neusoft.ehr.entity.UpdateEmployeeDto;
+import com.neusoft.ehr.entity.po.ViewEmployeesPo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 
 
@@ -19,4 +20,6 @@ public interface IEmployeeService {
     void addEmployee(AddEmployeeInfoDto data);
 
     void updateEmployee(UpdateEmployeeDto data);
+
+    ViewEmployeesPo getBasicInfo(Long id);
 }

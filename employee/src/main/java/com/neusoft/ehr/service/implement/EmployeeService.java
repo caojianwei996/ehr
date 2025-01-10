@@ -10,7 +10,9 @@ import com.neusoft.ehr.entity.UpdatePasswordDto;
 import com.neusoft.ehr.entity.AddEmployeeInfoDto;
 import com.neusoft.ehr.entity.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.po.EmployeesPo;
+import com.neusoft.ehr.entity.po.ViewEmployeesPo;
 import com.neusoft.ehr.entity.vo.LoginVo;
+import com.neusoft.ehr.mapper.ViewEmployeesMapper;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.mapper.EmployeesMapper;
 import com.neusoft.ehr.util.token.TokenUtil;
@@ -28,6 +30,7 @@ import static com.neusoft.ehr.entity.ServiceCode.OLD_PASSWORD_ERROR;
 public class EmployeeService implements IEmployeeService {
     private final TokenUtil tokenUtil;
     private final EmployeesMapper employeesMapper;
+    private final ViewEmployeesMapper viewEmployeesMapper;
 
     @Override
     public LoginVo login(LoginDto data) {
@@ -168,6 +171,12 @@ public class EmployeeService implements IEmployeeService {
         }
         employeesMapper.updateById(baseEmployee);
 
+    }
+
+    @Override
+    public ViewEmployeesPo getBasicInfo(Long id) {
+        ViewEmployeesPo viewEmployeesPo = viewEmployeesMapper.selectById(id);
+        return viewEmployeesPo;
     }
 
 }
