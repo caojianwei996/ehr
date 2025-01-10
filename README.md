@@ -249,7 +249,7 @@ Content-Type: application/json
 ```
 
 - Authentication:`true`
-- Required:`agree` `list`
+- Required:`id` `agree`
 
 ### 获取假期
 
@@ -279,10 +279,19 @@ Content-Type: application/json
 - Required:`type` `start` `end`
 - Throws:`假期不足`
 
+### 获取休假申请
+
+```http request
+GET /api/vacations/apply
+```
+
+- Authentication:`true`
+- Return:`Apply[]`
+
 ### 审批休假
 
 ```http request
-POST /api/vacations/apply
+PUT /api/vacations/apply
 Content-Type: application/json
 
 {
@@ -294,7 +303,7 @@ Content-Type: application/json
 ```
 
 - Authentication:`true`
-- Required:`agree` `list`
+- Required:`id` `agree`
 
 ### 获取部门信息
 

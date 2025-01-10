@@ -5,7 +5,7 @@ import com.neusoft.ehr.entity.ServiceCode;
 import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.ViewSupplementMonthDto;
 import com.neusoft.ehr.entity.po.*;
-import com.neusoft.ehr.entity.ApplyDto;
+import com.neusoft.ehr.entity.dto.ApplyDto;
 import com.neusoft.ehr.mapper.*;
 import com.neusoft.ehr.service.IAttendanceService;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author xkf
@@ -26,12 +27,13 @@ public class AttendanceService implements IAttendanceService {
     private final ViewSupplementsMapper viewSupplementsMapper;
     private final SupplementsMapper supplementsMapper;
     private final AttendancesMapper attendancesMapper;
+    private final EmployeesMapper employeesMapper;
 
     @Override
     public ViewAttendancesDayPo getAttendancesDay() {
         return viewAttendancesDayMapper.selectOne(
                 Wrappers.<ViewAttendancesDayPo>lambdaQuery()
-                        .eq(ViewAttendancesDayPo::getName, AuthorizationInterceptor.getCurrentUser().getName())
+                        .eq(ViewAttendancesDayPo::getEmployeeId, AuthorizationInterceptor.getCurrentUser().getId())
         );
     }
 
@@ -39,7 +41,7 @@ public class AttendanceService implements IAttendanceService {
     public List<ViewAttendancesMonthPo> getAttendancesMonth() {
         return viewAttendancesMonthMapper.selectList(
                 Wrappers.<ViewAttendancesMonthPo>lambdaQuery().eq(
-                        ViewAttendancesMonthPo::getEmployee, AuthorizationInterceptor.getCurrentUser().getName()
+                        ViewAttendancesMonthPo::getEmployeeId, AuthorizationInterceptor.getCurrentUser().getId()
                 )
         );
     }
@@ -74,15 +76,22 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     public List<ViewSupplementsPo> getApplies() {
-        return viewSupplementsMapper.selectList(Wrappers.emptyWrapper());
+        List<Long> collect = employeesMapper.selectList(
+                Wrappers.<EmployeesPo>lambdaQuery().eq(
+                        EmployeesPo::getLeader,
+                        AuthorizationInterceptor.getCurrentUser().getId()
+                )
+        ).stream().map(EmployeesPo::getId).collect(Collectors.toList());
+        return viewSupplementsMapper.selectList(
+                Wrappers.<ViewSupplementsPo>lambdaQuery().in(
+                        !collect.isEmpty(), ViewSupplementsPo::getEmployeeId, collect
+                )
+        );
     }
 
     @Override
     public void updateSupplement(ApplyDto data) {
-        SupplementsPo supplementsPo = supplementsMapper.selectOne(
-                Wrappers.<SupplementsPo>lambdaQuery()
-                        .eq(SupplementsPo::getId, data.getId())
-        );
+        SupplementsPo supplementsPo = supplementsMapper.selectById(data.getId());
         if (supplementsPo != null) {
             supplementsPo.setFiltered(true);
             supplementsMapper.updateById(supplementsPo);

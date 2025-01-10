@@ -30,4 +30,8 @@ public enum ServiceCode {
      * 属性冲突
      */
     PROPERTY_CONFLICT,
+    /**
+     * 假期不足
+     */
+    HOLIDAY_NOT_ENOUGH,
 }

@@ -75,7 +75,10 @@ values (1, 'SUCCESS', 1, 1, '操作成功！'),
        (15, 'PASSWORD_ERROR', 3, 3, 'パスワードエラー！'),
        (16, 'PROPERTY_CONFLICT', 1, 1, '属性冲突！'),
        (17, 'PROPERTY_CONFLICT', 2, 2, 'Property conflict!'),
-       (18, 'PROPERTY_CONFLICT', 3, 3, '属性の競合！');
+       (18, 'PROPERTY_CONFLICT', 3, 3, '属性の競合！'),
+       (19, 'HOLIDAY_NOT_ENOUGH', 1, 1, '假期不足！'),
+       (20, 'HOLIDAY_NOT_ENOUGH', 2, 2, 'Holiday not enough!'),
+       (21, 'HOLIDAY_NOT_ENOUGH', 3, 3, '休みが足りない！');
 create view view_messages as
 select messages.id    as id,
        messages.code  as code,
@@ -189,22 +192,6 @@ create table work_types
 ) comment '工作类型';
 insert into work_types (id, name, on_time, off_time)
 values (1, '8:30->17:30', '8:30', '17:30');
-create view view_employees as
-select employees.id        as id,
-       employees.name      as name,
-       employees.email     as email,
-       employees.authority as authority,
-       work_types.name     as work_type,
-       genders.name        as gender,
-       departments.name    as department,
-       positions.name      as position,
-       leader.name         as leader
-from employees
-         left outer join work_types on employees.work_type = work_types.id
-         left outer join genders on employees.gender = genders.id
-         left outer join departments on employees.department = departments.id
-         left outer join positions on employees.position = positions.id
-         left outer join employees as leader on employees.leader = leader.id;
 create table attendances
 (
     id        bigint  not null auto_increment comment '考勤编号',
@@ -218,7 +205,8 @@ create table attendances
 ) comment '考勤';
 create view view_attendances_day as
 select attendances.id        as id,
-       employees.name        as name,
+       employees.id          as employee_id,
+       employees.name        as employee_name,
        attendances.clock_in  as clock_in,
        attendances.clock_out as clock_out,
        attendances.status    as status
@@ -227,7 +215,8 @@ from attendances
 where date(clock_in) = curdate();
 create view view_attendances_month as
 select attendances.id        as id,
-       employees.name        as employee,
+       employees.id          as employee_id,
+       employees.name        as employee_name,
        attendances.clock_in  as clock_in,
        attendances.clock_out as clock_out,
        attendances.status    as status
@@ -250,7 +239,8 @@ create table supplements
 ) comment '补签';
 create view view_supplements as
 select supplements.id        as id,
-       employees.name        as name,
+       employees.id          as employee_id,
+       employees.name        as employee_name,
        attendances.clock_in  as clock_in_old,
        supplements.clock_in  as clock_in_new,
        attendances.clock_out as clock_out_old,
@@ -268,6 +258,9 @@ create table leaves
     primary key (id),
     index (is_restricted)
 ) comment '假期类型';
+insert into leaves (id, name, is_restricted)
+values (1, '病假', false),
+       (2, '事假', true);
 create table vocations
 (
     id       bigint  not null auto_increment comment '休假编号',
@@ -276,27 +269,23 @@ create table vocations
     start    date    not null comment '开始时间',
     end      date    not null comment '结束时间',
     length   bigint  not null comment '休假长度',
-    status   tinyint not null default 0 comment '休假状态:0.已申请;1.已批准;2.休假中;3.已结束;',
+    status   tinyint not null default 0 comment '休假状态:0.已申请;1.已批准;2.已拒绝;3.休假中;4.已结束;',
     primary key (id),
     index (employee),
     index (type)
 ) comment '休假';
 create view view_vocations as
-select vocations.id                       as id,
-       employees.name                     as name,
-       case
-           when employees.induction > date_sub(curdate(), interval 1 year) then 0
-           when employees.induction > date_sub(curdate(), interval 10 year) then 5
-           when employees.induction > date_sub(curdate(), interval 20 year) then 10
-           else 15 end * if(month(curdate()) >= 3, 2, 3) + employees.transfer_vocations -
-       coalesce(sum(vocations.length), 0) as last
+select vocations.id     as id,
+       employees.id     as employee_id,
+       employees.name   as employee_name,
+       vocations.type   as type,
+       vocations.start  as start,
+       vocations.end    as end,
+       vocations.length as length
 from vocations
          left outer join employees on vocations.employee = employees.id
-         left outer join leaves on vocations.type = leaves.id
-where vocations.status = 3
-  and vocations.start between makedate(year(curdate()) - if(month(curdate() >= 3), 1, 2), 1) and curdate()
-  and leaves.is_restricted = true
-group by vocations.employee;
+         left outer join work_types on vocations.type = work_types.id
+where vocations.status = 0;
 create table calendar
 (
     id   date    not null comment '日历日期',
@@ -304,3 +293,28 @@ create table calendar
     primary key (id),
     index (type)
 ) comment '日历';
+create view view_employees as
+select employees.id                                                                                      as id,
+       employees.name                                                                                    as name,
+       employees.email                                                                                   as email,
+       employees.authority                                                                               as authority,
+       work_types.name                                                                                   as work_type,
+       genders.name                                                                                      as gender,
+       departments.name                                                                                  as department,
+       positions.name                                                                                    as position,
+       leader.name                                                                                       as leader,
+       case
+           when employees.induction > date_sub(curdate(), interval 1 year) then 0
+           when employees.induction > date_sub(curdate(), interval 10 year) then 5
+           when employees.induction > date_sub(curdate(), interval 20 year) then 10
+           else 15 end * if(month(curdate()) >= 3, 2, 3) + employees.transfer_vocations -
+       coalesce(sum(if(leaves.is_restricted and vocations.status in (1, 3, 4), vocations.length, 0)), 0) as last
+from employees
+         left outer join work_types on employees.work_type = work_types.id
+         left outer join genders on employees.gender = genders.id
+         left outer join departments on employees.department = departments.id
+         left outer join positions on employees.position = positions.id
+         left outer join employees as leader on employees.leader = leader.id
+         left outer join vocations on employees.id = vocations.employee
+         left outer join leaves on vocations.type = leaves.id
+group by employees.id;
