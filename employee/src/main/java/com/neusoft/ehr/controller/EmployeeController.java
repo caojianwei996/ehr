@@ -4,6 +4,7 @@ import com.neusoft.ehr.entity.dto.AddEmployeeInfoDto;
 import com.neusoft.ehr.entity.dto.LoginDto;
 import com.neusoft.ehr.entity.dto.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.dto.UpdatePasswordDto;
+import com.neusoft.ehr.entity.vo.EmployeeBasicInfoVo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
@@ -68,4 +69,10 @@ public class EmployeeController extends BaseController {
         return success();
     }
 
+    @GetMapping("/employees/basic")
+    public Response<EmployeeBasicInfoVo> getBasicInfo(){
+        LoginVo currentUser = AuthorizationInterceptor.getCurrentUser();
+
+        return null;
+    }
 }
