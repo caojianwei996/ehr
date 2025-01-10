@@ -1,4 +1,4 @@
-package com.neusoft.ehr.token;
+package com.neusoft.ehr.util.token;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

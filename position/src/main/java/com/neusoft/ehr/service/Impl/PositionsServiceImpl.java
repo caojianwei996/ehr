@@ -14,9 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class PositionsServiceImpl implements PositionsService {
@@ -24,7 +21,7 @@ public class PositionsServiceImpl implements PositionsService {
     private final PositionsMapper positionsMapper;
 
     @Override
-    public IPage<PositionsPo> selectPositions(Integer limit, Integer page) {
+    public IPage<PositionsPo> selectPositions(Integer page, Integer limit) {
         return positionsMapper.selectPage(Page.of(page, limit), Wrappers.emptyWrapper());
     }
 
@@ -63,13 +60,13 @@ public class PositionsServiceImpl implements PositionsService {
         if (positionsPo == null) {
             return;
         }
-        if(updatePositionsDTO.getName() != null) {
+        if (updatePositionsDTO.getName() != null) {
             positionsPo.setName(updatePositionsDTO.getName());
         }
-        if(updatePositionsDTO.getLevel() != null) {
+        if (updatePositionsDTO.getLevel() != null) {
             positionsPo.setLevel(updatePositionsDTO.getLevel());
         }
-        if(updatePositionsDTO.getStatus() != null) {
+        if (updatePositionsDTO.getStatus() != null) {
             positionsPo.setStatus(updatePositionsDTO.getStatus());
         }
         positionsMapper.updateById(positionsPo);

@@ -1,4 +1,4 @@
-package com.neusoft.ehr.token;
+package com.neusoft.ehr.util.token;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neusoft.ehr.entity.ServiceCode;

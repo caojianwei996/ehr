@@ -9,13 +9,13 @@
     <packaging>pom</packaging>
     <modules>
         <module>application</module>
-        <module>common</module>
-        <module>generator</module>
-        <module>system</module>
-        <module>department</module>
         <module>attendance</module>
+        <module>common</module>
+        <module>department</module>
         <module>employee</module>
+        <module>generator</module>
         <module>position</module>
+        <module>system</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -84,17 +84,12 @@
             </dependency>
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
+                <artifactId>position</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
                 <artifactId>system</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.neusoft.ehr</groupId>
-                <artifactId>employee</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.neusoft.ehr</groupId>
-                <artifactId>department</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

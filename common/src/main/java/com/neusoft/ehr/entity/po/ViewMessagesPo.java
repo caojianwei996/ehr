@@ -9,10 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
-
 /**
  * <p>
  * VIEW
@@ -31,29 +27,21 @@ public class ViewMessagesPo implements Serializable {
 
     @Schema(description = "消息编号")
     @TableField("id")
-    @Null
     private Long id;
 
     @Schema(description = "消息代码")
     @TableField("code")
-    @NotBlank
-    @Size(min = 1, max = 64)
     private String code;
 
     @Schema(description = "语言名称")
     @TableField("language")
-    @NotBlank
-    @Size(min = 2, max = 2)
     private String language;
 
     @Schema(description = "国家名称")
     @TableField("country")
-    @NotBlank
-    @Size(min = 2, max = 2)
     private String country;
 
     @Schema(description = "文本")
     @TableField("text")
-    @NotBlank
     private String text;
 }
