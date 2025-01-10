@@ -188,7 +188,7 @@ create table work_types
     primary key (id)
 ) comment '工作类型';
 insert into work_types (id, name, on_time, off_time)
-values (1, '8:30->17:30', '8:30', '17:30');
+values (1, '早:8-30;晚:17:30', '8:30', '17:30');
 create view view_employees as
 select employees.id        as id,
        employees.name      as name,
@@ -306,3 +306,23 @@ create table calendar
     primary key (id),
     index (type)
 ) comment '日历';
+
+
+DROP TABLE IF EXISTS `resume`;
+CREATE TABLE `resume`  (
+                           `id` bigint NOT NULL COMMENT '履历id',
+                           `employee` bigint NOT NULL COMMENT '员工id',
+                           `start` date NOT NULL COMMENT '起始时间',
+                           `end` date NULL DEFAULT NULL COMMENT '终止时间',
+                           `department` bigint NOT NULL COMMENT '履历部门',
+                           PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+create view view_resume as
+select employees.name    as name,
+       departments.name  as department,
+       resume.`start`    as start,
+       resume.end        as end
+from resume
+         left outer join employees on employees.id = resume.employee
+         left outer join departments on departments.id = resume.department;
