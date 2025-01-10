@@ -203,7 +203,7 @@ create table attendances
     employee  bigint  not null comment '考勤员工',
     clock_in  datetime comment '出勤时间',
     clock_out datetime comment '退勤时间',
-    status    tinyint not null default 0 comment '考勤状态:1.考勤中;2.出勤;3.缺勤;4.审批;5.补签;6.矿工;',
+    status    tinyint not null default 0 comment '考勤状态:0.考勤中;1.出勤;2.缺勤;3.审批;4.补签;5.矿工;',
     primary key (id),
     index (employee),
     index (clock_in)

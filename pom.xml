@@ -66,6 +66,11 @@
             </dependency>
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
+                <artifactId>calendar</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
                 <artifactId>common</artifactId>
                 <version>${project.version}</version>
             </dependency>

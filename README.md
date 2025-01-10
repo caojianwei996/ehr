@@ -50,6 +50,8 @@
     - 程序主入口
 - Attendance
     - 出勤管理
+- Calendar
+    - 日历管理
 - Common
     - 通用代码
 - Department
@@ -63,6 +65,8 @@
 - System
     - 系统菜单管理
     - 国际化消息管理
+- Vocation
+    - 假期管理
 
 ## 接口文档
 
@@ -132,7 +136,6 @@ GET /api/employees/resume/department
 
 - Authentication:`true`
 - Return:`Resume`
-
 
 ### 查看职位履历信息
 
@@ -264,11 +267,20 @@ Content-Type: application/json
 ### 获取假期
 
 ```http request
-GET /api/vacations
+GET /api/vacations/last
 ```
 
 - Authentication:`true`
 - Return:`number`
+
+### 获取假期
+
+```http request
+GET /api/vacations?page=number&size=number
+```
+
+- Authentication:`true`
+- Return:`Apply[]`
 
 ### 申请休假
 
@@ -445,10 +457,10 @@ Content-Type: application/json
   }
 }
 ```
+
 - Authentication:`true`
 - Required:`id`
 - Throws:`属性冲突`
-
 
 ### 员工调转部门
 
@@ -460,6 +472,7 @@ Content-Type: application/json
   "data": "string"
 }
 ```
+
 - Authentication:`true`
 - Required:`id`
 
@@ -473,5 +486,6 @@ Content-Type: application/json
   "data": "string"
 }
 ```
+
 - Authentication:`true`
 - Required:`id`
