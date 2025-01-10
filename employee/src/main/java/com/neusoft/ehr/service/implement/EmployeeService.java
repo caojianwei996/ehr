@@ -11,8 +11,12 @@ import com.neusoft.ehr.entity.AddEmployeeInfoDto;
 import com.neusoft.ehr.entity.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.po.EmployeesPo;
 import com.neusoft.ehr.entity.po.ViewEmployeesPo;
+import com.neusoft.ehr.entity.po.ViewResumeDepartmentVo;
+import com.neusoft.ehr.entity.po.ViewResumePositionVo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.mapper.ViewEmployeesMapper;
+import com.neusoft.ehr.mapper.ViewResumeDepartmentMapper;
+import com.neusoft.ehr.mapper.ViewResumePositionMapper;
 import com.neusoft.ehr.service.IEmployeeService;
 import com.neusoft.ehr.mapper.EmployeesMapper;
 import com.neusoft.ehr.util.token.TokenUtil;
@@ -21,6 +25,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.neusoft.ehr.entity.ServiceCode.EMAIL_CONFLICT;
 import static com.neusoft.ehr.entity.ServiceCode.OLD_PASSWORD_ERROR;
@@ -31,6 +36,8 @@ public class EmployeeService implements IEmployeeService {
     private final TokenUtil tokenUtil;
     private final EmployeesMapper employeesMapper;
     private final ViewEmployeesMapper viewEmployeesMapper;
+    private final ViewResumeDepartmentMapper viewResumeDepartmentMapper;
+    private final ViewResumePositionMapper viewResumePositionMapper;
 
     @Override
     public LoginVo login(LoginDto data) {
@@ -178,5 +185,16 @@ public class EmployeeService implements IEmployeeService {
         ViewEmployeesPo viewEmployeesPo = viewEmployeesMapper.selectById(id);
         return viewEmployeesPo;
     }
+
+    @Override
+    public List<ViewResumeDepartmentVo> getDepartmentResume(String name) {
+        return viewResumeDepartmentMapper.selectList(new QueryWrapper<ViewResumeDepartmentVo>().eq("name", name));
+    }
+
+    @Override
+    public List<ViewResumePositionVo> getPositionResume(String name) {
+        return viewResumePositionMapper.selectList(new QueryWrapper<ViewResumePositionVo>().eq("name",name));
+    }
+
 
 }

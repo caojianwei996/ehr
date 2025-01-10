@@ -5,8 +5,11 @@ import com.neusoft.ehr.entity.UpdatePasswordDto;
 import com.neusoft.ehr.entity.AddEmployeeInfoDto;
 import com.neusoft.ehr.entity.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.po.ViewEmployeesPo;
+import com.neusoft.ehr.entity.po.ViewResumeDepartmentVo;
+import com.neusoft.ehr.entity.po.ViewResumePositionVo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 
+import java.util.List;
 
 
 public interface IEmployeeService {
@@ -22,4 +25,8 @@ public interface IEmployeeService {
     void updateEmployee(UpdateEmployeeDto data);
 
     ViewEmployeesPo getBasicInfo(Long id);
+
+    List<ViewResumeDepartmentVo> getDepartmentResume(String name);
+
+    List<ViewResumePositionVo> getPositionResume(String name);
 }

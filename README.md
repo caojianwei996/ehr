@@ -124,10 +124,20 @@ GET /api/employees/basic
 - Authentication:`true`
 - Return:`Employee`
 
-### 查看履历信息
+### 查看部门履历信息
 
 ```http request
-GET /api/employees/resume
+GET /api/employees/resume/department
+```
+
+- Authentication:`true`
+- Return:`Resume`
+
+
+### 查看职位履历信息
+
+```http request
+GET /api/employees/resume/position
 ```
 
 - Authentication:`true`

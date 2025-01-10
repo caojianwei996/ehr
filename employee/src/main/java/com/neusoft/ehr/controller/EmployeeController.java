@@ -6,6 +6,8 @@ import com.neusoft.ehr.entity.UpdateEmployeeDto;
 import com.neusoft.ehr.entity.UpdatePasswordDto;
 import com.neusoft.ehr.entity.EmployeeBasicInfoVo;
 import com.neusoft.ehr.entity.po.ViewEmployeesPo;
+import com.neusoft.ehr.entity.po.ViewResumeDepartmentVo;
+import com.neusoft.ehr.entity.po.ViewResumePositionVo;
 import com.neusoft.ehr.entity.vo.LoginVo;
 import com.neusoft.ehr.interceptor.authorization.AuthorizationInterceptor;
 import com.neusoft.ehr.service.IEmployeeService;
@@ -13,6 +15,8 @@ import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2025-01-08
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/employees")
 public class EmployeeController extends BaseController {
     private final IEmployeeService employeeService;
 
@@ -38,23 +42,8 @@ public class EmployeeController extends BaseController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/login")
-    public Response<LoginVo> login(@RequestBody Request<LoginDto> request) {
-        return success(employeeService.login(request.getData()));
-    }
 
-    @PostMapping("/reset")
-    public Response<Void> resetPassword(@RequestBody Request<String> request) {
-        employeeService.reset(request.getData());
-        return success();
-    }
-
-    @PostMapping("/update")
-    public Response<Void> updatePassword(@RequestBody Request<UpdatePasswordDto> request) {
-        employeeService.updatePassword(request.getData(), AuthorizationInterceptor.getCurrentUser());
-        return success();
-    }
-    @PostMapping("/employee")
+    @PostMapping
     public Response<Void> addEmployee(@RequestBody Request<AddEmployeeInfoDto> request){
 
         System.out.println(request);
@@ -62,17 +51,27 @@ public class EmployeeController extends BaseController {
         return success();
     }
 
-    @PutMapping("/employee")
+    @PutMapping
     public Response<Void> updateEmployee(@RequestBody Request<UpdateEmployeeDto> request){
 
         employeeService.updateEmployee(request.getData());
         return success();
     }
 
-    @GetMapping("/employees/basic")
+    @GetMapping("/basic")
     public Response<ViewEmployeesPo> getBasicInfo(){
         Long id = AuthorizationInterceptor.getCurrentUser().getId();
         return success(employeeService.getBasicInfo(id));
+    }
+    @GetMapping("/resume/department")
+    public Response<List<ViewResumeDepartmentVo>> getDepartmentResume(){
+        String name = AuthorizationInterceptor.getCurrentUser().getName();
+        return success(employeeService.getDepartmentResume(name));
+    }
+    @GetMapping("/resume/position")
+    public Response<List<ViewResumePositionVo>> getPositionResume(){
+        String name = AuthorizationInterceptor.getCurrentUser().getName();
+        return success(employeeService.getPositionResume(name));
     }
 
 }
