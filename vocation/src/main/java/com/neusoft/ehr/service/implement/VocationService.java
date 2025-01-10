@@ -1,6 +1,8 @@
 package com.neusoft.ehr.service.implement;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.neusoft.ehr.dto.ViewVocationsDto;
 import com.neusoft.ehr.entity.ServiceCode;
 import com.neusoft.ehr.entity.ServiceException;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,12 +31,21 @@ public class VocationService implements IVocationService {
     private final EmployeesMapper employeesMapper;
 
     @Override
-    public Short getVocations() {
+    public Short getLast() {
         return Optional.ofNullable(
                 viewEmployeesMapper.selectById(
                         AuthorizationInterceptor.getCurrentUser().getId()
                 )
         ).map(ViewEmployeesPo::getLast).orElse(BigDecimal.ZERO).shortValue();
+    }
+
+    @Override
+    public IPage<VocationsPo> getVocations(Integer page, Integer size) {
+        return vocationsMapper.selectPage(
+                Page.of(page, size), Wrappers.<VocationsPo>lambdaQuery()
+                        .eq(VocationsPo::getEmployee, AuthorizationInterceptor.getCurrentUser().getId())
+                        .orderByDesc(VocationsPo::getStart)
+        );
     }
 
     @Override
@@ -44,7 +56,7 @@ public class VocationService implements IVocationService {
                         .between(CalendarPo::getId, dto.getStart(), dto.getEnd())
                         .in(CalendarPo::getType, 2, 4)
         );
-        if (leavesPo.getRestricted() && vocationLength > getVocations()) {
+        if (leavesPo.getRestricted() && vocationLength > getLast()) {
             throw new ServiceException(ServiceCode.HOLIDAY_NOT_ENOUGH);
         }
         VocationsPo vocationsPo = new VocationsPo();
@@ -65,9 +77,14 @@ public class VocationService implements IVocationService {
                         AuthorizationInterceptor.getCurrentUser().getId()
                 )
         ).stream().map(EmployeesPo::getId).collect(Collectors.toList());
-        return viewVocationsMapper.selectList(
-                Wrappers.<ViewVocationsPo>lambdaQuery().in(!collect.isEmpty(), ViewVocationsPo::getEmployeeId, collect)
-        );
+        if (collect.isEmpty()) {
+            return new ArrayList<>();
+        } else {
+            return viewVocationsMapper.selectList(
+                    Wrappers.<ViewVocationsPo>lambdaQuery().in(ViewVocationsPo::getEmployeeId, collect)
+            );
+        }
+
     }
 
     @Override

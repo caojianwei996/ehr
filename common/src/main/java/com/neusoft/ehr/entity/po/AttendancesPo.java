@@ -42,7 +42,7 @@ public class AttendancesPo implements Serializable {
     @TableField("clock_out")
     private LocalDateTime clockOut;
 
-    @Schema(description = "考勤状态:1.考勤中;2.出勤;3.缺勤;4.审批;5.补签;6.矿工;")
+    @Schema(description = "考勤状态:0.考勤中;1.出勤;2.缺勤;3.审批;4.补签;5.矿工;")
     @TableField("status")
     private Byte status;
 }
