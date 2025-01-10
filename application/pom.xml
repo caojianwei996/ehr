@@ -35,6 +35,10 @@
             <groupId>com.neusoft.ehr</groupId>
             <artifactId>system</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.neusoft.ehr</groupId>
+            <artifactId>vocation</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -26,8 +26,8 @@ public class SignService implements ISignService {
         if (Duration.between(time, LocalDateTime.now()).getSeconds() > 30 ||
                 viewAttendancesDayMapper.exists(
                         Wrappers.<ViewAttendancesDayPo>lambdaQuery().eq(
-                                ViewAttendancesDayPo::getName,
-                                AuthorizationInterceptor.getCurrentUser().getName()
+                                ViewAttendancesDayPo::getEmployeeId,
+                                AuthorizationInterceptor.getCurrentUser().getId()
                         )
                 )
         ) {
@@ -46,8 +46,8 @@ public class SignService implements ISignService {
         }
         ViewAttendancesDayPo viewAttendancesDayPo = viewAttendancesDayMapper.selectOne(
                 Wrappers.<ViewAttendancesDayPo>lambdaQuery().eq(
-                        ViewAttendancesDayPo::getName,
-                        AuthorizationInterceptor.getCurrentUser().getName()
+                        ViewAttendancesDayPo::getEmployeeId,
+                        AuthorizationInterceptor.getCurrentUser().getId()
                 )
         );
         if (viewAttendancesDayPo == null || (viewAttendancesDayPo.getClockOut() != null && Duration.between(viewAttendancesDayPo.getClockOut(), time).toMinutes() < 5)) {

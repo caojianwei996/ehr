@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,7 +52,7 @@ public class VocationsPo implements Serializable {
     @TableField("length")
     private Long length;
 
-    @Schema(description = "休假状态:0.已申请;1.已批准;2.休假中;3.已结束;")
+    @Schema(description = "休假状态:0.已申请;1.已批准;2.已拒绝;3.休假中;4.已结束;")
     @TableField("status")
     private Byte status;
 }
