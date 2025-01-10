@@ -15,6 +15,7 @@
         <module>department</module>
         <module>attendance</module>
         <module>employee</module>
+        <module>position</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -84,6 +85,16 @@
             <dependency>
                 <groupId>com.neusoft.ehr</groupId>
                 <artifactId>system</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>employee</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.neusoft.ehr</groupId>
+                <artifactId>department</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
