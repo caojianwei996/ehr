@@ -44,15 +44,15 @@ public class ViewDepartmentsPo implements Serializable {
     @TableField("create_at")
     private LocalDate createAt;
 
-    @Schema(description = "部门编号")
+    @Schema(description = "上级部门编号")
     @TableField("parent_id")
     private Long parentId;
 
-    @Schema(description = "部门名称")
+    @Schema(description = "上级部门名称")
     @TableField("parent_name")
     private String parentName;
 
-    @Schema(description = "员工姓名")
+    @Schema(description = "部门负责人姓名")
     @TableField("leader")
     private String leader;
 }

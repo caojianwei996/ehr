@@ -9,8 +9,10 @@ import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.UpdateDepartmentsDto;
 import com.neusoft.ehr.entity.po.DepartmentsPo;
 import com.neusoft.ehr.entity.po.ViewDepartmentsPo;
+import com.neusoft.ehr.entity.po.ViewEmployeesPo;
 import com.neusoft.ehr.mapper.DepartmentsMapper;
 import com.neusoft.ehr.mapper.ViewDepartmentsMapper;
+import com.neusoft.ehr.mapper.ViewEmployeesMapper;
 import com.neusoft.ehr.service.IDepartmentsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -21,10 +23,19 @@ import org.springframework.stereotype.Service;
 public class DepartmentsService implements IDepartmentsService {
     private final DepartmentsMapper departmentsMapper;
     private final ViewDepartmentsMapper viewDepartmentsMapper;
+    private final ViewEmployeesMapper viewEmployeesPoMapper;
 
     @Override
     public IPage<ViewDepartmentsPo> selectDepartments(Integer page, Integer limit) {
         return viewDepartmentsMapper.selectPage(Page.of(page, limit), Wrappers.emptyWrapper());
+    }
+
+    @Override
+    public IPage<ViewEmployeesPo> selectEmployeesByDepartmentId(Long departmentId, Integer page, Integer limit) {
+        return viewEmployeesPoMapper.selectPage(
+                Page.of(page, limit),
+                Wrappers.<ViewEmployeesPo>lambdaQuery().eq(ViewEmployeesPo::getDepartment_id, departmentId)
+        );
     }
 
     @Override
@@ -50,5 +61,11 @@ public class DepartmentsService implements IDepartmentsService {
                         .set(departmentsDto.getLeader() != null, DepartmentsPo::getLeader, departmentsDto.getLeader())
                         .set(departmentsDto.getStatus() != null, DepartmentsPo::getStatus, departmentsDto.getStatus())
         );
+    }
+
+    @Override
+    public ViewDepartmentsPo selectDepartmentById(Long departmentId) {
+        return viewDepartmentsMapper.selectOne(
+                Wrappers.<ViewDepartmentsPo>lambdaQuery().eq(ViewDepartmentsPo::getDepartmentId, departmentId));
     }
 }

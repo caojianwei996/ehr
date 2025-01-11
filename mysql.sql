@@ -305,7 +305,9 @@ select employees.id                                                             
        employees.authority                                                                               as authority,
        work_types.name                                                                                   as work_type,
        genders.name                                                                                      as gender,
+       departments.id                                                                                    as department_id,
        departments.name                                                                                  as department,
+       positions.id                                                                                      as position_id,
        positions.name                                                                                    as position,
        leader.name                                                                                       as leader,
        case

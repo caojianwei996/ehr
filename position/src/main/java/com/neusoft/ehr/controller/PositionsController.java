@@ -6,6 +6,7 @@ import com.neusoft.ehr.entity.UpdatePositionsDto;
 import com.neusoft.ehr.entity.Request;
 import com.neusoft.ehr.entity.Response;
 import com.neusoft.ehr.entity.po.PositionsPo;
+import com.neusoft.ehr.entity.po.ViewEmployeesPo;
 import com.neusoft.ehr.service.PositionsService;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,21 @@ public class PositionsController extends BaseController {
             @RequestParam(defaultValue = "10") Integer limit
     ) {
         return success(positionsService.selectPositions(page, limit));
+    }
+
+    //根据岗位id查询岗位详细信息
+    @GetMapping("/{id}")
+    public Response<PositionsPo> getPositionById(@PathVariable Long id) {
+        return success(positionsService.selectOne(id));
+    }
+
+    //根据岗位id查询所有该岗位的员工
+    @GetMapping("/employees/{positionId}")
+    public Response<IPage<ViewEmployeesPo>> selectEmployeesByPositionId(
+            @PathVariable Long positionId,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
+        return success(positionsService.selectEmployeesByPositionId(positionId, page, limit));
     }
 
     @PostMapping
