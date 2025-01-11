@@ -8,7 +8,9 @@ import com.neusoft.ehr.entity.UpdatePositionsDto;
 import com.neusoft.ehr.entity.ServiceCode;
 import com.neusoft.ehr.entity.ServiceException;
 import com.neusoft.ehr.entity.po.PositionsPo;
+import com.neusoft.ehr.entity.po.ViewEmployeesPo;
 import com.neusoft.ehr.mapper.PositionsMapper;
+import com.neusoft.ehr.mapper.ViewEmployeesMapper;
 import com.neusoft.ehr.service.PositionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class PositionsServiceImpl implements PositionsService {
 
     private final PositionsMapper positionsMapper;
+    private final ViewEmployeesMapper viewEmployeesPoMapper;
 
     @Override
     public IPage<PositionsPo> selectPositions(Integer page, Integer limit) {
@@ -70,5 +73,18 @@ public class PositionsServiceImpl implements PositionsService {
             positionsPo.setStatus(updatePositionsDTO.getStatus());
         }
         positionsMapper.updateById(positionsPo);
+    }
+
+    @Override
+    public PositionsPo selectOne(Long id) {
+        return positionsMapper.selectById(id);
+    }
+
+    @Override
+    public IPage<ViewEmployeesPo> selectEmployeesByPositionId(Long positionId, Integer page, Integer limit) {
+        return viewEmployeesPoMapper.selectPage(
+                Page.of(page, limit),
+                Wrappers.<ViewEmployeesPo>lambdaQuery().eq(ViewEmployeesPo::getPosition_id, positionId)
+        );
     }
 }
