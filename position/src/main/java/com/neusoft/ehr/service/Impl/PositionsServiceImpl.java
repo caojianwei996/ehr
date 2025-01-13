@@ -24,8 +24,14 @@ public class PositionsServiceImpl implements PositionsService {
     private final ViewEmployeesMapper viewEmployeesPoMapper;
 
     @Override
-    public IPage<PositionsPo> selectPositions(Integer page, Integer limit) {
-        return positionsMapper.selectPage(Page.of(page, limit), Wrappers.emptyWrapper());
+    public IPage<PositionsPo> selectPositions(String name, Byte status, Integer page, Integer limit) {
+        //根据岗位名称（非必须）以及状态（非必须）查询岗位
+        return positionsMapper.selectPage(
+                Page.of(page, limit),
+                Wrappers.<PositionsPo>lambdaQuery()
+                        .like(!name.equals(""), PositionsPo::getName, name)
+                        .eq(status != null, PositionsPo::getStatus, status)
+        );
     }
 
     @Override

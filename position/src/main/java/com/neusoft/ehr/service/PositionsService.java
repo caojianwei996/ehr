@@ -7,7 +7,7 @@ import com.neusoft.ehr.entity.po.PositionsPo;
 import com.neusoft.ehr.entity.po.ViewEmployeesPo;
 
 public interface PositionsService {
-    IPage<PositionsPo> selectPositions(Integer page, Integer limit);
+    IPage<PositionsPo> selectPositions(String name, Byte status, Integer page, Integer limit);
 
     void insertPositions(InsertPositionsDto data);
 

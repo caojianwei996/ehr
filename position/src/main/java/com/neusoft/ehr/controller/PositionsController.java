@@ -30,10 +30,12 @@ public class PositionsController extends BaseController {
 
     @GetMapping
     public Response<IPage<PositionsPo>> getPositions(
+            @RequestParam (required = false) String name,
+            @RequestParam (required = false) Byte status,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer limit
     ) {
-        return success(positionsService.selectPositions(page, limit));
+        return success(positionsService.selectPositions(name, status, page, limit));
     }
 
     //根据岗位id查询岗位详细信息

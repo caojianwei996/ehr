@@ -28,13 +28,13 @@ public class DepartmentController extends BaseController {
         this.departmentsService = departmentsService;
     }
 
-    @GetMapping
+    /*@GetMapping
     public Response<IPage<ViewDepartmentsPo>> selectDepartments(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "limit", defaultValue = "10") Integer limit
     ) {
         return success(departmentsService.selectDepartments(page, limit));
-    }
+    }*/
 
     //根据部门id查询部门详细信息
     @GetMapping("/{departmentId}")
@@ -49,6 +49,16 @@ public class DepartmentController extends BaseController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
         return success(departmentsService.selectEmployeesByDepartmentId(departmentId, page, limit));
+    }
+
+    //根据部门名称（非必须）以及状态（非必须）查询部门
+    @GetMapping("/search")
+    public Response<IPage<ViewDepartmentsPo>> selectDepartments(
+            @RequestParam (required = false) String name,
+            @RequestParam (required = false) Byte status,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "limit", defaultValue = "10") Integer limit){
+        return success(departmentsService.selectDepartments(name, status, page, limit));
     }
 
     @PostMapping

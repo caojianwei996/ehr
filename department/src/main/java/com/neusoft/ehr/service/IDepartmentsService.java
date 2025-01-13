@@ -7,7 +7,7 @@ import com.neusoft.ehr.entity.po.ViewDepartmentsPo;
 import com.neusoft.ehr.entity.po.ViewEmployeesPo;
 
 public interface IDepartmentsService {
-    IPage<ViewDepartmentsPo> selectDepartments(Integer page, Integer limit);
+    /*IPage<ViewDepartmentsPo> selectDepartments(Integer page, Integer limit);*/
 
     IPage<ViewEmployeesPo> selectEmployeesByDepartmentId(Long departmentId, Integer page, Integer limit);
 
@@ -16,4 +16,6 @@ public interface IDepartmentsService {
     void updateDepartment(UpdateDepartmentsDto departmentsDTO);
 
     ViewDepartmentsPo selectDepartmentById(Long departmentId);
+
+    IPage<ViewDepartmentsPo> selectDepartments(String name, Byte status, Integer page, Integer limit);
 }

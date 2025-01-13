@@ -25,10 +25,10 @@ public class DepartmentsService implements IDepartmentsService {
     private final ViewDepartmentsMapper viewDepartmentsMapper;
     private final ViewEmployeesMapper viewEmployeesPoMapper;
 
-    @Override
+    /*@Override
     public IPage<ViewDepartmentsPo> selectDepartments(Integer page, Integer limit) {
         return viewDepartmentsMapper.selectPage(Page.of(page, limit), Wrappers.emptyWrapper());
-    }
+    }*/
 
     @Override
     public IPage<ViewEmployeesPo> selectEmployeesByDepartmentId(Long departmentId, Integer page, Integer limit) {
@@ -67,5 +67,16 @@ public class DepartmentsService implements IDepartmentsService {
     public ViewDepartmentsPo selectDepartmentById(Long departmentId) {
         return viewDepartmentsMapper.selectOne(
                 Wrappers.<ViewDepartmentsPo>lambdaQuery().eq(ViewDepartmentsPo::getDepartmentId, departmentId));
+    }
+
+    @Override
+    public IPage<ViewDepartmentsPo> selectDepartments(String name, Byte status, Integer page, Integer limit) {
+        //根据部门名称（非必须）以及状态（非必须）查询该部门
+        return viewDepartmentsMapper.selectPage(
+                Page.of(page, limit),
+                Wrappers.<ViewDepartmentsPo>lambdaQuery()
+                        .like(name != null && !"".equals(name), ViewDepartmentsPo::getDepartmentName, name)
+                        .eq(status != null, ViewDepartmentsPo::getDepartmentStatus, status)
+        );
     }
 }
