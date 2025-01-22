@@ -521,7 +521,7 @@ Content-Type: application/json
 {
   "data": {
     "name": "string",
-    "leader: "number",
+    "leader": "number",
     "preparation": "number",
     "status": "number"
   }
