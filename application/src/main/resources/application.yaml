@@ -1,0 +1,47 @@
+application:
+  authentication:
+    permit:
+      get:
+        - /api/error
+        - /api/swagger-ui.html
+        - /api/swagger-ui/**
+        - /api/v3/api-docs/**
+      post:
+        - /api/error
+        - /api/users/login
+        - /api/users/reset
+      put:
+        - /api/error
+      delete:
+        - /api/error
+      options:
+        - /api/**
+  token:
+    expiration-time: 60
+    issuer: neusoft
+    not-before: 0
+    private-key: MGACAQAwEAYHKoZIzj0CAQYFK4EEACMESTBHAgEBBEIBKBVhL17zuV97FCLgTBtgiegwvOGUq3ISjeW7zzqZHpPceYuZOmfEX+uMPrHt4uko+ZKJG+qmYTZdnpHMezwbgEQ=
+    public-key: MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAbmP72V9XoH2tjIL6iYtDNsVcGzWzFcjmHEo2t+3jl+pnhXRtDCJD8HmEgjzEIS68C3JvxGaOsjRwFIdxx6s/mrIA5xOCnLzvtltA8LJyNNIqvGepw1M2Jhbu6Kbfxr/R/3Cif/IrgJ+gbAzukfO+3Oj0ddOuz4rzAHqxk9k8ZVI6V9M=
+    subject: user
+mybatis-plus:
+  mapper-locations: classpath*:/mappers/**/*.xml
+server:
+  port: 8443
+  servlet:
+    context-path: /api
+  ssl:
+    key-store: classpath:ssl/server.p12
+    key-store-password: neusoft
+    key-store-type: pkcs12
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ehr
+  jackson:
+    default-property-inclusion: non_null
+  mail:
+    host: smtp.163.com
+    username: *
+    password: *
+    default-encoding: UTF-8
